@@ -1,6 +1,4 @@
-
 \documentclass[a4paper,12pt]{report}
-
 
 \usepackage[utf8]{inputenc}     % Per caratteri accentati
 \usepackage[T1]{fontenc}        % Font encoding
@@ -12,21 +10,21 @@
 \onehalfspacing                 % Interlinea 1.5
 \usepackage{graphicx}           % Immagini
 \usepackage{amsmath, amssymb}   % Matematica
+\usepackage{amsthm}             % Ambienti per teoremi, definizioni, ecc.
 \usepackage{hyperref}           % Link ipertestuali
 \usepackage{fancyhdr}           % Intestazioni e piè di pagina
+\usepackage{titlesec}           % Formattazione titoli
 
-
-\usepackage{titlesec}
+% Definizione ambiente teorema numerato per capitolo
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{definition}{Definizione}[chapter]
 
 
 \titleformat{\chapter}[display]
-  {\normalfont\huge\bfseries}  % Stile del titolo
-  {}                           % Nessuna numerazione visibile
-  {0pt}                        % Spazio tra numero e titolo (in questo caso, nessuno)
-  {\Huge}                      % Stile applicato al titolo vero e proprio
-
-
-
+{\normalfont\huge\bfseries}
+{}
+{0pt}
+{\Huge}
 
 % Impostazioni intestazioni
 \pagestyle{fancy}
@@ -35,110 +33,101 @@
 \fancyhead[RE]{\leftmark}
 \fancyhead[LO]{\rightmark}
 
-
 % Frontespizio personalizzabile
 \begin{document}
 
+    \begin{titlepage}
+        \centering
+        {\scshape\LARGE Università degli Studi di Milano \par}
+        \vspace{1cm}
+        {\scshape\Large Facoltà di \ldots\par}
+        \vspace{0.5cm}
+        {\scshape\large Corso di Laurea in Informatica\par}
+        \vspace{2cm}
+        {\huge\bfseries Input Driven Pushdown Automata ed Edit Distances\par}
+        \vspace{2cm}
+        \begin{flushleft}
+            \textbf{Relatore:} Nome Relatore\\
+            \textbf{Candidato:} Nome Cognome\\
+            \textbf{Matricola:} 123456
+        \end{flushleft}
+        \vfill
+        {\large Anno Accademico 2024--2025\par}
+    \end{titlepage}
 
-\begin{titlepage}
-    \centering
-    {\scshape\LARGE Università degli Studi di Milano \par}
-    \vspace{1cm}
-    {\scshape\Large Facoltà di \ldots\par}
-    \vspace{0.5cm}
-    {\scshape\large Corso di Laurea in Informatica\par}
-    \vspace{2cm}
-    {\huge\bfseries Input Driven Pushdown Automata ed Edit Distances\par}
-    \vspace{2cm}
-    \begin{flushleft}
-        \textbf{Relatore:} Nome Relatore\\
-        \textbf{Candidato:} Nome Cognome\\
-        \textbf{Matricola:} 123456
-    \end{flushleft}
-    \vfill
-    {\large Anno Accademico 2024--2025\par}
-\end{titlepage}
+    \pagenumbering{Roman}
+    \tableofcontents
+    \clearpage
 
+    \pagenumbering{arabic}
 
-\pagenumbering{Roman}
-\tableofcontents
-\clearpage
+    \chapter{Introduzione}
 
+    Gli \emph{Input Driven Pushdown Automata}, anche detti \textit{IDPDA}, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input. In particolare, il simbolo di input determina se l'automa compierà un'operazione di \emph{push} sulla pila, di \emph{pop}, oppure se lascerà la pila invariata.
 
-\pagenumbering{arabic}
+    Gli IDPDA risultano particolarmente utili in diversi ambiti, tra cui il \emph{parsing} dei linguaggi di programmazione, dei documenti XML e, più in generale, in tutti i contesti in cui la struttura dell'input riflette la struttura gerarchica dei dati.
 
+    È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari.
 
-\chapter{Introduzione}
+    Un problema di particolare rilevanza, dove gli \textit{IDPDA} trovano utilizzo, consiste nel determinare la distanza tra una data stringa $s$ e un linguaggio $L$, detta anche \textit{distanza di edit}. Tale distanza è definita come il costo minimo di una sequenza di operazioni elementari di modifica su $s$ (sostituzione, inserimento, eliminazione di un simbolo), che la trasformano in una stringa $s' \in L$.
 
+    In uno scenario applicativo, si può supporre di aver ricevuto in input una stringa appartenente a $L$, la quale potrebbe tuttavia contenere errori. L'obiettivo è quindi ricostruire, con la miglior accuratezza possibile, la stringa originaria.
 
-Gli \emph{Input Driven Pushdown Automata}, anche detti \textit{IDPDA}, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input. In particolare, il simbolo di input determina se l'automa compierà un'operazione di \emph{push} sulla pila, di \emph{pop}, oppure se lascerà la pila invariata.
+    Per ottenere tale risultato, si può adottare un approccio a \emph{distanza minima}, ovvero determinare la stringa $y \in L$ tale che la \textit{distanza di edit} tra $x$ (la stringa ricevuta) e $y$ sia minima.
 
+    \chapter{Definizioni}
+    Una transizione di un IDPDA è determinata dal tipo di simbolo in input, appartenente all'alfabeto $\Sigma$, che stabilisce l'operazione da eseguire, eventualmente nulla.
+    Si può rappresentare l'alfabeto di input di un IDPDA come unione di tre sottoinsiemi disgiunti e finiti:
 
-Gli IDPDA risultano particolarmente utili in diversi ambiti, tra cui il \emph{parsing} dei linguaggi di programmazione, dei documenti XML e, più in generale, in tutti i contesti in cui la struttura dell'input riflette la struttura gerarchica dei dati.
+    \begin{itemize}
+        \item $\Sigma_{+1}$: parentesi sinistre, determinano una operazione di push sulla pila
+        \item $\Sigma_{-1}$: parentesi destre, determinano una operazione di pop sulla pila
+        \item $\Sigma_{0}$: simboli neutrali, non si traducono in operazioni sulla pila
+    \end{itemize}
 
+    Una stringa $s \in \Sigma$ è detta \textit{ben matchata} se ogni parentesi sinistra ha una parentesi destra corrispondente, e viceversa.
 
-È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari.
+    \section{Automi Input Driven Deterministici}
 
-
-Un problema di particolare rilevanza, dove gli \textit{IDPDA} trovano utilizzo, consiste nel determinare la distanza tra una data stringa $s$ e un linguaggio $L$, detta anche \textit{distanza di edit}. Tale distanza è definita come il costo minimo di una sequenza di operazioni elementari di modifica su $s$ (sostituzione, inserimento, eliminazione di un simbolo), che la trasformano in una stringa $s' \in L$.
-
-
-In uno scenario applicativo, si può supporre di aver ricevuto in input una stringa appartenente a $L$, la quale potrebbe tuttavia contenere errori. L'obiettivo è quindi ricostruire, con la miglior accuratezza possibile, la stringa originaria.
-
-
-Per ottenere tale risultato, si può adottare un approccio a \emph{distanza minima}, ovvero determinare la stringa $y \in L$ tale che la \textit{distanza di edit} tra $x$ (la stringa ricevuta) e $y$ sia minima.
-
-
-\chapter{Definzioni}
-Una transizione di un IDPDA è determinata dal tipo di simbolo in input, appartenente all'alfabeto $\Sigma$, che stabilisce l'operazione da eseguire, eventualmente nulla.
-Si può rappresentare l'alfabeto di input di un IDPDA come unione di tre sottoinsiemi disgiunti e finiti:
-
-
-\begin{itemize}
-  \item $\Sigma_{+1}$: parentesi sinistre, determinano una operazione di push sulla pila
-  \item $\Sigma_{-1}$: parentesi destre, determinano una operazione di pop sulla pila
-  \item $\Sigma_{0}$: simboli neutrali, non si traducono in operazioni sulla pila
-\end{itemize}
-
-
-Una stringa $s \in \Sigma$ è detta \textit{ben matchata} se ogni parentesi sinistra ha una parentesi destra corrispondente, e viceversa.
-
-\section{Automi Input Driven Deterministici}
-
-
-
-\chapter{Sviluppo}
-Descrizione del lavoro svolto...
+    \begin{definition}
+        Un \textit{deterministic input driven pushdown automata} (detto anche \textit{DIPDA}) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
+        \begin{itemize}
+            \item $\Sigma$ è un alfabeto di input, composto da 3 sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
+            \item $Q$ è un insieme di stati dell'automa
+            \item $q_{0} \in Q$ è lo stato iniziale
+            \item $F \in Q$ è il sottoinsieme degli stati \textit{accepting}
+            \item $\Gamma$ è un \textit{alfabeto pushdown}
+            \item $\perp$ è il simbolo che indica la pila vuota
+            \item $\delta_{<} : Q \rightarrow Q \times \Gamma$ è la funzione di transizione che, per ogni parentesi sinistra, dato un determinato stato corrente, fornisce lo stato successivo ed il simbolo da pushare sulla pila
+            \item $\delta_{>} : Q \times (\Gamma\;\cup\perp) \rightarrow Q$ è la funzione di transizione che, per ogni parentesi destra, dato un determinato stato corrente, fornisce lo stato successivo ed il simbolo da pushare sulla pila, posto che il simbolo specificato venga rimosso dalla cima della pila o lo stack sia vuoto
+            \item $\delta_{c} : Q \rightarrow Q$ è la funzione di transizione che, per ogni simbolo neutro $c \in \Sigma_{0}$, fornisce il prossimo stato
+        \end{itemize}
+    \end{definition}
 
 
-\chapter{Risultati}
-Analisi e valutazione dei risultati...
+    \chapter{Sviluppo}
+    Descrizione del lavoro svolto...
 
+    \chapter{Risultati}
+    Analisi e valutazione dei risultati...
 
-\chapter{Conclusioni}
-Osservazioni finali e possibili sviluppi futuri...
+    \chapter{Conclusioni}
+    Osservazioni finali e possibili sviluppi futuri...
 
+    \appendix
+    \chapter{Appendice}
+    Eventuali tabelle, codice o materiale integrativo...
 
-\appendix
-\chapter{Appendice}
-Eventuali tabelle, codice o materiale integrativo...
+    \clearpage
+    \begin{thebibliography}{9}
 
-
-\clearpage
-\begin{thebibliography}{9}
-
-
-\bibitem{lamport}
-  Leslie Lamport,
-  \textit{LaTeX: A Document Preparation System},
-  Addison Wesley, 1994.
-
+        \bibitem{lamport}
+        Leslie Lamport,
+        \textit{LaTeX: A Document Preparation System},
+        Addison Wesley, 1994.
 
 % Aggiungere altre fonti
 
-
-\end{thebibliography}
-
+    \end{thebibliography}
 
 \end{document}
-
