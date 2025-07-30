@@ -90,19 +90,38 @@
     \section{Automi Input Driven Deterministici}
 
     \begin{definition}
-        Un \textit{deterministic input driven pushdown automata} (detto anche \textit{DIPDA}) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
+        Un \textit{deterministic input driven pushdown automata} (detto anche \textit{DIDPDA}) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
         \begin{itemize}
             \item $\Sigma$ è un alfabeto di input, composto da 3 sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
             \item $Q$ è un insieme di stati dell'automa
             \item $q_{0} \in Q$ è lo stato iniziale
-            \item $F \in Q$ è il sottoinsieme degli stati \textit{accepting}
+            \item $F \subseteq Q$ è il sottoinsieme degli stati \textit{accepting}
             \item $\Gamma$ è un \textit{alfabeto pushdown}
             \item $\perp$ è il simbolo che indica la pila vuota
             \item $\delta_{<} : Q \rightarrow Q \times \Gamma$ è la funzione di transizione che, per ogni parentesi sinistra, dato un determinato stato corrente, fornisce lo stato successivo ed il simbolo da pushare sulla pila
-            \item $\delta_{>} : Q \times (\Gamma\;\cup\perp) \rightarrow Q$ è la funzione di transizione che, per ogni parentesi destra, dato un determinato stato corrente, fornisce lo stato successivo ed il simbolo da pushare sulla pila, posto che il simbolo specificato venga rimosso dalla cima della pila o lo stack sia vuoto
+            \item $\delta_{>} : Q \times (\Gamma\;\cup\perp) \rightarrow Q$ è la funzione di transizione che, per ogni parentesi destra, dato un determinato stato corrente, fornisce lo stato successivo, posto che il simbolo specificato venga rimosso dalla cima della pila o lo stack sia vuoto
             \item $\delta_{c} : Q \rightarrow Q$ è la funzione di transizione che, per ogni simbolo neutro $c \in \Sigma_{0}$, fornisce il prossimo stato
         \end{itemize}
     \end{definition}
+
+    Data questa definizione del modello comportamentale di un DIDPDA alla lettura di un simbolo, si può subito notare come il contenuto della pila
+    sia preso in considerazione solo quando il simbolo di input è una parentesi destra. Quando il simbolo in input è, invece, un simbolo neutro o
+    una parentesi sinistra, il prossimo stato non dipende dal contenuto dello stack.
+
+    \section{Automi Input Driven non Deterministici}
+
+    \begin{definition}
+        Un \textit{non deterministic input driven pushdown automata} (detto anche \textit{NIDPDA}) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \delta, F)$ dove:
+        \begin{itemize}
+            \item $q_{0} \in Q$ è lo stato iniziale
+            \item per ogni parentesi sinistra, la funzione di transizione $\delta_{+1} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da pushare sullo stack
+            \item per ogni parentesi destra, la funzione di transizione $\delta_{-1} : Q \times (\Gamma \cup \{\perp\}) \rightarrow 2^Q$ fornisce, dato un certo stato attuale, lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
+            \item per ogni simbolo neutro $c \in \Sigma_{0}$, c'è una funzione $\delta_{0} : Q \rightarrow 2^Q$
+            \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto pushdown $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accepting $F \subseteq Q$ sono definiti come nella Sezione 2.1
+        \end{itemize}
+    \end{definition}
+
+    Con gli automi non deterministici, la funzione di transizione è calcolata più volte per lo stesso input. Una stringa è considerata accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accepting}
 
 
     \chapter{Sviluppo}
