@@ -40,16 +40,16 @@
         \centering
         {\scshape\LARGE Università degli Studi di Milano \par}
         \vspace{1cm}
-        {\scshape\Large Facoltà di \ldots\par}
+        {\scshape\Large Facoltà di Scienze e Tecnologie \par}
         \vspace{0.5cm}
         {\scshape\large Corso di Laurea in Informatica\par}
         \vspace{2cm}
         {\huge\bfseries Input Driven Pushdown Automata ed Edit Distances\par}
         \vspace{2cm}
         \begin{flushleft}
-            \textbf{Relatore:} Nome Relatore\\
-            \textbf{Candidato:} Nome Cognome\\
-            \textbf{Matricola:} 123456
+            \textbf{Relatore:} Giovanni Pighizzini\\
+            \textbf{Candidato:} Luca Casnedi\\
+            \textbf{Matricola:} 931856
         \end{flushleft}
         \vfill
         {\large Anno Accademico 2024--2025\par}
@@ -76,7 +76,9 @@
     Per ottenere tale risultato, si può adottare un approccio a \emph{distanza minima}, ovvero determinare la stringa $y \in L$ tale che la \textit{distanza di edit} tra $x$ (la stringa ricevuta) e $y$ sia minima.
 
     \chapter{Definizioni}
+
     Una transizione di un IDPDA è determinata dal tipo di simbolo in input, appartenente all'alfabeto $\Sigma$, che stabilisce l'operazione da eseguire, eventualmente nulla.
+    
     Si può rappresentare l'alfabeto di input di un IDPDA come unione di tre sottoinsiemi disgiunti e finiti:
 
     \begin{itemize}
@@ -92,7 +94,7 @@
     \begin{definition}
         Un \textit{deterministic input driven pushdown automata} (detto anche \textit{DIDPDA}) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
         \begin{itemize}
-            \item $\Sigma$ è un alfabeto di input, composto da 3 sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
+            \item $\Sigma$ è un alfabeto di input, composto da tre sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
             \item $Q$ è un insieme di stati dell'automa
             \item $q_{0} \in Q$ è lo stato iniziale
             \item $F \subseteq Q$ è il sottoinsieme degli stati \textit{accepting}
@@ -105,8 +107,9 @@
     \end{definition}
 
     Data questa definizione del modello comportamentale di un DIDPDA alla lettura di un simbolo, si può subito notare come il contenuto della pila
-    sia preso in considerazione solo quando il simbolo di input è una parentesi destra. Quando il simbolo in input è, invece, un simbolo neutro o
-    una parentesi sinistra, il prossimo stato non dipende dal contenuto dello stack.
+    sia preso in considerazione solo quando il simbolo di input è una parentesi destra. 
+    
+    Quando il simbolo in input è, invece, un simbolo neutro o una parentesi sinistra, il prossimo stato non dipende dal contenuto dello stack.
 
     \section{Automi Input Driven non Deterministici}
 
@@ -114,27 +117,85 @@
         Un \textit{non deterministic input driven pushdown automata} (detto anche \textit{NIDPDA}) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \delta, F)$ dove:
         \begin{itemize}
             \item $q_{0} \in Q$ è lo stato iniziale
-            \item per ogni parentesi sinistra, la funzione di transizione $\delta_{+1} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da pushare sullo stack
-            \item per ogni parentesi destra, la funzione di transizione $\delta_{-1} : Q \times (\Gamma \cup \{\perp\}) \rightarrow 2^Q$ fornisce, dato un certo stato attuale, lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
+            \item per ogni parentesi sinistra, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da pushare sullo stack
+            \item per ogni parentesi destra, la funzione di transizione $\delta_{>} : Q \times (\Gamma \cup \{\perp\}) \rightarrow 2^Q$ fornisce, dato un certo stato attuale, lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
             \item per ogni simbolo neutro $c \in \Sigma_{0}$, c'è una funzione $\delta_{0} : Q \rightarrow 2^Q$
             \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto pushdown $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accepting $F \subseteq Q$ sono definiti come nella Sezione 2.1
         \end{itemize}
     \end{definition}
 
-    Con gli automi non deterministici, la funzione di transizione è calcolata più volte per lo stesso input. Una stringa è considerata accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accepting}
+    Con gli automi non deterministici, la funzione di transizione è calcolata più volte per lo stesso input. 
+    
+    Una stringa è considerata accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accepting}.
+
+    \section{Grammatiche input-driven}
+
+    Gli input-driven pushdown automata sono stati introdotti durante lo studio di particolari tipi di grammatiche, queste grammatiche sono definite
+    con un alfabeto e una serie di regole che danno origine a stringhe che osservano vari criteri di \textit{ben parentesizzazione}.
+    
+    Il primo dei modelli studiati sono state le \textit{parenthesis grammars} di McNaughton, nel quale l'alfabeto conteneva una parentesi sinistra $<$, una parentesi destra $>$
+    ed una serie di simboli terminali, e le regole erano nella forma $X \rightarrow <\alpha>$, con $\alpha \in (\Sigma_0 \cup N)$ (dove $N$ è l'insieme dei simboli non terminali della grammatica), oppure nella forma $X \rightarrow c$ con $c \in \Sigma_0^*$.
+    
+    Tutte queste grammatiche vanno a dare origine a sottoclassi dei linguaggi input-driven.
+
+    \begin{definition}
+        Una grammatica input-driven è una quadrupla $G = (\Sigma, N, R, S)$ dove:
+        \begin{itemize}
+            \item $\Sigma = \Sigma_{-1} \cup \Sigma_0 \cup \Sigma_{+1}$ è l'alfabeto, diviso in tre sottoinsiemi disgiunti
+            \item $N$ è l'insieme dei simboli non terminali
+            \item $R$ è l'insieme delle regole, ognuna nella forma $A \rightarrow <B>C$, $A \rightarrow aC$, $A \rightarrow \epsilon$, dove $A, B, C \in N$, $< \in \Sigma_{+1}$, $> \in \Sigma_{-1}$, $a \in \Sigma$.
+            \item $S$ è il simbolo iniziale
+        \end{itemize}
+    \end{definition}
+
+    \section{Distanze di Edit}
+
+    Il problema del calcolare le distanze di edit tra stringhe è strettamente correlato al problema del trovare la stringa con distanza di edit minima rispetto ad una data (correction problem).
+    
+    Una operazione di edit è una coppia $(a, b) \neq (\epsilon, \epsilon)$ con $\lvert a \rvert, \lvert b \rvert \leq 1$, ed è comunemente indicata con
+    $a \rightarrow b$. 
+    
+    Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^* \mid x = vaw, y = vbw$.
+    
+    Dati $a, b \in \Sigma, a \neq b$, possiamo definire le operazioni $a \rightarrow b$, $a \rightarrow \epsilon$ e $ \epsilon \rightarrow a$ rispettivamente
+    \textit{sostituzione}, \textit{cancellazione} e \textit{inserimento}. 
+    
+    Ad ogni operazione di edit è associato un costo, rappresentato mediante la funzione
+    $\gamma(a \rightarrow b)$. 
+    
+    Data una sequenza di operazioni di edit $S = (s_1, s_2, ..., s_k)$, il costo di $S$ è definito come la somma dei costi delle singole operazioni di edit
+    $\sum_{i=1}^{k} \gamma(s_i)$.
+
+    Si assume che dati $x, y, k \in (\Sigma \cup \epsilon), \gamma(x \rightarrow y) = 0$ se e solo se $x = y$, e $\gamma(x \rightarrow y)
+    + \gamma(y \rightarrow k) \geq \gamma(x \rightarrow k)$.
+
+    \begin{definition}
+        Date due stringhe $x, y \in \Sigma^*$, la distanza di edit $d(x, y)$ da $x$ a $y$ è il minimo dei costi delle sequenze di operazioni di edit che trasformano $x$ in $y$.
+    \end{definition}
+
+    Questa definizione di distanza si può estendere, fissando un concetto di distanza che non riguarda due stringhe ma bensì una stringa e un linguaggio.
+    
+    \begin{definition}
+        La distanza di edit tra un linguaggio $L \subseteq \Sigma^*$ ed una stringa $x \in \Sigma^*$ è il minimo tra i costi delle sequenze di operazioni di edit
+        che trasformano stringhe di $L$ in $x$, ovvero $d(L, x) = min\{d(y, x) \mid y \in L \}$.
+    \end{definition}
 
 
     \chapter{Sviluppo}
+
     Descrizione del lavoro svolto...
 
     \chapter{Risultati}
+
     Analisi e valutazione dei risultati...
 
     \chapter{Conclusioni}
+
     Osservazioni finali e possibili sviluppi futuri...
 
     \appendix
     \chapter{Appendice}
+
     Eventuali tabelle, codice o materiale integrativo...
 
     \clearpage
