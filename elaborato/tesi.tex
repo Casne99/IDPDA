@@ -78,6 +78,12 @@
 
     \chapter{Definizioni}
 
+    \section{Notazioni}
+    
+    Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
+
+    \section{Input Driven Pushdown Automata}
+
     Una transizione di un IDPDA è determinata dal tipo di simbolo in input, appartenente all'alfabeto $\Sigma$, che stabilisce l'operazione da eseguire, eventualmente nulla.
     
     Si può rappresentare l'alfabeto di input di un IDPDA come unione di tre sottoinsiemi disgiunti e finiti:
@@ -93,7 +99,7 @@
     \section{Automi Input Driven Deterministici}
 
     \begin{definition}
-        Un \textit{automa a pila input driven deterministicp} (detto anche DIDPDA) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
+        Un \textit{automa a pila input driven deterministico} (detto anche DIDPDA) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
         \begin{itemize}
             \item $\Sigma$ è un alfabeto di input, composto da tre sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
             \item $Q$ è l'insieme di stati dell'automa
@@ -131,7 +137,7 @@
     \begin{align}
         \delta_{(}(q_0) &= \begin{cases}
         (q_0, X)
-        \end{cases} \\
+        \end{cases} \\[1em]
         \delta_{)}(q_0, \gamma) &= \begin{cases}
             q_0 & \text{se } \gamma = X \text{ (viene rimosso } X \text{ dalla pila)} \\
             q_{\text{err}} & \text{se } \gamma = \perp \text{ (pila vuota)}
