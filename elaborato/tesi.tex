@@ -63,13 +63,13 @@
 
     \chapter{Introduzione}
 
-    Gli \emph{Input Driven Pushdown Automata}, anche detti \textit{IDPDA}, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input. In particolare, il simbolo di input determina se l'automa compierà un'operazione di \emph{push} sulla pila, di \emph{pop}, oppure se lascerà la pila invariata.
+    Gli \emph{Input Driven Pushdown Automata}, anche detti IDPDA, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input. In particolare, il simbolo di input determina se l'automa compierà un'operazione di \emph{push} sulla pila, di \emph{pop}, oppure se lascerà la pila invariata.
 
     Gli IDPDA risultano particolarmente utili in diversi ambiti, tra cui il \emph{parsing} dei linguaggi di programmazione, dei documenti XML e, più in generale, in tutti i contesti in cui la struttura dell'input riflette la struttura gerarchica dei dati.
 
-    È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari.
+    È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari, pur essendo più ampia.
 
-    Un problema di particolare rilevanza, dove gli \textit{IDPDA} trovano utilizzo, consiste nel determinare la distanza tra una data stringa $s$ e un linguaggio $L$, detta anche \textit{distanza di edit}. Tale distanza è definita come il costo minimo di una sequenza di operazioni elementari di modifica su $s$ (sostituzione, inserimento, eliminazione di un simbolo), che la trasformano in una stringa $s' \in L$.
+    Un problema di particolare rilevanza, dove gli IDPDA trovano utilizzo, consiste nel determinare la distanza tra una data stringa $s$ e un linguaggio $L$, detta anche \textit{distanza di edit}. Tale distanza è definita come il costo minimo di una sequenza di operazioni elementari di modifica su $s$ (sostituzione, inserimento, eliminazione di un simbolo), che la trasformano in una stringa $s' \in L$.
 
     In uno scenario applicativo, si può supporre di aver ricevuto in input una stringa appartenente a $L$, la quale potrebbe tuttavia contenere errori. L'obiettivo è quindi ricostruire, con la miglior accuratezza possibile, la stringa originaria.
 
@@ -87,21 +87,21 @@
         \item $\Sigma_{0}$: simboli neutrali, non si traducono in operazioni sulla pila
     \end{itemize}
 
-    Una stringa $s \in \Sigma$ è detta \textit{ben matchata} se ogni parentesi sinistra ha una parentesi destra corrispondente, e viceversa.
+    Una stringa $s \in \Sigma$ è detta \textit{ben formata} se ogni parentesi sinistra ha una parentesi destra corrispondente, e viceversa.
 
     \section{Automi Input Driven Deterministici}
 
     \begin{definition}
-        Un \textit{deterministic input driven pushdown automata} (detto anche \textit{DIDPDA}) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
+        Un \textit{automa a pila input driven deterministicp} (detto anche DIDPDA) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
         \begin{itemize}
             \item $\Sigma$ è un alfabeto di input, composto da tre sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
-            \item $Q$ è un insieme di stati dell'automa
+            \item $Q$ è l'insieme di stati dell'automa
             \item $q_{0} \in Q$ è lo stato iniziale
-            \item $F \subseteq Q$ è il sottoinsieme degli stati \textit{accepting}
-            \item $\Gamma$ è un \textit{alfabeto pushdown}
+            \item $F \subseteq Q$ è il sottoinsieme degli stati \textit{accettanti}
+            \item $\Gamma$ è  l'\textit{alfabeto della pila}
             \item $\perp$ è il simbolo che indica la pila vuota
-            \item $\delta_{<} : Q \rightarrow Q \times \Gamma$ è la funzione di transizione che, per ogni parentesi sinistra, dato un determinato stato corrente, fornisce lo stato successivo ed il simbolo da pushare sulla pila
-            \item $\delta_{>} : Q \times (\Gamma\;\cup\perp) \rightarrow Q$ è la funzione di transizione che, per ogni parentesi destra, dato un determinato stato corrente, fornisce lo stato successivo, posto che il simbolo specificato venga rimosso dalla cima della pila o lo stack sia vuoto
+            \item $\delta_{<} : Q \rightarrow Q \times \Gamma$ è la funzione di transizione che, per ogni parentesi sinistra $< \in \Sigma_{+1}$, dato un determinato stato corrente, fornisce lo stato successivo ed il simbolo da pushare sulla pila
+            \item $\delta_{>} : Q \times (\Gamma\;\cup\perp) \rightarrow Q$ è la funzione di transizione che, per ogni parentesi destra $> \in \Sigma_{-1}$, dato un determinato stato corrente, fornisce lo stato successivo, posto che il simbolo specificato si trovi in cima alla pila e venga rimosso da essa o lo stack sia vuoto
             \item $\delta_{c} : Q \rightarrow Q$ è la funzione di transizione che, per ogni simbolo neutro $c \in \Sigma_{0}$, fornisce il prossimo stato
         \end{itemize}
     \end{definition}
@@ -114,26 +114,26 @@
     \section{Automi Input Driven non Deterministici}
 
     \begin{definition}
-        Un \textit{non deterministic input driven pushdown automata} (detto anche \textit{NIDPDA}) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \delta, F)$ dove:
+        Un \textit{non automa a pila input driven non deterministico} (detto anche NIDPDA) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \delta, F)$ dove:
         \begin{itemize}
             \item $q_{0} \in Q$ è lo stato iniziale
-            \item per ogni parentesi sinistra, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da pushare sullo stack
-            \item per ogni parentesi destra, la funzione di transizione $\delta_{>} : Q \times (\Gamma \cup \{\perp\}) \rightarrow 2^Q$ fornisce, dato un certo stato attuale, lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
+            \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da caricare sullo stack
+            \item per ogni parentesi destra $> \in \Sigma_{-1}$, la funzione di transizione $\delta_{>} : Q \times (\Gamma \cup \{\perp\}) \rightarrow 2^Q$, dato lo stato attuale e il simbolo in cima alla pila (che sarà rimosso se la pila non è vuota), fornisce un insieme di possibili stati successivi %lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
             \item per ogni simbolo neutro $c \in \Sigma_{0}$, c'è una funzione $\delta_{0} : Q \rightarrow 2^Q$
-            \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto pushdown $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accepting $F \subseteq Q$ sono definiti come nella Sezione 2.1
+            \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto della pila $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accepting $F \subseteq Q$ sono definiti come nella Definizione 2.1
         \end{itemize}
     \end{definition}
 
     Con gli automi non deterministici, la funzione di transizione è calcolata più volte per lo stesso input. 
     
-    Una stringa è considerata accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accepting}.
+    Una stringa è accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accepting}.
 
-    \section{Grammatiche input-driven}
+    \section{Grammatiche Input-Driven}
 
-    Gli input-driven pushdown automata sono stati introdotti durante lo studio di particolari tipi di grammatiche, queste grammatiche sono definite
-    con un alfabeto e una serie di regole che danno origine a stringhe che osservano vari criteri di \textit{ben parentesizzazione}.
+    Gli Input Driven Pushdown Automata sono stati introdotti durante lo studio di particolari tipi di grammatiche, queste grammatiche sono definite
+    con un alfabeto e una serie di regole che danno origine a stringhe che osservano vari criteri di \textit{corretta parentesizzazione}.
     
-    Il primo dei modelli studiati sono state le \textit{parenthesis grammars} di McNaughton, nel quale l'alfabeto conteneva una parentesi sinistra $<$, una parentesi destra $>$
+    Il primo dei modelli studiati sono state le \textit{grammatiche di parentesi} di McNaughton, nel quale l'alfabeto conteneva una parentesi sinistra $<$, una parentesi destra $>$
     ed una serie di simboli terminali, e le regole erano nella forma $X \rightarrow <\alpha>$, con $\alpha \in (\Sigma_0 \cup N)$ (dove $N$ è l'insieme dei simboli non terminali della grammatica), oppure nella forma $X \rightarrow c$ con $c \in \Sigma_0^*$.
     
     Tutte queste grammatiche vanno a dare origine a sottoclassi dei linguaggi input-driven.
@@ -157,16 +157,15 @@
     
     Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^* \mid x = vaw, y = vbw$.
     
-    Dati $a, b \in \Sigma, a \neq b$, possiamo definire le operazioni $a \rightarrow b$, $a \rightarrow \epsilon$ e $ \epsilon \rightarrow a$ rispettivamente
-    \textit{sostituzione}, \textit{cancellazione} e \textit{inserimento}. 
+    Dati $a, b \in \Sigma, a \neq b$, possiamo definire le operazioni $a \rightarrow b$, $a \rightarrow \epsilon$ e $\epsilon \rightarrow a$ rispettivamente
+    \textit{sostituzione}, \textit{cancellazione} e \textit{inserimento}.
     
-    Ad ogni operazione di edit è associato un costo, rappresentato mediante la funzione
-    $\gamma(a \rightarrow b)$. 
+    Ad ogni operazione di edit è associato un costo, rappresentato mediante la funzione $\gamma(a \rightarrow b)$.
     
     Data una sequenza di operazioni di edit $S = (s_1, s_2, ..., s_k)$, il costo di $S$ è definito come la somma dei costi delle singole operazioni di edit
     $\sum_{i=1}^{k} \gamma(s_i)$.
 
-    Si assume che dati $x, y, k \in (\Sigma \cup \epsilon), \gamma(x \rightarrow y) = 0$ se e solo se $x = y$, e $\gamma(x \rightarrow y)
+    Si assume che dati $x, y, k \in (\Sigma \cup \epsilon)$, $\gamma(x \rightarrow y) = 0$ se e solo se $x = y$, e $\gamma(x \rightarrow y)
     + \gamma(y \rightarrow k) \geq \gamma(x \rightarrow k)$.
 
     \begin{definition}
