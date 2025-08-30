@@ -9,6 +9,7 @@
 \usepackage{setspace}           % Spaziatura
 \onehalfspacing                 % Interlinea 1.5
 \usepackage{graphicx}           % Immagini
+\usepackage{float}              % Controllo posizionamento figure
 \usepackage{amsmath, amssymb}   % Matematica
 \usepackage{amsthm}             % Ambienti per teoremi, definizioni, ecc.
 \usepackage{hyperref}           % Link ipertestuali
@@ -110,6 +111,34 @@
     sia preso in considerazione solo quando il simbolo di input è una parentesi destra. 
     
     Quando il simbolo in input è, invece, un simbolo neutro o una parentesi sinistra, il prossimo stato non dipende dal contenuto dello stack.
+
+    \clearpage
+    \subsection{Esempio di DIDPDA}
+    
+    Per illustrare il funzionamento di un automa input driven deterministico, consideriamo il seguente esempio:
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=4.2\textwidth,height=0.6\textheight,keepaspectratio]{img/automa_det}
+        \caption{Esempio di automa input driven deterministico}
+        \label{fig:esempio_didpda}
+    \end{figure}
+
+    Per l'automa rappresentato in Figura~\ref{fig:esempio_didpda}, gli alfabeti sono $\Sigma_{+1} = \{(\}$, $\Sigma_{-1} = \{)\}$, $\Sigma_0 = \emptyset$ e $\Gamma = \{X\}$.
+    
+    Le funzioni di transizione si possono definire come segue:
+
+    \begin{align}
+        \delta_{(}(q_0) &= \begin{cases}
+        (q_0, X)
+        \end{cases} \\
+        \delta_{)}(q_0, \gamma) &= \begin{cases}
+            q_0 & \text{se } \gamma = X \text{ (viene rimosso } X \text{ dalla pila)} \\
+            q_{\text{err}} & \text{se } \gamma = \perp \text{ (pila vuota)}
+        \end{cases}
+    \end{align}
+
+    In questo esempio non compaiono simboli neutrali.
 
     \section{Automi Input Driven non Deterministici}
 
