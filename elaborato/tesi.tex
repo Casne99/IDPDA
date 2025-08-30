@@ -149,7 +149,7 @@
     \section{Automi Input Driven non Deterministici}
 
     \begin{definition}
-        Un \textit{non automa a pila input driven non deterministico} (detto anche NIDPDA) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \delta, F)$ dove:
+        Un \textit{automa a pila input driven non deterministico} (detto anche NIDPDA) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \delta, F)$ dove:
         \begin{itemize}
             \item $q_{0} \in Q$ è lo stato iniziale
             \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da caricare sullo stack
