@@ -183,6 +183,27 @@
         \end{itemize}
     \end{definition}
 
+    \subsection{Esempio di grammatica input-driven}
+    
+    Un modello più generale, studiato da Berstel e Boasson, sono le \textit{grammatiche bilanciate}, nelle quali esiste una corrispondenza biunivoca tra parentesi sinistre e destre, in modo che ogni regola $A \rightarrow <\alpha>$ debba utilizzare una coppia di parentesi corrispondenti.
+    
+    Consideriamo un esempio di grammatica bilanciata con:
+    \begin{itemize}
+        \item $\Sigma_{+1} = \{<, [\}$
+        \item $\Sigma_{-1} = \{>, ]\}$
+        \item $\Sigma_0 = \{\beta\}$
+        \item $N = \{S, A\}$
+    \end{itemize}
+    
+    Le regole di produzione si possono definire come segue:
+    
+    \begin{align}
+        S &\rightarrow < A > \mid [A] \mid \epsilon \\
+        A &\rightarrow < A > \mid [A] \mid \beta
+    \end{align}
+    
+    In questo esempio ogni regola utilizza una coppia di parentesi corrispondenti, rispettando il vincolo delle grammatiche bilanciate. La grammatica genera stringhe come $<\beta>$, $[\beta]$, $<<\beta>>$, $[[\beta]]$, $<[\beta]>$, $[<\beta>]$.
+
     \section{Distanze di Edit}
 
     Il problema del calcolare le distanze di edit tra stringhe è strettamente correlato al problema del trovare la stringa con distanza di edit minima rispetto ad una data (correction problem).
