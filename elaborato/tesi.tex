@@ -130,15 +130,15 @@
         \label{fig:esempio_didpda}
     \end{figure}
 
-    Per l'automa rappresentato in Figura~\ref{fig:esempio_didpda}, gli alfabeti sono $\Sigma_{+1} = \{(\}$, $\Sigma_{-1} = \{)\}$, $\Sigma_0 = \emptyset$ e $\Gamma = \{X\}$.
+    Per l'automa rappresentato in Figura~\ref{fig:esempio_didpda}, gli alfabeti sono $\Sigma_{+1} = \{<\}$, $\Sigma_{-1} = \{>\}$, $\Sigma_0 = \emptyset$ e $\Gamma = \{X\}$.
     
     Le funzioni di transizione si possono definire come segue:
 
     \begin{align}
-        \delta_{(}(q_0) &= \begin{cases}
+        \delta_{<}(q_0) &= \begin{cases}
         (q_0, X)
         \end{cases} \\[1em]
-        \delta_{)}(q_0, \gamma) &= \begin{cases}
+        \delta_{>}(q_0, \gamma) &= \begin{cases}
             q_0 & \text{se } \gamma = X \text{ (viene rimosso } X \text{ dalla pila)} \\
             q_{\text{err}} & \text{se } \gamma = \perp \text{ (pila vuota)}
         \end{cases}
