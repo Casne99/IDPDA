@@ -227,6 +227,12 @@
     \begin{definition}
         Date due stringhe $x, y \in \Sigma^*$, la distanza di edit $d(x, y)$ da $x$ a $y$ è il minimo dei costi delle sequenze di operazioni di edit che trasformano $x$ in $y$.
     \end{definition}
+    
+    Ad esempio, sia $\Sigma = \{i, j\}$ e $\gamma(a \rightarrow b) = 1$ per ogni $a, b \in \Sigma \cup \{\epsilon\}$ con $a \neq b$. Per trasformare la stringa $iji$ nella stringa $jj$ si può utilizzare la seguente sequenza di operazioni:
+    
+    $$iji \xrightarrow{i \rightarrow j} jji \xrightarrow{i \rightarrow \epsilon} jj$$
+    
+    In questo caso sono state utilizzate una sostituzione e una cancellazione, per un costo totale di $1 + 1 = 2$.
 
     Questa definizione di distanza si può estendere, fissando un concetto di distanza che non riguarda due stringhe ma bensì una stringa e un linguaggio.
     
@@ -235,31 +241,20 @@
         che trasformano stringhe di $L$ in $x$, ovvero $d(L, x) = min\{d(y, x) \mid y \in L \}$.
     \end{definition}
 
-
-    \chapter{Sviluppo}
-
-    Descrizione del lavoro svolto...
-
-    \chapter{Risultati}
-
-    Analisi e valutazione dei risultati...
-
     \chapter{Conclusioni}
 
     Osservazioni finali e possibili sviluppi futuri...
 
-    \appendix
-    \chapter{Appendice}
-
-    Eventuali tabelle, codice o materiale integrativo...
-
     \clearpage
     \begin{thebibliography}{9}
 
-        \bibitem{lamport}
-        Leslie Lamport,
-        \textit{LaTeX: A Document Preparation System},
-        Addison Wesley, 1994.
+        \bibitem{okhotin-salomaa}
+        Alexander Okhotin, Kai Salomaa,
+        \textit{Complexity of Input-Driven Pushdown Automata}.
+
+        \bibitem{pighizzini}
+        Giovanni Pighizzini,
+        \textit{How Hard Is Computing the Edit Distance?}
 
 % Aggiungere altre fonti
 
