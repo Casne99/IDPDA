@@ -287,7 +287,33 @@
         \]
     \end{proof}
 
+    \begin{proposizione}
+        Per ogni $x', x'', y \in \Sigma^*$ vale:
+        \[
+            d(x'x'', y) = \min\{d(x', y') + d(x'', y'') \mid y = y'y''\}.
+        \]
+    \end{proposizione}
 
+    \begin{proof}
+        Definiamo il minimo cercato:
+        \[
+            M := \min\{d(x', y') + d(x'', y'') \mid y = y'y''\}.
+        \]
+        
+        \textbf{(1)} Mostriamo che $d(x'x'', y) \leq M$.
+        
+        Prendiamo una decomposizione $y = y'y''$ che realizza (o approssima) il minimo $M$. Trasformiamo $x'$ in $y'$ con una sequenza ottimale di costo $d(x', y')$ e trasformiamo $x''$ in $y''$ con una sequenza ottimale di costo $d(x'', y'')$.
+        Concatenando le due trasformazioni otteniamo una trasformazione da $x'x''$ a $y$, di costo totale $d(x', y') + d(x'', y'') = M$.
+        Poiché $d(x'x'', y)$ è definito come il costo minimo, si ha $d(x'x'', y) \leq M$.
+        
+        \textbf{(2)} Mostriamo che $d(x'x'', y) \geq M$.
+        
+        Sia $\tau$ una sequenza ottimale di trasformazioni che porta $x'x''$ in $y$. Durante questa trasformazione, la parte iniziale $x'$ viene consumata e produrrà un certo prefisso $y'$ di $y$. La parte rimanente $x''$ sarà trasformata nel suffisso $y''$, con $y = y'y''$.
+        Il costo totale di $\tau$ si può allora suddividere: una parte è dovuta alla trasformazione di $x'$ in $y'$, e l'altra alla trasformazione di $x''$ in $y''$.
+        Quindi il costo $d(x'x'', y)$ è almeno $d(x', y') + d(x'', y'')$. Questo vale per quella specifica decomposizione di $y$, quindi a maggior ragione vale per il minimo su tutte: $d(x'x'', y) \geq M$.
+        
+        \textbf{Conclusione.} Dalle due disuguaglianze otteniamo l'uguaglianza: $d(x'x'', y) = M$.
+    \end{proof}
 
     \section{Conclusioni}
 
