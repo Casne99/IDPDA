@@ -145,6 +145,7 @@
     \end{align}
 
     In questo esempio non compaiono simboli neutrali.
+    Questo automa riconosce stringhe come \texttt{<}, \texttt{<>}, \texttt{<{<}<>} ma non riconosce \texttt{>}, poiché quest'ultima farebbe transitare l'automa nello stato di errore $q_{\text{err}}$.
 
     \section{Automi Input Driven non Deterministici}
 
@@ -244,6 +245,20 @@
     Fissato un linguaggio $L \subseteq \Sigma^*$, la funzione $d(L, x)$ nella variabile $x$ viene denominata \textit{distanza di edit del linguaggio} $L$.
 
     \subsection{Esempi di distanze}
+    
+    Esistono diverse varianti della distanza di edit, che differiscono per le operazioni consentite e i relativi costi. Di seguito presentiamo due delle più comuni.
+    
+    \subsubsection{Distanza di Hamming}
+    
+    La \textit{distanza di Hamming} è definita solo per stringhe di uguale lunghezza e considera esclusivamente operazioni di sostituzione. Formalmente, date due stringhe $x, y \in \Sigma^*$ con $|x| = |y| = n$, la distanza di Hamming è:
+    
+    $$d_H(x, y) = |\{i \in [1, n] : x[i] \neq y[i]\}|$$
+    
+    dove $x[i]$ e $y[i]$ denotano l'$i$-esimo carattere delle stringhe $x$ e $y$ rispettivamente. In altre parole, la distanza di Hamming conta il numero di posizioni in cui i caratteri corrispondenti sono diversi.
+    
+    \subsubsection{Distanza di Levenshtein}
+    
+        ...
 
 
     \section{Conclusioni}
