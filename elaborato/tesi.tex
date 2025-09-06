@@ -19,6 +19,7 @@
 % Definizione ambiente teorema numerato per capitolo
 \newtheorem{theorem}{Teorema}[chapter]
 \newtheorem{definition}{Definizione}[chapter]
+\newtheorem{proposizione}{Proposizione}[chapter]
 
 
 \titleformat{\chapter}[display]
@@ -145,7 +146,7 @@
     \end{align}
 
     In questo esempio non compaiono simboli neutrali.
-    Questo automa riconosce stringhe come \texttt{<}, \texttt{<>}, \texttt{<{<}<>} ma non riconosce \texttt{>}, poiché quest'ultima farebbe transitare l'automa nello stato di errore $q_{\text{err}}$.
+    Questo automa riconosce stringhe come \textit{<}, \textit{<>}, \textit{<{<}<>} ma non riconosce \textit{>}, poiché quest'ultima farebbe transitare l'automa nello stato di errore $q_{\text{err}}$.
 
     \section{Automi Input Driven non Deterministici}
 
@@ -156,13 +157,13 @@
             \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da caricare sullo stack
             \item per ogni parentesi destra $> \in \Sigma_{-1}$, la funzione di transizione $\delta_{>} : Q \times (\Gamma \cup \{\perp\}) \rightarrow 2^Q$, dato lo stato attuale e il simbolo in cima alla pila (che sarà rimosso se la pila non è vuota), fornisce un insieme di possibili stati successivi %lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
             \item per ogni simbolo neutro $c \in \Sigma_{0}$, c'è una funzione $\delta_{0} : Q \rightarrow 2^Q$
-            \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto della pila $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accepting $F \subseteq Q$ sono definiti come nella Definizione 2.1
+            \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto della pila $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accettanti $F \subseteq Q$ sono definiti come nella Definizione 2.1
         \end{itemize}
     \end{definition}
 
     Con gli automi non deterministici, la funzione di transizione è calcolata più volte per lo stesso input. 
     
-    Una stringa è accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accepting}.
+    Una stringa è accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accettante}.
 
     \section{Grammatiche Input-Driven}
 
@@ -259,6 +260,33 @@
     \subsubsection{Distanza di Levenshtein}
     
         ...
+
+    \subsection{Calcolo delle distanze di edit}
+
+    Date due stringhe, la distanza di edit tra di esse può essere determinata in termini di distanza tra le loro sottostringhe.
+
+    \begin{proposizione}
+        Siano $u,v,w,z \in \Sigma^*$. Allora vale
+        \[
+            d(uv, wz) \leq d(u,w) + d(v,z).
+        \]
+    \end{proposizione}
+
+    \begin{proof}
+        Per definizione, $d(u,w)$ è il costo minimo necessario per trasformare $u$ in $w$, mentre $d(v,z)$ è il costo minimo per trasformare $v$ in $z$.
+        Consideriamo dunque la seguente strategia:
+        \begin{enumerate}
+            \item trasformiamo $u$ in $w$ mediante una sequenza ottimale di operazioni, al costo $d(u,w)$;
+            \item trasformiamo $v$ in $z$ mediante una sequenza ottimale di operazioni, al costo $d(v,z)$.
+        \end{enumerate}
+        Applicando queste trasformazioni in sequenza, otteniamo una trasformazione da $uv$ a $wz$ con costo totale pari a $d(u,w)+d(v,z)$.
+
+        Poiché la distanza $d(uv,wz)$ è definita come il costo minimo tra tutte le possibili trasformazioni, segue immediatamente che
+        \[
+            d(uv, wz) \leq d(u,w) + d(v,z).
+        \]
+    \end{proof}
+
 
 
     \section{Conclusioni}
