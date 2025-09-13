@@ -79,15 +79,18 @@
 
     \chapter{Introduzione}
 
-    Gli \emph{Input Driven Pushdown Automata}, anche detti IDPDA, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input. In particolare, il simbolo di input determina se l'automa compierà un'operazione di \emph{push} sulla pila, di \emph{pop}, oppure se lascerà la pila invariata.
+    Gli \emph{Input Driven Pushdown Automata}, anche detti IDPDA, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input.
+    In particolare, il simbolo di input determina se l'automa compierà un'operazione di \emph{push} sulla pila, di \emph{pop}, oppure se lascerà la pila invariata.
 
     Gli IDPDA risultano particolarmente utili in diversi ambiti, tra cui il \emph{parsing} dei linguaggi di programmazione, dei documenti XML e, più in generale, in tutti i contesti in cui la struttura dell'input riflette la struttura gerarchica dei dati.
 
     È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari, pur essendo più ampia.
 
-    Un problema di particolare rilevanza, dove gli IDPDA trovano utilizzo, consiste nel determinare la distanza tra una data stringa $s$ e un linguaggio $L$, detta anche \textit{distanza di edit}. Tale distanza è definita come il costo minimo di una sequenza di operazioni elementari di modifica su $s$ (sostituzione, inserimento, eliminazione di un simbolo), che la trasformano in una stringa $s' \in L$.
+    Un problema di particolare rilevanza, dove gli IDPDA trovano utilizzo, consiste nel determinare la distanza tra una data stringa $s$ e un linguaggio $L$, detta anche \textit{distanza di edit}.
+    Tale distanza è definita come il costo minimo di una sequenza di operazioni elementari di modifica su $s$ (sostituzione, inserimento, eliminazione di un simbolo), che la trasformano in una stringa $s' \in L$.
 
-    In uno scenario applicativo, si può supporre di aver ricevuto in input una stringa appartenente a $L$, la quale potrebbe tuttavia contenere errori. L'obiettivo è quindi ricostruire, con la miglior accuratezza possibile, la stringa originaria.
+    In uno scenario applicativo, si può supporre di aver ricevuto in input una stringa appartenente a $L$, la quale potrebbe tuttavia contenere errori.
+    L'obiettivo è quindi ricostruire, con la miglior accuratezza possibile, la stringa originaria.
 
     Per ottenere tale risultato, si può adottare un approccio a \emph{distanza minima}, ovvero determinare la stringa $y \in L$ tale che la \textit{distanza di edit} tra $x$ (la stringa ricevuta) e $y$ sia minima.
 
@@ -234,7 +237,7 @@
     
     Ad ogni operazione di edit è associato un costo, rappresentato mediante la funzione $\gamma(a \rightarrow b)$.
     
-    Data una sequenza di operazioni di edit $S = (s_1, s_2, ..., s_k)$, il costo di $S$ è definito come la somma dei costi delle singole operazioni di edit
+    Data una sequenza di operazioni di edit $S = (s_1, s_2, \dots, s_k)$, il costo di $S$ è definito come la somma dei costi delle singole operazioni di edit
     $\sum_{i=1}^{k} \gamma(s_i)$.
 
     Si assume che dati $x, y, k \in (\Sigma \cup \epsilon)$, $\gamma(x \rightarrow y) = 0$ se e solo se $x = y$, e $\gamma(x \rightarrow y)
@@ -254,7 +257,7 @@
 
     \begin{definition}
         La distanza di edit tra un linguaggio $L \subseteq \Sigma^*$ ed una stringa $x \in \Sigma^*$ è il minimo tra i costi delle sequenze di operazioni di edit
-        che trasformano stringhe di $L$ in $x$, ovvero $d(L, x) = min\{d(y, x) \mid y \in L \}$.
+        che trasformano stringhe di $L$ in $x$, ovvero $d(L, x) = \min\{d(y, x) \mid y \in L \}$.
     \end{definition}
 
     Fissato un linguaggio $L \subseteq \Sigma^*$, la funzione $d(L, x)$ nella variabile $x$ viene denominata \textit{distanza di edit del linguaggio} $L$.
@@ -297,7 +300,7 @@
 
     Poiché la distanza $d(uv,wz)$ è definita come il costo minimo tra tutte le possibili trasformazioni, segue immediatamente che
     \[
-        d(uv, wz) \leq d(u,w) + d(v,z).
+        d(uv, wz) \leq d(u,w) + d(v,z). \qedhere
     \]
 \end{proof}
 
@@ -324,18 +327,38 @@
 
         \textbf{(2)} Mostriamo che $d(x'x'', y) \geq M$.
 
-        Sia $\tau$ una sequenza ottimale di trasformazioni che porta $x'x''$ in $y$. Durante questa trasformazione, la parte iniziale $x'$ viene consumata e produrrà un certo prefisso $y'$ di $y$. La parte rimanente $x''$ sarà trasformata nel suffisso $y''$, con $y = y'y''$.
+        Sia $\tau$ una sequenza ottimale di trasformazioni che porta $x'x''$ in $y$.
+        Durante questa trasformazione, la parte iniziale $x'$ viene consumata e produrrà un certo prefisso $y'$ di $y$.
+        La parte rimanente $x''$ sarà trasformata nel suffisso $y''$, con $y = y'y''$.
         Il costo totale di $\tau$ si può allora suddividere: una parte è dovuta alla trasformazione di $x'$ in $y'$, e l'altra alla trasformazione di $x''$ in $y''$.
-        Quindi il costo $d(x'x'', y)$ è almeno $d(x', y') + d(x'', y'')$. Questo vale per quella specifica decomposizione di $y$, quindi a maggior ragione vale per il minimo su tutte: $d(x'x'', y) \geq M$.
+        Quindi il costo $d(x'x'', y)$ è almeno $d(x', y') + d(x'', y'')$.
+        Questo vale per quella specifica decomposizione di $y$, quindi a maggior ragione vale per il minimo su tutte: $d(x'x'', y) \geq M$.
 
         \vspace{0.5em}
 
         \textbf{Conclusione.} Dalle due disuguaglianze otteniamo l'uguaglianza: $d(x'x'', y) = M$.
     \end{proof}
 
+    Si può inoltre individuare facilmente un limite superiore per il calcolo della distanza di edit
+    tra un linguaggio $L$ ed una stringa $x \in \Sigma^*$
+
+    \begin{prop}
+        Dato un linguaggio $L \in \Sigma^*$ ed una funzione di costo $\gamma$ esistono costanti $\alpha, \beta$ tali che
+        $d(L, x) \leq \alpha \lvert x \rvert + \beta$
+    \end{prop}
+
+    \begin{proof}
+        Scegliamo una stringa $z \in L$, allora $d(L, x) \leq d(z, x)$.
+        Si può inoltre trasformare $z$ in $x$ contatenando $z$ con $x$ e cancellando in seguito $z$ dalla stringa risultante:
+
+        $$ d(L, x) \leq d(z, x) \leq \sum_{i=1}^{\lvert x \rvert} \gamma(\epsilon \rightarrow x_i) + \sum_{i=1}^{\lvert z \rvert} \gamma(z_i \rightarrow \epsilon) \leq \alpha \lvert x \rvert + \beta$$
+
+        In questo caso, $\alpha = \max\{\gamma(\epsilon \rightarrow b) \mid b \in \Sigma\}$ e $\beta = \sum_{i=1}^{\lvert z \rvert} \gamma(z_i \rightarrow \epsilon)$
+    \end{proof}
+
     \section{Conclusioni}
 
-    Osservazioni finali e possibili sviluppi futuri...
+    Osservazioni finali e possibili sviluppi futuri\ldots
 
     \clearpage
     \begin{thebibliography}{9}
