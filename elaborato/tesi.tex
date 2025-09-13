@@ -19,7 +19,6 @@
 % Definizione ambiente teorema numerato per capitolo
 \newtheorem{theorem}{Teorema}[chapter]
 \newtheorem{definition}{Definizione}[chapter]
-\newtheorem{proposizione}{Proposizione}[chapter]
 
 % Personalizzazione stile proposizione
 \newtheoremstyle{propositionstyle}
@@ -273,10 +272,6 @@
     $$d_H(x, y) = |\{i \in [1, n] : x[i] \neq y[i]\}|$$
     
     dove $x[i]$ e $y[i]$ denotano l'$i$-esimo carattere delle stringhe $x$ e $y$ rispettivamente. In altre parole, la distanza di Hamming conta il numero di posizioni in cui i caratteri corrispondenti sono diversi.
-    
-    \subsubsection{Distanza di Levenshtein}
-    
-        ...
 
     \subsection{Calcolo delle distanze di edit}
 
@@ -340,9 +335,9 @@
     \end{proof}
 
     Si può inoltre individuare facilmente un limite superiore per il calcolo della distanza di edit
-    tra un linguaggio $L$ ed una stringa $x \in \Sigma^*$
+    tra un linguaggio $L$ ed una stringa $x \in \Sigma^*$.
 
-    \begin{prop}
+    \begin{prop}\label{prop:distanza-limitata}
         Dato un linguaggio $L \in \Sigma^*$ ed una funzione di costo $\gamma$ esistono costanti $\alpha, \beta$ tali che
         $d(L, x) \leq \alpha \lvert x \rvert + \beta$
     \end{prop}
@@ -351,10 +346,38 @@
         Scegliamo una stringa $z \in L$, allora $d(L, x) \leq d(z, x)$.
         Si può inoltre trasformare $z$ in $x$ contatenando $z$ con $x$ e cancellando in seguito $z$ dalla stringa risultante:
 
-        $$ d(L, x) \leq d(z, x) \leq \sum_{i=1}^{\lvert x \rvert} \gamma(\epsilon \rightarrow x_i) + \sum_{i=1}^{\lvert z \rvert} \gamma(z_i \rightarrow \epsilon) \leq \alpha \lvert x \rvert + \beta$$
+        $$\displaystyle d(L, x) \leq d(z, x) \leq \sum_{i=1}^{\lvert x \rvert} \gamma(\epsilon \rightarrow x_i) + \sum_{i=1}^{\lvert z \rvert} \gamma(z_i \rightarrow \epsilon) \leq \alpha \lvert x \rvert + \beta$$
 
         In questo caso, $\alpha = \max\{\gamma(\epsilon \rightarrow b) \mid b \in \Sigma\}$ e $\beta = \sum_{i=1}^{\lvert z \rvert} \gamma(z_i \rightarrow \epsilon)$
     \end{proof}
+
+    Partendo da questo risultato, si possono individuare stringhe di $L$ che minimizzano questa distanza.
+
+    \begin{prop}
+        Dato un linguaggio $L \in \Sigma^*$ ed una funzione di costo $\gamma$ esistono costanti $\alpha', \beta'$ tali che
+        $\forall{x \in \Sigma^*}, \forall{y \in L}$ tali che $d(L, x) = d(y, x)$ vale $\lvert y \rvert \leq \alpha' \lvert x \rvert + \beta'$
+    \end{prop}
+
+    \begin{proof}
+        Scegliamo $y \in L$ tale che $d(L, x) = d(y, x)$ e definiamo $\lambda$ come il minimo tra i costi degli inserimenti e delle cancellazioni:
+
+        $$ \lambda = \min\bigl\{\{\gamma(\epsilon \rightarrow c) \mid c \in \Sigma\} \cup \{\gamma(c \rightarrow \epsilon) \mid c \in \Sigma\}\bigr\}$$
+
+        Si può affermare che per derivare una stringa $y$ da una stringa $x$, si dovranno effettuare operazioni di cancellazione o inserimento in numero pari
+        ad almeno la differenza in lunghezza tra le due stringhe, segue quindi che $d(y, x) \geq \lambda\bigl\lvert(\lvert y \rvert - \lvert x \rvert)\bigr\rvert$.
+        Si può quindi esprimere la disuguaglianza in termini di $y$:
+
+        $$\lvert y \rvert \leq \lvert x \rvert + \frac{1}{\lambda}d(y, x)$$
+
+        Senza perdita di generalità si può assumere $\lvert y \rvert - \lvert x \rvert \geq 0$.
+
+        Usando la Proposizione~\ref{prop:distanza-limitata} e ricordando che $d(L, x) = d(y, x)$ otteniamo:
+
+        $$\lvert y \rvert \leq (\frac{\alpha}{\lambda} + 1)\lvert x \rvert + \frac{\beta}{\lambda}$$
+
+
+    \end{proof}
+
 
     \section{Conclusioni}
 
