@@ -14,7 +14,8 @@
 \usepackage{amsthm}             % Ambienti per teoremi, definizioni, ecc.
 \usepackage{hyperref}           % Link ipertestuali
 \usepackage{fancyhdr}           % Intestazioni e piè di pagina
-\usepackage{titlesec}           % Formattazione titoli
+\usepackage{titlesec}
+\usepackage{mathtools}           % Formattazione titoli
 
 % Definizione ambiente teorema numerato per capitolo
 \newtheorem{theorem}{Teorema}[chapter]
@@ -111,7 +112,7 @@
         \item $\Sigma_{0}$: simboli neutrali, non si traducono in operazioni sulla pila
     \end{itemize}
 
-    Una stringa $s \in \Sigma$ è detta \textit{ben formata} se ogni parentesi sinistra ha una parentesi destra corrispondente, e viceversa.
+    Una stringa $s \in \Sigma^*$ è detta \textit{ben formata} se ogni parentesi sinistra ha una parentesi destra corrispondente, e viceversa.
 
     \section{Automi Input Driven Deterministici}
 
@@ -220,15 +221,15 @@
         A &\rightarrow < A > \mid [A] \mid \beta
     \end{align}
     
-    In questo esempio ogni regola utilizza una coppia di parentesi corrispondenti, rispettando il vincolo delle grammatiche bilanciate. La grammatica genera stringhe come $<\beta>$, $[\beta]$, $<<\beta>>$, $[[\beta]]$, $<[\beta]>$, $[<\beta>]$.
+    In questo esempio ogni regola utilizza una coppia di parentesi corrispondenti, rispettando il vincolo delle grammatiche bilanciate. La grammatica genera stringhe come $<>$, $<\beta>$, $[\beta]$, $<<\beta>>$, $[[\beta]]$, $<[\beta]>$, $[<\beta>]$.
 
     \section{Distanze di Edit}
 
     Il problema del calcolare le distanze di edit tra stringhe è strettamente correlato al problema del trovare la stringa con distanza di edit minima rispetto ad una data (correction problem).
     
     Una operazione di edit è una coppia $\left(a, b\right) \neq \left(\epsilon, \epsilon\right)$ con $\lvert a \rvert, \lvert b \rvert \leq 1$, ed è comunemente indicata con
-    $a \rightarrow b$. 
-    
+    $a \rightarrow b$.
+
     Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^* \mid x = vaw, y = vbw$.
     
     Dati $a, b \in \Sigma, a \neq b$, possiamo definire le operazioni $a \rightarrow b$, $a \rightarrow \epsilon$ e $\epsilon \rightarrow a$ rispettivamente
@@ -344,7 +345,7 @@
 
     \begin{proof}
         Scegliamo una stringa $z \in L$, allora $d\left(L, x\right) \leq d\left(z, x\right)$.
-        Si può inoltre trasformare $z$ in $x$ contatenando $z$ con $x$ e cancellando in seguito $z$ dalla stringa risultante:
+        Si può inoltre trasformare $z$ in $x$ concatenando $z$ con $x$ e cancellando in seguito $z$ dalla stringa risultante:
 
         $$\displaystyle d\left(L, x\right) \leq d\left(z, x\right) \leq \sum_{i=1}^{\lvert x \rvert} \gamma\left(\epsilon \rightarrow x_i\right) + \sum_{i=1}^{\lvert z \rvert} \gamma\left(z_i \rightarrow \epsilon\right) \leq \alpha \lvert x \rvert + \beta$$
 
@@ -374,6 +375,9 @@
         Usando la Proposizione~\ref{prop:distanza-limitata} e ricordando che $d\left(L, x\right) = d\left(y, x\right)$ otteniamo:
 
         $$\lvert y \rvert \leq \left(\frac{\alpha}{\lambda} + 1\right)\lvert x \rvert + \frac{\beta}{\lambda}$$
+        \vspace{0.5em}
+
+        Definendo ora $\displaystyle \alpha' \coloneqq \frac{\alpha}{\lambda} + 1$ e $\displaystyle \beta' \coloneqq \frac{\beta}{\lambda}$ la dimostrazione è conclusa.
 
 
     \end{proof}
