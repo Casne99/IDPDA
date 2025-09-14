@@ -116,7 +116,7 @@
     \section{Automi Input Driven Deterministici}
 
     \begin{definition}
-        Un \textit{automa a pila input driven deterministico} (detto anche DIDPDA) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F)$ dove:
+        Un \textit{automa a pila input driven deterministico} (detto anche DIDPDA) è una settupla $A = \left(\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F\right)$ dove:
         \begin{itemize}
             \item $\Sigma$ è un alfabeto di input, composto da tre sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
             \item $Q$ è l'insieme di stati dell'automa
@@ -125,7 +125,7 @@
             \item $\Gamma$ è  l'\textit{alfabeto della pila}
             \item $\perp$ è il simbolo che indica la pila vuota
             \item $\delta_{<} : Q \rightarrow Q \times \Gamma$ è la funzione di transizione che, per ogni parentesi sinistra $< \in \Sigma_{+1}$, dato un determinato stato corrente, fornisce lo stato successivo ed il simbolo da pushare sulla pila
-            \item $\delta_{>} : Q \times (\Gamma\;\cup\perp) \rightarrow Q$ è la funzione di transizione che, per ogni parentesi destra $> \in \Sigma_{-1}$, dato un determinato stato corrente, fornisce lo stato successivo, posto che il simbolo specificato si trovi in cima alla pila e venga rimosso da essa o lo stack sia vuoto
+            \item $\delta_{>} : Q \times \left(\Gamma\;\cup\perp\right) \rightarrow Q$ è la funzione di transizione che, per ogni parentesi destra $> \in \Sigma_{-1}$, dato un determinato stato corrente, fornisce lo stato successivo, posto che il simbolo specificato si trovi in cima alla pila e venga rimosso da essa o lo stack sia vuoto
             \item $\delta_{c} : Q \rightarrow Q$ è la funzione di transizione che, per ogni simbolo neutro $c \in \Sigma_{0}$, fornisce il prossimo stato
         \end{itemize}
     \end{definition}
@@ -152,10 +152,10 @@
     Le funzioni di transizione si possono definire come segue:
 
     \begin{align}
-        \delta_{<}(q_0) &= \begin{cases}
-        (q_0, X)
+        \delta_{<}\left(q_0\right) &= \begin{cases}
+        \left(q_0, X\right)
         \end{cases} \\[1em]
-        \delta_{>}(q_0, \gamma) &= \begin{cases}
+        \delta_{>}\left(q_0, \gamma\right) &= \begin{cases}
             q_0 & \text{se } \gamma = X \text{ (viene rimosso } X \text{ dalla pila)} \\
             q_{\text{err}} & \text{se } \gamma = \perp \text{ (pila vuota)}
         \end{cases}
@@ -167,11 +167,11 @@
     \section{Automi Input Driven non Deterministici}
 
     \begin{definition}
-        Un \textit{automa a pila input driven non deterministico} (detto anche NIDPDA) è una settupla $A = (\Sigma, Q, \Gamma, q_0, \perp, \delta, F)$ dove:
+        Un \textit{automa a pila input driven non deterministico} (detto anche NIDPDA) è una settupla $A = \left(\Sigma, Q, \Gamma, q_0, \perp, \delta, F\right)$ dove:
         \begin{itemize}
             \item $q_{0} \in Q$ è lo stato iniziale
             \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da caricare sullo stack
-            \item per ogni parentesi destra $> \in \Sigma_{-1}$, la funzione di transizione $\delta_{>} : Q \times (\Gamma \cup \{\perp\}) \rightarrow 2^Q$, dato lo stato attuale e il simbolo in cima alla pila (che sarà rimosso se la pila non è vuota), fornisce un insieme di possibili stati successivi %lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
+            \item per ogni parentesi destra $> \in \Sigma_{-1}$, la funzione di transizione $\delta_{>} : Q \times \left(\Gamma \cup \{\perp\}\right) \rightarrow 2^Q$, dato lo stato attuale e il simbolo in cima alla pila (che sarà rimosso se la pila non è vuota), fornisce un insieme di possibili stati successivi %lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
             \item per ogni simbolo neutro $c \in \Sigma_{0}$, c'è una funzione $\delta_{0} : Q \rightarrow 2^Q$
             \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto della pila $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accettanti $F \subseteq Q$ sono definiti come nella Definizione 2.1
         \end{itemize}
@@ -187,12 +187,12 @@
     con un alfabeto e una serie di regole che danno origine a stringhe che osservano vari criteri di \textit{corretta parentesizzazione}.
     
     Il primo dei modelli studiati sono state le \textit{grammatiche di parentesi} di McNaughton, nel quale l'alfabeto conteneva una parentesi sinistra $<$, una parentesi destra $>$
-    ed una serie di simboli terminali, e le regole erano nella forma $X \rightarrow <\alpha>$, con $\alpha \in (\Sigma_0 \cup N)$ (dove $N$ è l'insieme dei simboli non terminali della grammatica), oppure nella forma $X \rightarrow c$ con $c \in \Sigma_0^*$.
+    ed una serie di simboli terminali, e le regole erano nella forma $X \rightarrow <\alpha>$, con $\alpha \in \left(\Sigma_0 \cup N\right)$ (dove $N$ è l'insieme dei simboli non terminali della grammatica), oppure nella forma $X \rightarrow c$ con $c \in \Sigma_0^*$.
     
     Tutte queste grammatiche vanno a dare origine a sottoclassi dei linguaggi input-driven.
 
     \begin{definition}
-        Una grammatica input-driven è una quadrupla $G = (\Sigma, N, R, S)$ dove:
+        Una grammatica input-driven è una quadrupla $G = \left(\Sigma, N, R, S\right)$ dove:
         \begin{itemize}
             \item $\Sigma = \Sigma_{-1} \cup \Sigma_0 \cup \Sigma_{+1}$ è l'alfabeto, diviso in tre sottoinsiemi disgiunti
             \item $N$ è l'insieme dei simboli non terminali
@@ -226,7 +226,7 @@
 
     Il problema del calcolare le distanze di edit tra stringhe è strettamente correlato al problema del trovare la stringa con distanza di edit minima rispetto ad una data (correction problem).
     
-    Una operazione di edit è una coppia $(a, b) \neq (\epsilon, \epsilon)$ con $\lvert a \rvert, \lvert b \rvert \leq 1$, ed è comunemente indicata con
+    Una operazione di edit è una coppia $\left(a, b\right) \neq \left(\epsilon, \epsilon\right)$ con $\lvert a \rvert, \lvert b \rvert \leq 1$, ed è comunemente indicata con
     $a \rightarrow b$. 
     
     Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^* \mid x = vaw, y = vbw$.
@@ -236,17 +236,17 @@
     
     Ad ogni operazione di edit è associato un costo, rappresentato mediante la funzione $\gamma(a \rightarrow b)$.
     
-    Data una sequenza di operazioni di edit $S = (s_1, s_2, \dots, s_k)$, il costo di $S$ è definito come la somma dei costi delle singole operazioni di edit
+    Data una sequenza di operazioni di edit $S = \left(s_1, s_2, \dots, s_k\right)$, il costo di $S$ è definito come la somma dei costi delle singole operazioni di edit
     $\sum_{i=1}^{k} \gamma(s_i)$.
 
-    Si assume che dati $x, y, k \in (\Sigma \cup \epsilon)$, $\gamma(x \rightarrow y) = 0$ se e solo se $x = y$, e $\gamma(x \rightarrow y)
-    + \gamma(y \rightarrow k) \geq \gamma(x \rightarrow k)$.
+    Si assume che dati $x, y, k \in \left(\Sigma \cup \epsilon\right)$, $\gamma\left(x \rightarrow y\right) = 0$ se e solo se $x = y$, e $\gamma\left(x \rightarrow y\right)
+    + \gamma\left(y \rightarrow k\right) \geq \gamma\left(x \rightarrow k\right)$.
 
     \begin{definition}
-        Date due stringhe $x, y \in \Sigma^*$, la distanza di edit $d(x, y)$ da $x$ a $y$ è il minimo dei costi delle sequenze di operazioni di edit che trasformano $x$ in $y$.
+        Date due stringhe $x, y \in \Sigma^*$, la distanza di edit $d\left(x, y\right)$ da $x$ a $y$ è il minimo dei costi delle sequenze di operazioni di edit che trasformano $x$ in $y$.
     \end{definition}
     
-    Ad esempio, sia $\Sigma = \{i, j\}$ e $\gamma(a \rightarrow b) = 1$ per ogni $a, b \in \Sigma \cup \{\epsilon\}$ con $a \neq b$. Per trasformare la stringa $iji$ nella stringa $jj$ si può utilizzare la seguente sequenza di operazioni:
+    Ad esempio, sia $\Sigma = \{i, j\}$ e $\gamma\left(a \rightarrow b\right) = 1$ per ogni $a, b \in \Sigma \cup \{\epsilon\}$ con $a \neq b$. Per trasformare la stringa $iji$ nella stringa $jj$ si può utilizzare la seguente sequenza di operazioni:
     
     $$iji \xrightarrow{i \rightarrow j} jji \xrightarrow{i \rightarrow \epsilon} jj$$
     
@@ -256,10 +256,10 @@
 
     \begin{definition}
         La distanza di edit tra un linguaggio $L \subseteq \Sigma^*$ ed una stringa $x \in \Sigma^*$ è il minimo tra i costi delle sequenze di operazioni di edit
-        che trasformano stringhe di $L$ in $x$, ovvero $d(L, x) = \min\{d(y, x) \mid y \in L \}$.
+        che trasformano stringhe di $L$ in $x$, ovvero $d\left(L, x\right) = \min\left\{d\left(y, x\right) \mid y \in L \right\}$.
     \end{definition}
 
-    Fissato un linguaggio $L \subseteq \Sigma^*$, la funzione $d(L, x)$ nella variabile $x$ viene denominata \textit{distanza di edit del linguaggio} $L$.
+    Fissato un linguaggio $L \subseteq \Sigma^*$, la funzione $d\left(L, x\right)$ nella variabile $x$ viene denominata \textit{distanza di edit del linguaggio} $L$.
 
     \subsection{Esempi di distanze}
     
@@ -269,9 +269,9 @@
     
     La \textit{distanza di Hamming} è definita solo per stringhe di uguale lunghezza e considera esclusivamente operazioni di sostituzione. Formalmente, date due stringhe $x, y \in \Sigma^*$ con $|x| = |y| = n$, la distanza di Hamming è:
     
-    $$d_H(x, y) = |\{i \in [1, n] : x[i] \neq y[i]\}|$$
+    $$d_H\left(x, y\right) = \left|\left\{i \in \left[1, n\right] : x\left[i\right] \neq y\left[i\right]\right\}\right|$$
     
-    dove $x[i]$ e $y[i]$ denotano l'$i$-esimo carattere delle stringhe $x$ e $y$ rispettivamente. In altre parole, la distanza di Hamming conta il numero di posizioni in cui i caratteri corrispondenti sono diversi.
+    dove $x\left[i\right]$ e $y\left[i\right]$ denotano l'$i$-esimo carattere delle stringhe $x$ e $y$ rispettivamente. In altre parole, la distanza di Hamming conta il numero di posizioni in cui i caratteri corrispondenti sono diversi.
 
     \subsection{Calcolo delle distanze di edit}
 
@@ -280,58 +280,58 @@
 \begin{prop}
     Siano $u,v,w,z \in \Sigma^*$. Allora vale
     \[
-        d(uv, wz) \leq d(u,w) + d(v,z).
+        d\left(uv, wz\right) \leq d\left(u,w\right) + d\left(v,z\right).
     \]
 \end{prop}
 
 \begin{proof}
-    Per definizione, $d(u,w)$ è il costo minimo necessario per trasformare $u$ in $w$, mentre $d(v,z)$ è il costo minimo per trasformare $v$ in $z$.
+    Per definizione, $d\left(u,w\right)$ è il costo minimo necessario per trasformare $u$ in $w$, mentre $d\left(v,z\right)$ è il costo minimo per trasformare $v$ in $z$.
     Consideriamo dunque la seguente strategia:
     \begin{enumerate}
-        \item trasformiamo $u$ in $w$ mediante una sequenza ottimale di operazioni, al costo $d(u,w)$;
-        \item trasformiamo $v$ in $z$ mediante una sequenza ottimale di operazioni, al costo $d(v,z)$.
+        \item trasformiamo $u$ in $w$ mediante una sequenza ottimale di operazioni, al costo $d\left(u,w\right)$;
+        \item trasformiamo $v$ in $z$ mediante una sequenza ottimale di operazioni, al costo $d\left(v,z\right)$.
     \end{enumerate}
-    Applicando queste trasformazioni in sequenza, otteniamo una trasformazione da $uv$ a $wz$ con costo totale pari a $d(u,w)+d(v,z)$.
+    Applicando queste trasformazioni in sequenza, otteniamo una trasformazione da $uv$ a $wz$ con costo totale pari a $d\left(u,w\right)+d\left(v,z\right)$.
 
-    Poiché la distanza $d(uv,wz)$ è definita come il costo minimo tra tutte le possibili trasformazioni, segue immediatamente che
+    Poiché la distanza $d\left(uv,wz\right)$ è definita come il costo minimo tra tutte le possibili trasformazioni, segue immediatamente che
     \[
-        d(uv, wz) \leq d(u,w) + d(v,z). \qedhere
+        d\left(uv, wz\right) \leq d\left(u,w\right) + d\left(v,z\right). \qedhere
     \]
 \end{proof}
 
 \begin{prop}
     Per ogni $x', x'', y \in \Sigma^*$ vale:
     \[
-        d(x'x'', y) = \min\{d(x', y') + d(x'', y'') \mid y = y'y''\}.
+        d\left(x'x'', y\right) = \min\left\{d\left(x', y'\right) + d\left(x'', y''\right) \mid y = y'y''\right\}.
     \]
 \end{prop}
 
     \begin{proof}
         Definiamo il minimo cercato:
         \[
-            M := \min\{d(x', y') + d(x'', y'') \mid y = y'y''\}.
+            M := \min\left\{d\left(x', y'\right) + d\left(x'', y''\right) \mid y = y'y''\right\}.
         \]
 
-        \textbf{(1)} Mostriamo che $d(x'x'', y) \leq M$.
+        \textbf{(1)} Mostriamo che $d\left(x'x'', y\right) \leq M$.
 
-        Prendiamo una decomposizione $y = y'y''$ che realizza (o approssima) il minimo $M$. Trasformiamo $x'$ in $y'$ con una sequenza ottimale di costo $d(x', y')$ e trasformiamo $x''$ in $y''$ con una sequenza ottimale di costo $d(x'', y'')$.
-        Concatenando le due trasformazioni otteniamo una trasformazione da $x'x''$ a $y$, di costo totale $d(x', y') + d(x'', y'') = M$.
-        Poiché $d(x'x'', y)$ è definito come il costo minimo, si ha $d(x'x'', y) \leq M$.
+        Prendiamo una decomposizione $y = y'y''$ che realizza (o approssima) il minimo $M$. Trasformiamo $x'$ in $y'$ con una sequenza ottimale di costo $d\left(x', y'\right)$ e trasformiamo $x''$ in $y''$ con una sequenza ottimale di costo $d\left(x'', y''\right)$.
+        Concatenando le due trasformazioni otteniamo una trasformazione da $x'x''$ a $y$, di costo totale $d\left(x', y'\right) + d\left(x'', y''\right) = M$.
+        Poiché $d\left(x'x'', y\right)$ è definito come il costo minimo, si ha $d\left(x'x'', y\right) \leq M$.
 
         \vspace{0.5em}
 
-        \textbf{(2)} Mostriamo che $d(x'x'', y) \geq M$.
+        \textbf{(2)} Mostriamo che $d\left(x'x'', y\right) \geq M$.
 
         Sia $\tau$ una sequenza ottimale di trasformazioni che porta $x'x''$ in $y$.
         Durante questa trasformazione, la parte iniziale $x'$ viene consumata e produrrà un certo prefisso $y'$ di $y$.
         La parte rimanente $x''$ sarà trasformata nel suffisso $y''$, con $y = y'y''$.
         Il costo totale di $\tau$ si può allora suddividere: una parte è dovuta alla trasformazione di $x'$ in $y'$, e l'altra alla trasformazione di $x''$ in $y''$.
-        Quindi il costo $d(x'x'', y)$ è almeno $d(x', y') + d(x'', y'')$.
-        Questo vale per quella specifica decomposizione di $y$, quindi a maggior ragione vale per il minimo su tutte: $d(x'x'', y) \geq M$.
+        Quindi il costo $d\left(x'x'', y\right)$ è almeno $d\left(x', y'\right) + d\left(x'', y''\right)$.
+        Questo vale per quella specifica decomposizione di $y$, quindi a maggior ragione vale per il minimo su tutte: $d\left(x'x'', y\right) \geq M$.
 
         \vspace{0.5em}
 
-        \textbf{Conclusione.} Dalle due disuguaglianze otteniamo l'uguaglianza: $d(x'x'', y) = M$.
+        \textbf{Conclusione.} Dalle due disuguaglianze otteniamo l'uguaglianza: $d\left(x'x'', y\right) = M$.
     \end{proof}
 
     Si può inoltre individuare facilmente un limite superiore per il calcolo della distanza di edit
@@ -339,41 +339,41 @@
 
     \begin{prop}\label{prop:distanza-limitata}
         Dato un linguaggio $L \in \Sigma^*$ ed una funzione di costo $\gamma$ esistono costanti $\alpha, \beta$ tali che
-        $d(L, x) \leq \alpha \lvert x \rvert + \beta$
+        $d\left(L, x\right) \leq \alpha \lvert x \rvert + \beta$
     \end{prop}
 
     \begin{proof}
-        Scegliamo una stringa $z \in L$, allora $d(L, x) \leq d(z, x)$.
+        Scegliamo una stringa $z \in L$, allora $d\left(L, x\right) \leq d\left(z, x\right)$.
         Si può inoltre trasformare $z$ in $x$ contatenando $z$ con $x$ e cancellando in seguito $z$ dalla stringa risultante:
 
-        $$\displaystyle d(L, x) \leq d(z, x) \leq \sum_{i=1}^{\lvert x \rvert} \gamma(\epsilon \rightarrow x_i) + \sum_{i=1}^{\lvert z \rvert} \gamma(z_i \rightarrow \epsilon) \leq \alpha \lvert x \rvert + \beta$$
+        $$\displaystyle d\left(L, x\right) \leq d\left(z, x\right) \leq \sum_{i=1}^{\lvert x \rvert} \gamma\left(\epsilon \rightarrow x_i\right) + \sum_{i=1}^{\lvert z \rvert} \gamma\left(z_i \rightarrow \epsilon\right) \leq \alpha \lvert x \rvert + \beta$$
 
-        In questo caso, $\alpha = \max\{\gamma(\epsilon \rightarrow b) \mid b \in \Sigma\}$ e $\beta = \sum_{i=1}^{\lvert z \rvert} \gamma(z_i \rightarrow \epsilon)$
+        In questo caso, $\alpha = \max\left\{\gamma\left(\epsilon \rightarrow b\right) \mid b \in \Sigma\right\}$ e $\beta = \sum_{i=1}^{\lvert z \rvert} \gamma\left(z_i \rightarrow \epsilon\right)$
     \end{proof}
 
     Partendo da questo risultato, si possono individuare stringhe di $L$ che minimizzano questa distanza.
 
     \begin{prop}
         Dato un linguaggio $L \in \Sigma^*$ ed una funzione di costo $\gamma$ esistono costanti $\alpha', \beta'$ tali che
-        $\forall{x \in \Sigma^*}, \forall{y \in L}$ tali che $d(L, x) = d(y, x)$ vale $\lvert y \rvert \leq \alpha' \lvert x \rvert + \beta'$
+        $\forall{x \in \Sigma^*}, \forall{y \in L}$ tali che $d\left(L, x\right) = d\left(y, x\right)$ vale $\lvert y \rvert \leq \alpha' \lvert x \rvert + \beta'$
     \end{prop}
 
     \begin{proof}
-        Scegliamo $y \in L$ tale che $d(L, x) = d(y, x)$ e definiamo $\lambda$ come il minimo tra i costi degli inserimenti e delle cancellazioni:
+        Scegliamo $y \in L$ tale che $d\left(L, x\right) = d\left(y, x\right)$ e definiamo $\lambda$ come il minimo tra i costi degli inserimenti e delle cancellazioni:
 
-        $$ \lambda = \min\bigl\{\{\gamma(\epsilon \rightarrow c) \mid c \in \Sigma\} \cup \{\gamma(c \rightarrow \epsilon) \mid c \in \Sigma\}\bigr\}$$
+        $$ \lambda = \min\bigl\{\{\gamma\left(\epsilon \rightarrow c\right) \mid c \in \Sigma\} \cup \{\gamma\left(c \rightarrow \epsilon\right) \mid c \in \Sigma\}\bigr\}$$
 
         Si può affermare che per derivare una stringa $y$ da una stringa $x$, si dovranno effettuare operazioni di cancellazione o inserimento in numero pari
-        ad almeno la differenza in lunghezza tra le due stringhe, segue quindi che $d(y, x) \geq \lambda\bigl\lvert(\lvert y \rvert - \lvert x \rvert)\bigr\rvert$.
+        ad almeno la differenza in lunghezza tra le due stringhe, segue quindi che $d\left(y, x\right) \geq \lambda\bigl|\left(\lvert y \rvert - \lvert x \rvert\right)\bigr|$.
         Si può quindi esprimere la disuguaglianza in termini di $y$:
 
-        $$\lvert y \rvert \leq \lvert x \rvert + \frac{1}{\lambda}d(y, x)$$
+        $$\lvert y \rvert \leq \lvert x \rvert + \frac{1}{\lambda}d\left(y, x\right)$$
 
         Senza perdita di generalità si può assumere $\lvert y \rvert - \lvert x \rvert \geq 0$.
 
-        Usando la Proposizione~\ref{prop:distanza-limitata} e ricordando che $d(L, x) = d(y, x)$ otteniamo:
+        Usando la Proposizione~\ref{prop:distanza-limitata} e ricordando che $d\left(L, x\right) = d\left(y, x\right)$ otteniamo:
 
-        $$\lvert y \rvert \leq (\frac{\alpha}{\lambda} + 1)\lvert x \rvert + \frac{\beta}{\lambda}$$
+        $$\lvert y \rvert \leq \left(\frac{\alpha}{\lambda} + 1\right)\lvert x \rvert + \frac{\beta}{\lambda}$$
 
 
     \end{proof}
