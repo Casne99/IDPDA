@@ -107,8 +107,8 @@
     Si può rappresentare l'alfabeto di input di un IDPDA come unione di tre sottoinsiemi disgiunti e finiti:
 
     \begin{itemize}
-        \item $\Sigma_{+1}$: parentesi sinistre, determinano una operazione di push sulla pila
-        \item $\Sigma_{-1}$: parentesi destre, determinano una operazione di pop sulla pila
+        \item $\Sigma_{+1}$: parentesi sinistre, determinano un'operazione di push sulla pila
+        \item $\Sigma_{-1}$: parentesi destre, determinano un'operazione di pop sulla pila
         \item $\Sigma_{0}$: simboli neutrali, non si traducono in operazioni sulla pila
     \end{itemize}
 
@@ -123,9 +123,9 @@
             \item $Q$ è l'insieme di stati dell'automa
             \item $q_{0} \in Q$ è lo stato iniziale
             \item $F \subseteq Q$ è il sottoinsieme degli stati \textit{accettanti}
-            \item $\Gamma$ è  l'\textit{alfabeto della pila}
+            \item $\Gamma$ è l'\textit{alfabeto della pila}
             \item $\perp$ è il simbolo che indica la pila vuota
-            \item $\delta_{<} : Q \rightarrow Q \times \Gamma$ è la funzione di transizione che, per ogni parentesi sinistra $< \in \Sigma_{+1}$, dato un determinato stato corrente, fornisce lo stato successivo ed il simbolo da pushare sulla pila
+            \item $\delta_{<} : Q \rightarrow Q \times \Gamma$ è la funzione di transizione che, per ogni parentesi sinistra $< \in \Sigma_{+1}$, dato un determinato stato corrente, fornisce lo stato successivo e il simbolo da pushare sulla pila
             \item $\delta_{>} : Q \times \left(\Gamma\;\cup\perp\right) \rightarrow Q$ è la funzione di transizione che, per ogni parentesi destra $> \in \Sigma_{-1}$, dato un determinato stato corrente, fornisce lo stato successivo, posto che il simbolo specificato si trovi in cima alla pila e venga rimosso da essa o lo stack sia vuoto
             \item $\delta_{c} : Q \rightarrow Q$ è la funzione di transizione che, per ogni simbolo neutro $c \in \Sigma_{0}$, fornisce il prossimo stato
         \end{itemize}
