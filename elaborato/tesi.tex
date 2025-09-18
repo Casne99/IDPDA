@@ -116,7 +116,7 @@
 
     \section{Automi Input Driven Deterministici}
 
-    \begin{definition}
+    \begin{definition}\label{def:didpda}
         Un \textit{automa a pila input driven deterministico} (detto anche DIDPDA) è una settupla $A = \left(\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F\right)$ dove:
         \begin{itemize}
             \item $\Sigma$ è un alfabeto di input, composto da tre sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
@@ -174,7 +174,7 @@
             \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da caricare sullo stack
             \item per ogni parentesi destra $> \in \Sigma_{-1}$, la funzione di transizione $\delta_{>} : Q \times \left(\Gamma \cup \{\perp\}\right) \rightarrow 2^Q$, dato lo stato attuale e il simbolo in cima alla pila (che sarà rimosso se la pila non è vuota), fornisce un insieme di possibili stati successivi %lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
             \item per ogni simbolo neutro $c \in \Sigma_{0}$, c'è una funzione $\delta_{0} : Q \rightarrow 2^Q$
-            \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto della pila $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accettanti $F \subseteq Q$ sono definiti come nella Definizione 2.1
+            \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto della pila $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accettanti $F \subseteq Q$ sono definiti come nella Definizione~\ref{def:didpda}
         \end{itemize}
     \end{definition}
 
@@ -260,6 +260,8 @@
         che trasformano stringhe di $L$ in $x$, ovvero $d\left(L, x\right) = \min\left\{d\left(y, x\right) \mid y \in L \right\}$.
     \end{definition}
 
+    Ad esempio, dato $L = \{aab, aabb, abc\}$ ed $x = acb$, assumendo $\gamma(a \rightarrow b) = 1$ per ogni $a \neq b$, abbiamo che $d\left(L, x\right) = 1$, infatti $aab \xrightarrow{a \rightarrow c} acb$. Si noti che $x \in L \implies d\left(L, x\right) = 0$.
+
     Fissato un linguaggio $L \subseteq \Sigma^*$, la funzione $d\left(L, x\right)$ nella variabile $x$ viene denominata \textit{distanza di edit del linguaggio} $L$.
 
     \subsection{Calcolo delle distanze di edit}
@@ -303,7 +305,7 @@
 
         \textbf{(1)} Mostriamo che $d\left(x'x'', y\right) \leq M$.
 
-        Prendiamo una decomposizione $y = y'y''$ che realizza (o approssima) il minimo $M$. Trasformiamo $x'$ in $y'$ con una sequenza ottimale di costo $d\left(x', y'\right)$ e trasformiamo $x''$ in $y''$ con una sequenza ottimale di costo $d\left(x'', y''\right)$.
+        Prendiamo una decomposizione $y = y'y''$ che realizza il minimo $M$. Trasformiamo $x'$ in $y'$ con una sequenza ottimale di costo $d\left(x', y'\right)$ e trasformiamo $x''$ in $y''$ con una sequenza ottimale di costo $d\left(x'', y''\right)$.
         Concatenando le due trasformazioni otteniamo una trasformazione da $x'x''$ a $y$, di costo totale $d\left(x', y'\right) + d\left(x'', y''\right) = M$.
         Poiché $d\left(x'x'', y\right)$ è definito come il costo minimo, si ha $d\left(x'x'', y\right) \leq M$.
 
