@@ -136,6 +136,27 @@
     
     Quando il simbolo in input è, invece, un simbolo neutro o una parentesi sinistra, il prossimo stato non dipende dal contenuto dello stack.
 
+    \begin{definition}\label{def:configuration}
+    Una configurazione di $A$ è una tripla $\left(q, w, x\right)$ dove $q \in Q$ indica lo stato, $w \in \Sigma^*$ è l'input rimanente ed  $x \in \Gamma$ è il contenuto dello stack.
+    La configurazione iniziale per una stringa $w_0 \in \Sigma^*$ è $\left(q_0, w_0, \epsilon\right)$.
+    Per ogni configurazione con almeno un singolo di input rimanente, la configurazione successiva è univocamente determinata da un singolo step della funzione di transizione:
+    \begin{itemize}
+        \item per ogni parentesi sinistra $< \in \Sigma_{+1}$ sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$, dove $\delta_{<}(q) = (q', \gamma)$
+        \item per ogni parentesi destra $> \in \Sigma_{-1}$ sia $(q, >w, \gamma x) \vdash_{A} (\delta_{>}(q, \gamma), w, x)$, e nel caso lo stack fosse vuoto $(q, >w, \epsilon) \vdash_{A} (\delta_{>}(q, \perp), w, \epsilon)$
+        \item per ogni simbolo neutro $c \in \Sigma_{0}$ sia $(q, cw, x) \vdash_{A} (\delta_{c}(q), w, x)$
+    \end{itemize}
+
+    Quando la stringa di input è stata letta, l'ultima configurazione $\left(q, \epsilon, u\right)$ è accettante se $q \in F$, a prescindere dal contenuto della pila.
+    Il linguaggio $L\left(A\right)$ riconosciuto dall'automa è l'insieme di tutte le stringhe $w \in \Sigma^*$ per le quali la computazione che parte da $\left(q_0, w, \epsilon\right)$ è accettante.
+    \end{definition}
+
+    Un DIPDA può accettare stringhe con parentesi sinistre che non hanno una corrispondente parentesi destra, quello che si verifica al termine della computazione in questi casi è che la pila non è vuota.
+
+    Le parentesi destre senza una corrispondente parentesi sinistra si possono trattare utilizzando il simbolo di pila vuota $\perp$ usato come secondo argomento della funzione di transizione, al posto di un simbolo dell'alfabeto della pila.
+
+    Se l'alfabeto contiene solo simboli neutri, ovvero $\Sigma_{-1} = \Sigma_{+1} = \emptyset$, allora un DIPDA diventa un automa a stati deterministico (DFA).
+
+
     \clearpage
     \subsection{Esempio di DIDPDA}
     
@@ -178,8 +199,7 @@
         \end{itemize}
     \end{definition}
 
-    Con gli automi non deterministici, la funzione di transizione è calcolata più volte per lo stesso input. 
-    
+
     Una stringa è accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accettante}.
 
     \section{Grammatiche Input-Driven}
@@ -218,7 +238,7 @@
     
     \begin{align}
         S &\rightarrow < A > \mid [A] \mid \epsilon \\
-        A &\rightarrow < A > \mid [A] \mid \beta
+        A &\rightarrow < A > \mid [A] \mid \beta \mid \epsilon
     \end{align}
     
     In questo esempio ogni regola utilizza una coppia di parentesi corrispondenti, rispettando il vincolo delle grammatiche bilanciate. La grammatica genera stringhe come $<>$, $<\beta>$, $[\beta]$, $<<\beta>>$, $[[\beta]]$, $<[\beta]>$, $[<\beta>]$.
@@ -227,8 +247,26 @@
 
     Il problema del calcolare le distanze di edit tra stringhe è strettamente correlato al problema del trovare la stringa con distanza di edit minima rispetto ad una data (correction problem).
     
-    Una operazione di edit è una coppia $\left(a, b\right) \neq \left(\epsilon, \epsilon\right)$ con $\lvert a \rvert, \lvert b \rvert \leq 1$, ed è comunemente indicata con
-    $a \rightarrow b$.
+    La \textit{distanza di Hamming} è definita solo per stringhe di uguale lunghezza e considera esclusivamente operazioni di sostituzione, ovvero le operazioni di cancellazione ed inserimento hanno costo infinito.
+    
+    Formalmente, data una funzione di costo generale $\gamma$, la distanza di Hamming si ottiene ponendo:
+    \begin{align}
+        \gamma(a \rightarrow b) &= \begin{cases}
+            0 & \text{se } a = b \\
+            1 & \text{se } a \neq b \text{ e } a, b \in \Sigma \\
+            +\infty & \text{se } a = \epsilon \text{ o } b = \epsilon
+        \end{cases}
+    \end{align}
+    
+    Con questa definizione, per stringhe $x, y \in \Sigma^*$ con $|x| \neq |y|$, si ha $d_H(x, y) = +\infty$, mentre per $|x| = |y| = n$:
+    \[
+        d_H(x, y) = \sum_{i=1}^{n} \begin{cases}
+            0 & \text{se } x_i = y_i \\
+            1 & \text{se } x_i \neq y_i
+        \end{cases}
+    \]
+    
+    Una operazione di edit è una coppia $(a, b) \neq (\epsilon, \epsilon)$ con $|a|, |b| \leq 1$, ed è comunemente indicata con $a \rightarrow b$.
 
     Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^* \mid x = vaw, y = vbw$.
     
@@ -252,6 +290,12 @@
     $$iji \xrightarrow{i \rightarrow j} jji \xrightarrow{i \rightarrow \epsilon} jj$$
     
     In questo caso sono state utilizzate una sostituzione e una cancellazione, per un costo totale di $1 + 1 = 2$.
+    
+    Consideriamo ora un esempio con un linguaggio infinito. Sia $L = \{a^n b^n \mid n \geq 1\}$ il linguaggio delle stringhe bilanciate su $\{a, b\}$ e la stringa $x = aabb$. Con la stessa funzione di costo $\gamma(c \rightarrow d) = 1$ per $c \neq d$, abbiamo $d(L, x) = 0$ poiché $x \in L$. Se invece consideriamo $x = aaabb$, possiamo trasformarla in $aabb \in L$ mediante:
+    
+    $$aaabb \xrightarrow{a \rightarrow \epsilon} aabb$$
+    
+    ottenendo $d(L, aaabb) = 1$.
 
     Questa definizione di distanza si può estendere, fissando un concetto di distanza che non riguarda due stringhe ma bensì una stringa e un linguaggio.
 
