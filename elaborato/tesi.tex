@@ -100,7 +100,7 @@
 
     \section{Notazioni}
     
-    Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
+    Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è  indicata con $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
 
     \section{Input Driven Pushdown Automata}
 
@@ -166,7 +166,7 @@
     
     \begin{figure}[H]
         \centering
-        \begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=4cm, semithick, font=\scriptsize, scale=1.3, transform shape]
+        \begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=4cm, semithick, font=\scriptsize, scale=1.5, transform shape]
         \tikzstyle{every state}=[fill=white, draw=black, text=black, minimum size=12mm]
         
         \node[state, accepting] (q0) {$q_{0}$};
@@ -235,7 +235,7 @@
 
     \begin{figure}[H]
         \centering
-        \begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=3.5cm, semithick, font=\scriptsize, scale=1.2, transform shape]
+        \begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=3.5cm, semithick, font=\scriptsize, scale=1.4, transform shape]
             \tikzstyle{every state}=[fill=white, draw=black, text=black, minimum size=12mm]
 
             \node[state, accepting] (q0) {$q_{0}$};
@@ -319,7 +319,7 @@
         \item $N = \{S, A\}$
     \end{itemize}
     
-    Le regole di produzione si possono definire come segue:
+    Le regole di produzione possono essere definite come segue:
     
     \begin{align}
         S &\rightarrow < A > \mid [A] \mid \epsilon \\
@@ -477,27 +477,6 @@
         Dato un linguaggio $L \in \Sigma^*$ ed una funzione di costo $\gamma$ esistono costanti $\alpha', \beta'$ tali che
         $\forall{x \in \Sigma^*}, \forall{y \in L}$ tali che $d\left(L, x\right) = d\left(y, x\right)$ vale $\lvert y \rvert \leq \alpha' \lvert x \rvert + \beta'$
     \end{prop}
-
-    \begin{proof}
-        Scegliamo $y \in L$ tale che $d\left(L, x\right) = d\left(y, x\right)$ e definiamo $\lambda$ come il minimo tra i costi degli inserimenti e delle cancellazioni:
-
-        $$ \lambda = \min\bigl\{\{\gamma\left(\epsilon \rightarrow c\right) \mid c \in \Sigma\} \cup \{\gamma\left(c \rightarrow \epsilon\right) \mid c \in \Sigma\}\bigr\}$$
-
-        Si può affermare che per derivare una stringa $y$ da una stringa $x$, si dovranno effettuare operazioni di cancellazione o inserimento in numero pari
-        ad almeno la differenza in lunghezza tra le due stringhe, segue quindi che $d\left(y, x\right) \geq \lambda\bigl|\left(\lvert y \rvert - \lvert x \rvert\right)\bigr|$.
-        Si può quindi esprimere la disuguaglianza in termini di $y$:
-
-        $$\lvert y \rvert \leq \lvert x \rvert + \frac{1}{\lambda}d\left(y, x\right)$$
-
-        Senza perdita di generalità si può assumere $\lvert y \rvert - \lvert x \rvert \geq 0$.
-
-        Usando la Proposizione~\ref{prop:distanza-limitata} e ricordando che $d\left(L, x\right) = d\left(y, x\right)$ otteniamo:
-
-        $$\lvert y \rvert \leq \left(\frac{\alpha}{\lambda} + 1\right)\lvert x \rvert + \frac{\beta}{\lambda}$$
-        \vspace{0.5em}
-
-        Definendo ora $\displaystyle \alpha' \coloneqq \frac{\alpha}{\lambda} + 1$ e $\displaystyle \beta' \coloneqq \frac{\beta}{\lambda}$ la dimostrazione è conclusa.
-    \end{proof}
 
     La Proposizione~\ref{prop:distanza-limitata} e la Proposizione~\ref{prop:stringa-limitata} mostrano rispettivamente che la distanza di edit è limitata superiormente da una funzione lineare della lunghezza della stringa di input, ed un limite superiore per la lunghezza delle stringhe $s \in L$ che minimizzano la distanza da $L$.
 
