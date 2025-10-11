@@ -331,25 +331,6 @@
 
     Il problema del calcolare le distanze di edit tra stringhe è strettamente correlato al problema del trovare la stringa con distanza di edit minima rispetto ad una data (correction problem).
     
-    La \textit{distanza di Hamming} è definita solo per stringhe di uguale lunghezza e considera esclusivamente operazioni di sostituzione, ovvero le operazioni di cancellazione ed inserimento hanno costo infinito.
-    
-    Formalmente, data una funzione di costo generale $\gamma$, la distanza di Hamming si ottiene ponendo:
-    \begin{align}
-        \gamma(a \rightarrow b) &= \begin{cases}
-            0 & \text{se } a = b \\
-            1 & \text{se } a \neq b \text{ e } a, b \in \Sigma \\
-            +\infty & \text{se } a = \epsilon \text{ o } b = \epsilon
-        \end{cases}
-    \end{align}
-    
-    Con questa definizione, per stringhe $x, y \in \Sigma^*$ con $|x| \neq |y|$, si ha $d_H(x, y) = +\infty$, mentre per $|x| = |y| = n$:
-    \[
-        d_H(x, y) = \sum_{i=1}^{n} \begin{cases}
-            0 & \text{se } x_i = y_i \\
-            1 & \text{se } x_i \neq y_i
-        \end{cases}
-    \]
-    
     Una operazione di edit è una coppia $(a, b) \neq (\epsilon, \epsilon)$ con $|a|, |b| \leq 1$, ed è comunemente indicata con $a \rightarrow b$.
 
     Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^* \mid x = vaw, y = vbw$.
@@ -391,6 +372,27 @@
     Ad esempio, dato $L = \{aab, aabb, abc\}$ ed $x = acb$, assumendo $\gamma(a \rightarrow b) = 1$ per ogni $a \neq b$, abbiamo che $d\left(L, x\right) = 1$, infatti $aab \xrightarrow{a \rightarrow c} acb$. Si noti che $x \in L \implies d\left(L, x\right) = 0$.
 
     Fissato un linguaggio $L \subseteq \Sigma^*$, la funzione $d\left(L, x\right)$ nella variabile $x$ viene denominata \textit{distanza di edit del linguaggio} $L$.
+
+    \subsection{Esempio: distanza di Hamming}
+
+    La \textit{distanza di Hamming} è definita solo per stringhe di uguale lunghezza e considera esclusivamente operazioni di sostituzione, ovvero le operazioni di cancellazione ed inserimento hanno costo infinito.
+
+    Formalmente, data una funzione di costo generale $\gamma$, la distanza di Hamming si ottiene ponendo:
+    \begin{align}
+        \gamma(a \rightarrow b) &= \begin{cases}
+                                       0 & \text{se } a = b \\
+                                       1 & \text{se } a \neq b \text{ e } a, b \in \Sigma \\
+                                       +\infty & \text{se } a = \epsilon \text{ o } b = \epsilon
+        \end{cases}
+    \end{align}
+
+    Con questa definizione, per stringhe $x, y \in \Sigma^*$ con $|x| \neq |y|$, si ha $d_H(x, y) = +\infty$, mentre per $|x| = |y| = n$:
+    \[
+        d_H(x, y) = \sum_{i=1}^{n} \begin{cases}
+                                       0 & \text{se } x_i = y_i \\
+                                       1 & \text{se } x_i \neq y_i
+        \end{cases}
+    \]
 
     \subsection{Calcolo delle distanze di edit}
 
