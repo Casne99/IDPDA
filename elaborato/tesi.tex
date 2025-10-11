@@ -100,7 +100,7 @@
 
     \section{Notazioni}
     
-    Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è  indicata con $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
+    Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è indicata con $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
 
     \section{Input Driven Pushdown Automata}
 
@@ -111,7 +111,7 @@
     \begin{itemize}
         \item $\Sigma_{+1}$: parentesi sinistre, determinano un'operazione di caricamento sulla pila
         \item $\Sigma_{-1}$: parentesi destre, determinano un'operazione di pop sulla pila
-        \item $\Sigma_{0}$: simboli neutrali, non si traducono in operazioni sulla pila
+        \item $\Sigma_{0}$: simboli neutri, non si traducono in operazioni sulla pila
     \end{itemize}
 
     Una stringa $s \in \Sigma^*$ è detta \textit{ben formata} se ogni parentesi sinistra ha una parentesi destra corrispondente, e viceversa.
@@ -158,11 +158,10 @@
 
     Se l'alfabeto contiene solo simboli neutri, ovvero $\Sigma_{-1} = \Sigma_{+1} = \emptyset$, allora un DIPDA diventa un automa a stati deterministico (DFA).
 
-
     \clearpage
-    \subsection{Esempio di DIDPDA con simboli neutrali}
+    \subsection{Esempio di DIDPDA con simboli neutri}
     
-    Per illustrare il funzionamento di un automa input driven deterministico più complesso, consideriamo un esempio che include anche simboli neutrali. L'automa seguente riconosce stringhe bilanciate con simboli neutrali interni:
+    Per illustrare il funzionamento di un automa input driven deterministico più complesso, consideriamo un esempio che include anche simboli neutri. L'automa seguente riconosce stringhe bilanciate con simboli neutri interni:
     
     \begin{figure}[H]
         \centering
@@ -185,7 +184,7 @@
         (q1) edge[bend left=15] node[below] {$>$/pop $X$} (q0)
         (q1) edge node[right] {$>$/err} (qerr);
         \end{tikzpicture}
-        \caption{DIDPDA che riconosce stringhe bilanciate con simboli neutrali}
+        \caption{DIDPDA che riconosce stringhe bilanciate con simboli neutri}
         \label{fig:esempio_didpda}
     \end{figure}
 
@@ -193,7 +192,7 @@
     \begin{itemize}
         \item $\Sigma_{+1} = \{<\}$ (parentesi sinistre)
         \item $\Sigma_{-1} = \{>\}$ (parentesi destre)
-        \item $\Sigma_0 = \{a\}$ (simboli neutrali)
+        \item $\Sigma_0 = \{a\}$ (simboli neutri)
         \item $\Gamma = \{X\}$ (alfabeto della pila)
     \end{itemize}
     
@@ -272,7 +271,7 @@
     \begin{itemize}
         \item $\Sigma_{+1} = \{(, [\}$ (parentesi sinistre)
         \item $\Sigma_{-1} = \{), ]\}$ (parentesi destre)
-        \item $\Sigma_0 = \{a\}$ (simboli neutrali)
+        \item $\Sigma_0 = \{a\}$ (simboli neutri)
         \item $\Gamma = \{A, B\}$ (alfabeto della pila)
     \end{itemize}
     
