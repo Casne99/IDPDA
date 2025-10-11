@@ -88,6 +88,9 @@
 
     È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari, pur essendo più ampia.
 
+    A differenza degli automi a stati finiti (DFA), che possono riconoscere solo linguaggi regolari, gli IDPDA sono in grado di gestire strutture annidate e bilanciate grazie alla presenza della pila.
+    Gli automi a stati finiti, infatti, non possono riconoscere linguaggi come $\{a^n b^n \mid n \geq 0\}$ a causa della loro memoria limitata agli stati, mentre gli IDPDA possono facilmente gestire tali costrutti utilizzando la pila per tenere traccia del bilanciamento.
+
     Un problema di particolare rilevanza, dove gli IDPDA trovano utilizzo, consiste nel determinare la distanza tra una data stringa $s$ e un linguaggio $L$, detta anche \textit{distanza di edit}.
     Tale distanza è definita come il costo minimo di una sequenza di operazioni elementari di modifica su $s$ (sostituzione, inserimento, eliminazione di un simbolo), che la trasformano in una stringa $s' \in L$.
 
@@ -161,7 +164,8 @@
     \clearpage
     \subsection{Esempio di DIDPDA con simboli neutri}
     
-    Per illustrare il funzionamento di un automa input driven deterministico più complesso, consideriamo un esempio che include anche simboli neutri. L'automa seguente riconosce stringhe bilanciate con simboli neutri interni:
+    Per illustrare il funzionamento di un automa input driven deterministico, consideriamo un esempio.
+    L'automa seguente riconosce stringhe bilanciate con simboli neutri interni:
     
     \begin{figure}[H]
         \centering
@@ -201,9 +205,7 @@
         \delta_{<}(q_0) &= (q_0, X) \\
         \delta_{a}(q_0) &= q_1 \\
         \delta_{a}(q_1) &= q_1 \\
-        \delta_{>}(q_0, \gamma) &= \begin{cases}
-            q_{\text{err}} & \text{se } \gamma = \perp
-        \end{cases} \\
+        \delta_{>}(q_0, \gamma) &= q_{\text{err}} \\
         \delta_{>}(q_1, \gamma) &= \begin{cases}
             q_0 & \text{se } \gamma = X \\
             q_{\text{err}} & \text{se } \gamma = \perp
@@ -230,7 +232,7 @@
 
     \subsection{Esempio di NIDPDA}
     
-    Consideriamo ora un esempio di NIDPDA che mostra il non determinismo. L'automa seguente riconosce stringhe bilanciate dove ogni parentesi sinistra può essere abbinata non deterministicamente a diverse parentesi destre:
+    Consideriamo ora un esempio di NIDPDA. L'automa seguente riconosce stringhe bilanciate, che possono eventualmente contenere un simbolo neutro (una o più volte), anche alla loro fine:
 
     \begin{figure}[H]
         \centering
@@ -275,7 +277,7 @@
         \item $\Gamma = \{A, B\}$ (alfabeto della pila)
     \end{itemize}
     
-    Le funzioni di transizione non deterministiche sono:
+    Le funzioni di transizione sono:
     \begin{align}
         \delta_{(}(q_0) &= \{(q_1, A)\} \\
         \delta_{[}(q_0) &= \{(q_1, B)\} \\
@@ -284,7 +286,8 @@
         \delta_{a}(q_2) &= \{q_2\}
     \end{align}
     
-    Il non determinismo si manifesta quando l'automa legge una parentesi destra: può scegliere di tornare a $q_0$ (per continuare il bilanciamento) o andare a $q_2$ (per leggere simboli neutrali). Questo automa accetta stringhe come $()$, $[]$, $(a)$, $[aa]$, $()[]$, ma anche $()a$, $[]aa$.
+    Il non determinismo si manifesta quando l'automa legge una parentesi destra: può scegliere di tornare in $q_0$ (per continuare il bilanciamento) o andare in $q_2$ (per leggere simboli neutrali).
+    Questo automa accetta stringhe come $()$, $[]$, $(a)$, $[aa]$, $()[]$, ma anche $()a$, $[]aa$.
 
     \section{Grammatiche Input-Driven}
 
@@ -393,6 +396,17 @@
                                        1 & \text{se } x_i \neq y_i
         \end{cases}
     \]
+    
+    Ad esempio, consideriamo le stringhe $x = 1011$ e $y = 1101$ sull'alfabeto $\{0, 1\}$. La distanza di Hamming si calcola confrontando posizione per posizione:
+    \begin{align*}
+        d_H(1011, 1101) &= \sum_{i=0}^{3} \begin{cases}
+            0 & \text{se } x_i = y_i \\
+            1 & \text{se } x_i \neq y_i
+        \end{cases} \\
+        &= 0 + 1 + 1 + 0 = 2
+    \end{align*}
+    
+    Infatti, le stringhe differiscono nelle posizioni 1 e 2: $x_1 = 0 \neq 1 = y_1$ e $x_2 = 1 \neq 0 = y_2$.
 
     \subsection{Calcolo delle distanze di edit}
 
