@@ -219,16 +219,32 @@
     \begin{definition}
         Un \textit{automa a pila input driven non deterministico} (detto anche NIDPDA) è una settupla $A = \left(\Sigma, Q, \Gamma, q_0, \perp, \delta, F\right)$ dove:
         \begin{itemize}
-            \item $q_{0} \in Q$ è lo stato iniziale
-            \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da caricare sullo stack
-            \item per ogni parentesi destra $> \in \Sigma_{-1}$, la funzione di transizione $\delta_{>} : Q \times \left(\Gamma \cup \{\perp\}\right) \rightarrow 2^Q$, dato lo stato attuale e il simbolo in cima alla pila (che sarà rimosso se la pila non è vuota), fornisce un insieme di possibili stati successivi %lo stato successivo se viene effettuata una operazione di pop dallo stack del simbolo corrispondente
-            \item per ogni simbolo neutro $c \in \Sigma_{0}$, c'è una funzione $\delta_{0} : Q \rightarrow 2^Q$
             \item l'alfabeto di input $\Sigma$, l'insieme degli stati $Q$, l'alfabeto della pila $\Gamma$, lo stack vuoto $\perp$ e l'insieme degli stati accettanti $F \subseteq Q$ sono definiti come nella Definizione~\ref{def:didpda}
+            \item esiste un insieme di stati iniziali $Q_0 \in Q$, ed una computazione potrebbe partire da ognuno di essi
+            \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, la funzione di transizione $\delta_{<} : Q \rightarrow 2^{Q \times \Gamma}$ fornisce, dato un certo stato attuale, un insieme di possibili risultati, ovvero coppie che indicano stato successivo e simbolo da caricare sullo stack
+            \item per ogni parentesi destra $> \in \Sigma_{-1}$, la funzione di transizione $\delta_{>} : Q \times \left(\Gamma \cup \{\perp\}\right) \rightarrow 2^Q$, dato lo stato attuale e il simbolo in cima alla pila (che sarà rimosso se la pila non è vuota), fornisce un insieme di possibili stati successivi
+            \item per ogni simbolo neutro $c \in \Sigma_{0}$, c'è una funzione $\delta_{0} : Q \rightarrow 2^Q$
         \end{itemize}
     \end{definition}
 
+    \begin{definition}\label{def:configuration-non-det}
+        Una configurazione di $A$ è una tripla $\left(q, w, x\right)$, con $q \in Q$, $w \in \Sigma^*$ ed $x \in \Gamma^*$.
+        Presa una stringa di input $w_0$, tutte le configurazioni $(q_0, w_0, \epsilon)$ con $q_0 \in Q_0$ sono iniziali.
+        La relazione di transizione è definita come segue:
 
-    Una stringa è accettata se almeno una delle computazioni risultanti dalla lettura della stringa termina in uno stato \textit{accettante}.
+    \begin{itemize}
+        \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, e per ogni coppia $\left(q', \gamma\right) in \sigma_<\left(q\right)$, sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$;
+        \item per ogni parentesi destra $> \in \Sigma_{-1}$ e per ogni $q' \in \sigma_>\left(q, \gamma\right)$, sia $(q, >w, \gamma x) \vdash_{A} (q', w, x)$, e nel caso lo stack fosse vuoto, per ogni $q' \in \sigma_>\left(q, \perp\right)$, sia $\left(q, >w, \epsilon\right) \vdash{A} \left(q', w, \epsilon\right)$
+        \item per un simbolo neutro $c \in \Sigma_0$, per ogni $q' \in \sigma_c\left(q\right)$, sia $\left(q, cw, x\right) \vdash{A} \left(q?, w, x\right)$
+    \end{itemize}
+
+    L'ultima configurazione $\left(q, \epsilon, u\right)$ è accettante se $q \in F$.
+    Il linguaggio $L$ riconosciuto dall'automa è l'insieme di tutte le stringhe $w \in \Sigma^*$ per le quali almeno una computazione da $\left(q_0, w, \epsilon\right)$ è accettante.
+
+    \end{definition}
+
+    Un NIDPDA $B$ diventa un DIPDA se $\lvert Q_0\rvert = 1$ e le sue funzioni di transizione $\sigma_a$, $a \in \Sigma$ forniscono al più una azione possibile per ogni simbolo di input, stato e simbolo in cima alla pila.
+    Se ci sono solo simboli neutri nell'alfabeto $\left(\Sigma_{+1} = \Sigma_{-1} = \emptyset\right)$, allora un NIDPDA è una automa a stati finiti non deterministico (NFA)
 
     \subsection{Esempio di NIDPDA}
     
@@ -441,34 +457,6 @@
     \]
 \end{prop}
 
-    \begin{proof}
-        Definiamo il minimo cercato:
-        \[
-            M := \min\left\{d\left(x', y'\right) + d\left(x'', y''\right) \mid y = y'y''\right\}.
-        \]
-
-        \textbf{(1)} Mostriamo che $d\left(x'x'', y\right) \leq M$.
-
-        Prendiamo una decomposizione $y = y'y''$ che realizza il minimo $M$. Trasformiamo $x'$ in $y'$ con una sequenza ottimale di costo $d\left(x', y'\right)$ e trasformiamo $x''$ in $y''$ con una sequenza ottimale di costo $d\left(x'', y''\right)$.
-        Concatenando le due trasformazioni otteniamo una trasformazione da $x'x''$ a $y$, di costo totale $d\left(x', y'\right) + d\left(x'', y''\right) = M$.
-        Poiché $d\left(x'x'', y\right)$ è definito come il costo minimo, si ha $d\left(x'x'', y\right) \leq M$.
-
-        \vspace{0.5em}
-
-        \textbf{(2)} Mostriamo che $d\left(x'x'', y\right) \geq M$.
-
-        Sia $\tau$ una sequenza ottimale di trasformazioni che porta $x'x''$ in $y$.
-        Durante questa trasformazione, la parte iniziale $x'$ viene consumata e produrrà un certo prefisso $y'$ di $y$.
-        La parte rimanente $x''$ sarà trasformata nel suffisso $y''$, con $y = y'y''$.
-        Il costo totale di $\tau$ si può allora suddividere: una parte è dovuta alla trasformazione di $x'$ in $y'$, e l'altra alla trasformazione di $x''$ in $y''$.
-        Quindi il costo $d\left(x'x'', y\right)$ è almeno $d\left(x', y'\right) + d\left(x'', y''\right)$.
-        Questo vale per quella specifica decomposizione di $y$, quindi a maggior ragione vale per il minimo su tutte: $d\left(x'x'', y\right) \geq M$.
-
-        \vspace{0.5em}
-
-        \textbf{Conclusione.} Dalle due disuguaglianze otteniamo l'uguaglianza: $d\left(x'x'', y\right) = M$.
-    \end{proof}
-
     Si può inoltre individuare facilmente un limite superiore per il calcolo della distanza di edit
     tra un linguaggio $L$ ed una stringa $x \in \Sigma^*$.
 
@@ -493,7 +481,36 @@
         $\forall{x \in \Sigma^*}, \forall{y \in L}$ tali che $d\left(L, x\right) = d\left(y, x\right)$ vale $\lvert y \rvert \leq \alpha' \lvert x \rvert + \beta'$
     \end{prop}
 
+    \begin{proof}
+        Scegliamo $y \in L$ tale che $d\left(L, x\right) = d\left(y, x\right)$ e definiamo $\lambda$ come il minimo tra i costi degli inserimenti e delle cancellazioni:
+
+        $$ \lambda = \min\bigl\{\{\gamma\left(\epsilon \rightarrow c\right) \mid c \in \Sigma\} \cup \{\gamma\left(c \rightarrow \epsilon\right) \mid c \in \Sigma\}\bigr\}$$
+
+        Si può affermare che per derivare una stringa $y$ da una stringa $x$, si dovranno effettuare operazioni di cancellazione o inserimento in numero pari
+        ad almeno la differenza in lunghezza tra le due stringhe, segue quindi che $d\left(y, x\right) \geq \lambda\bigl|\left(\lvert y \rvert - \lvert x \rvert\right)\bigr|$.
+        Si può quindi esprimere la disuguaglianza in termini di $y$:
+
+        $$\lvert y \rvert \leq \lvert x \rvert + \frac{1}{\lambda}d\left(y, x\right)$$
+
+        Senza perdita di generalità si può assumere $\lvert y \rvert - \lvert x \rvert \geq 0$.
+
+        Usando la Proposizione~\ref{prop:distanza-limitata} e ricordando che $d\left(L, x\right) = d\left(y, x\right)$ otteniamo:
+
+        $$\lvert y \rvert \leq \left(\frac{\alpha}{\lambda} + 1\right)\lvert x \rvert + \frac{\beta}{\lambda}$$
+        \vspace{0.5em}
+
+        Definendo ora $\displaystyle \alpha' \coloneqq \frac{\alpha}{\lambda} + 1$ e $\displaystyle \beta' \coloneqq \frac{\beta}{\lambda}$ la dimostrazione è conclusa.
+    \end{proof}
+
     La Proposizione~\ref{prop:distanza-limitata} e la Proposizione~\ref{prop:stringa-limitata} mostrano rispettivamente che la distanza di edit è limitata superiormente da una funzione lineare della lunghezza della stringa di input, ed un limite superiore per la lunghezza delle stringhe $s \in L$ che minimizzano la distanza da $L$.
+
+    Quando si tratta delle macchine di Turing, si indica con $\Sigma$ l'alfabeto di input, con $\Gamma$ l'alfabeto del nastro, con $Q$ l'insieme degli stati
+    e con $q_0$ lo stato iniziale.
+    Un automa a pila ausiliario non deterministico monodirezionale è una macchina di Turing non deterministica,
+    avente un nastro di input di sola lettura, con marcatori di inizio e fine, percorribile in una sola direzione, un nastro a pila,
+    ed un nastro di lavoro di lettura/scrittura, bidirezionale, con una limitazione di spazio logaritmica.
+
+
 
 
     \section{Conclusioni}
