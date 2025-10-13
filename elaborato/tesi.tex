@@ -492,8 +492,6 @@
 
         $$\lvert y \rvert \leq \lvert x \rvert + \frac{1}{\lambda}d\left(y, x\right)$$
 
-        Senza perdita di generalità si può assumere $\lvert y \rvert - \lvert x \rvert \geq 0$.
-
         Usando la Proposizione~\ref{prop:distanza-limitata} e ricordando che $d\left(L, x\right) = d\left(y, x\right)$ otteniamo:
 
         $$\lvert y \rvert \leq \left(\frac{\alpha}{\lambda} + 1\right)\lvert x \rvert + \frac{\beta}{\lambda}$$
@@ -501,16 +499,35 @@
 
         Definendo ora $\displaystyle \alpha' \coloneqq \frac{\alpha}{\lambda} + 1$ e $\displaystyle \beta' \coloneqq \frac{\beta}{\lambda}$ la dimostrazione è conclusa.
     \end{proof}
+    
+    \section{Un caso di studio: la distanza di Levenshtein}
+    
+    La distanza di Levenshtein tra due stringhe $x$ ed $y$ è il numero minimo di operazioni di edit che consentono di trasformare $x$ in $y$. Questa distanza rappresenta un caso particolare della distanza di edit generale, dove tutti i costi delle operazioni sono uniformi.
+    
+    Nel caso della distanza di Levenshtein, la funzione di costo $\gamma$ è definita come segue:
 
-    La Proposizione~\ref{prop:distanza-limitata} e la Proposizione~\ref{prop:stringa-limitata} mostrano rispettivamente che la distanza di edit è limitata superiormente da una funzione lineare della lunghezza della stringa di input, ed un limite superiore per la lunghezza delle stringhe $s \in L$ che minimizzano la distanza da $L$.
+    \begin{align}
+        \gamma(a \rightarrow b) &= \begin{cases}
+            0 & \text{se } a = b \\
+            1 & \text{se } a \neq b \text{ e } a, b \in \Sigma \cup \{\epsilon\}
+        \end{cases}
+    \end{align}
+    
+    In altre parole, ogni operazione di sostituzione, inserimento o cancellazione ha costo unitario, mentre non modificare un simbolo ha costo nullo. Questa uniformità nei costi rende la distanza di Levenshtein particolarmente adatta per applicazioni dove tutte le operazioni di edit hanno la stessa importanza o difficoltà.
+    
+    Consideriamo un esempio di calcolo della distanza di Levenshtein tra le stringhe $x = \text{"gatto"}$ e $y = \text{"cane"}$. Una possibile sequenza di trasformazioni è:
+    
+    $$\text{gatto} \xrightarrow{g \rightarrow c} \text{catto} \xrightarrow{t \rightarrow n} \text{canto} \xrightarrow{t \rightarrow e} \text{caneo} \xrightarrow{o \rightarrow \epsilon} \text{cane}$$
+    
+    Questa sequenza richiede 4 operazioni (3 sostituzioni e 1 cancellazione), quindi $d_L(\text{"gatto"}, \text{"cane"}) = 4$.
 
-    Quando si tratta delle macchine di Turing, si indica con $\Sigma$ l'alfabeto di input, con $\Gamma$ l'alfabeto del nastro, con $Q$ l'insieme degli stati
-    e con $q_0$ lo stato iniziale.
-    Un automa a pila ausiliario non deterministico monodirezionale è una macchina di Turing non deterministica,
-    avente un nastro di input di sola lettura, con marcatori di inizio e fine, percorribile in una sola direzione, un nastro a pila,
-    ed un nastro di lavoro di lettura/scrittura, bidirezionale, con una limitazione di spazio logaritmica.
-
-
+    Si possono fissare dei limiti per il calcolo della distanza di Levenshtein tra due stringhe $x$ ed $y$, in particolare:
+    \begin{itemize}
+        \item è almeno pari alla differenza tra la lunghezza delle due stringhe.
+        \item è pari a 0 se e solo se $x = y$;
+        \item se $x = y$, $d_L(x, y)$ non supera $d_H(x, y)$ (distanza di Hamming);
+        \item il limite superiore è pari alla lunghezza della stringa più lunga;
+    \end{itemize}
 
 
     \section{Conclusioni}
