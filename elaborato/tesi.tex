@@ -519,9 +519,7 @@
 
     Il problema del calcolo delle distanze di edit presenta interessanti connessioni con alcune delle principali questioni aperte della complessità strutturale, in particolare con le relazioni $P \stackrel{?}{=} NP$ e $P \stackrel{?}{=} PSPACE$.
 
-    È stato dimostrato che esiste un linguaggio context-sensitive $L$ tale che la distanza di edit per $L$ è calcolabile in tempo polinomiale se e solo se $P = PSPACE$. Questo risultato può essere ulteriormente rafforzato: esiste un linguaggio $L$ appartenente a $\text{co-NTIME}(\log n)$ (una piccola sottoclasse di $AC^0$) la cui distanza di edit è calcolabile in tempo polinomiale se e solo se $P = NP$.
-
-    Risultati analoghi valgono per il problema di correzione, ovvero il problema di trovare una stringa appartenente al linguaggio considerato con distanza minima dalla stringa di input: il problema di correzione per linguaggi in $NP$ (rispettivamente, per linguaggi context-sensitive) è risolvibile in tempo polinomiale se e solo se $P = NP$ (rispettivamente, $P = PSPACE$).
+    Nella sottosezione che segue saranno date preliminarmente le definizioni delle classi di complessità di interesse per la nostra trattazione del problema del calcolo delle distanze di edit.
 
     \subsection{Classi di complessità}
 
@@ -537,6 +535,47 @@
         \end{itemize}
     \end{definition}
 
+    \subsubsection{Esempio: problema $TRIANGLE$}
+    Il problema $TRIANGLE$ prevede di determinare se all'interno di un grafo semplice non orientato, rappresentato mediante matrice di adiacenza,
+    sia presente o meno un triangolo.
+
+    \paragraph{Input}
+    L'input è una matrice di adiacenza $A = (a_{ij})_{1 \leq i,j \leq n}$, dove $a_{ij} = 1$ se esiste un arco tra i vertici $i$ e $j$, e $a_{ij} = 0$ altrimenti.
+    Poiché il grafo è non orientato, vale $a_{ij} = a_{ji}$ e $a_{ii} = 0$.
+
+    \paragraph{Output}
+    L'output vale $1$ se esiste almeno una tripla di vertici distinti $i,j,k$ tale che tra essi esistano tutti e tre gli archi,
+    ovvero se $(i,j)$, $(j,k)$ e $(k,i)$ sono presenti nel grafo; in caso contrario, vale $0$.
+
+    \paragraph{Costruzione del circuito}
+    Per ogni terna non ordinata di vertici distinti $\{i,j,k\}$ con $1 \leq i < j < k \leq n$, si costruisce una porta \texttt{AND} di tre ingressi che verifica la presenza di tutti e tre gli archi:
+    \[
+        g_{i,j,k} = a_{ij} \wedge a_{jk} \wedge a_{ki}.
+    \]
+    Le uscite di tutte le porte \texttt{AND} vengono poi collegate a una singola porta \texttt{OR}, che restituisce $1$ se almeno una delle condizioni è verificata:
+    \[
+        C_n(A) = \bigvee_{1 \leq i < j < k \leq n} (a_{ij} \wedge a_{jk} \wedge a_{ki}).
+    \]
+    Il numero di porte \texttt{AND} necessarie è dunque pari a $\binom{n}{3} = \frac{n(n-1)(n-2)}{6}$, mentre la profondità del circuito rimane costante (pari a 2), indipendente da $n$.
+    Pertanto, la famiglia di circuiti $\{C_n\}$ che risolve il problema \textsc{Triangle} appartiene alla classe $\mathbf{AC^0}$.
+
+    \paragraph{Esempio}
+    Per $n = 4$ si ottengono le seguenti quattro terne di vertici distinti:
+    \[
+        (1,2,3),\ (1,2,4),\ (1,3,4),\ (2,3,4).
+    \]
+    Il corrispondente circuito è:
+    \[
+        C_4(A) =
+        (a_{12}\wedge a_{23}\wedge a_{31})
+        \vee
+        (a_{12}\wedge a_{24}\wedge a_{41})
+        \vee
+        (a_{13}\wedge a_{34}\wedge a_{41})
+        \vee
+        (a_{23}\wedge a_{34}\wedge a_{42}).
+    \]
+
     \begin{definition}
         La classe $CONTIME(f(n))$ è l'insieme dei linguaggi riconoscibili da macchine di Turing non deterministiche che operano in tempo $O(f(n))$ e tali che ogni stringa accettata ha almeno un cammino di computazione accettante.
 
@@ -551,6 +590,10 @@
     \end{definition}
 
     Queste definizioni sono particolarmente rilevanti nel contesto delle distanze di edit, poiché permettono di caratterizzare con precisione la complessità computazionale dei problemi considerati e di stabilire connessioni con le principali questioni aperte della teoria della complessità.
+
+    È stato dimostrato che esiste un linguaggio context-sensitive $L$ tale che la distanza di edit per $L$ è calcolabile in tempo polinomiale se e solo se $P = PSPACE$. Questo risultato può essere ulteriormente rafforzato: esiste un linguaggio $L$ appartenente a $\text{co-NTIME}(\log n)$ (una piccola sottoclasse di $AC^0$) la cui distanza di edit è calcolabile in tempo polinomiale se e solo se $P = NP$.
+
+    Risultati analoghi valgono per il problema di correzione, ovvero il problema di trovare una stringa appartenente al linguaggio considerato con distanza minima dalla stringa di input: il problema di correzione per linguaggi in $NP$ (rispettivamente, per linguaggi context-sensitive) è risolvibile in tempo polinomiale se e solo se $P = NP$ (rispettivamente, $P = PSPACE$).
 
     \begin{theorem}
         Esiste un linguaggio context-sensitive $L$ tale che $P = PSPACE$ se e solo se la distanza di edit di $L$ è calcolabile in tempo polinomiale
