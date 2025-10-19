@@ -17,7 +17,7 @@
 \usepackage{titlesec}
 \usepackage{mathtools}           % Formattazione titoli
 \usepackage{tikz}                % Per diagrammi TikZ
-\usetikzlibrary{automata,positioning,calc}
+\usetikzlibrary{automata,positioning,calc,circuits.logic.US}
 
 % Definizione ambiente teorema numerato per capitolo
 \newtheorem{theorem}{Teorema}[chapter]
@@ -539,15 +539,15 @@
     Il problema $TRIANGLE$ prevede di determinare se all'interno di un grafo semplice non orientato, rappresentato mediante matrice di adiacenza,
     sia presente o meno un triangolo.
 
-    \paragraph{Input}
-    L'input è una matrice di adiacenza $A = (a_{ij})_{1 \leq i,j \leq n}$, dove $a_{ij} = 1$ se esiste un arco tra i vertici $i$ e $j$, e $a_{ij} = 0$ altrimenti.
+    \paragraph{Input:}
+    matrice di adiacenza $A = (a_{ij})_{1 \leq i,j \leq n}$, dove $a_{ij} = 1$ se esiste un arco tra i vertici $i$ e $j$, e $a_{ij} = 0$ altrimenti.
     Poiché il grafo è non orientato, vale $a_{ij} = a_{ji}$ e $a_{ii} = 0$.
 
-    \paragraph{Output}
-    L'output vale $1$ se esiste almeno una tripla di vertici distinti $i,j,k$ tale che tra essi esistano tutti e tre gli archi,
-    ovvero se $(i,j)$, $(j,k)$ e $(k,i)$ sono presenti nel grafo; in caso contrario, vale $0$.
+    \paragraph{Output:}
+    $1$ se esiste almeno una tripla di vertici distinti $i,j,k$ tale che tra essi esistano tutti e tre gli archi,
+    ovvero se $(i,j)$, $(j,k)$ e $(k,i)$ sono presenti nel grafo; in caso contrario, $0$.
 
-    \paragraph{Costruzione del circuito}
+    \paragraph{Costruzione del circuito:}
     Per ogni terna non ordinata di vertici distinti $\{i,j,k\}$ con $1 \leq i < j < k \leq n$, si costruisce una porta \texttt{AND} di tre ingressi che verifica la presenza di tutti e tre gli archi:
     \[
         g_{i,j,k} = a_{ij} \wedge a_{jk} \wedge a_{ki}.
@@ -576,6 +576,67 @@
         (a_{23}\wedge a_{34}\wedge a_{42}).
     \]
 
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[circuit logic US, scale=0.8, every node/.style={scale=0.8}]
+            % AND gates
+            \node[and gate, draw, logic gate inputs=nnn, logic gate input sep=0.4cm] (and1) at (6,5) {};
+            \node[and gate, draw, logic gate inputs=nnn, logic gate input sep=0.4cm] (and2) at (6,3) {};
+            \node[and gate, draw, logic gate inputs=nnn, logic gate input sep=0.4cm] (and3) at (6,1) {};
+            \node[and gate, draw, logic gate inputs=nnn, logic gate input sep=0.4cm] (and4) at (6,-1) {};
+
+            % Inputs per and1: a12, a23, a31
+            \node[left=3cm of and1.input 1] (a12_1) {$a_{12}$};
+            \node[left=3cm of and1.input 2] (a23_1) {$a_{23}$};
+            \node[left=3cm of and1.input 3] (a31_1) {$a_{31}$};
+
+            \draw (a12_1.east) -- (and1.input 1);
+            \draw (a23_1.east) -- (and1.input 2);
+            \draw (a31_1.east) -- (and1.input 3);
+
+            % Inputs per and2: a12, a24, a41
+            \node[left=3cm of and2.input 1] (a12_2) {$a_{12}$};
+            \node[left=3cm of and2.input 2] (a24_1) {$a_{24}$};
+            \node[left=3cm of and2.input 3] (a41_1) {$a_{41}$};
+
+            \draw (a12_2.east) -- (and2.input 1);
+            \draw (a24_1.east) -- (and2.input 2);
+            \draw (a41_1.east) -- (and2.input 3);
+
+            % Inputs per and3: a13, a34, a41
+            \node[left=3cm of and3.input 1] (a13_1) {$a_{13}$};
+            \node[left=3cm of and3.input 2] (a34_1) {$a_{34}$};
+            \node[left=3cm of and3.input 3] (a41_2) {$a_{41}$};
+
+            \draw (a13_1.east) -- (and3.input 1);
+            \draw (a34_1.east) -- (and3.input 2);
+            \draw (a41_2.east) -- (and3.input 3);
+
+            % Inputs per and4: a23, a34, a42
+            \node[left=3cm of and4.input 1] (a23_2) {$a_{23}$};
+            \node[left=3cm of and4.input 2] (a34_2) {$a_{34}$};
+            \node[left=3cm of and4.input 3] (a42_1) {$a_{42}$};
+
+            \draw (a23_2.east) -- (and4.input 1);
+            \draw (a34_2.east) -- (and4.input 2);
+            \draw (a42_1.east) -- (and4.input 3);
+
+            % OR gate
+            \node[or gate, draw, logic gate inputs=nnnn, logic gate input sep=0.4cm] (or1) at (9,2) {};
+
+            % Connessione AND -> OR
+            \draw (and1.output) -- ++(0.5,0) |- (or1.input 1);
+            \draw (and2.output) -- ++(0.5,0) |- (or1.input 2);
+            \draw (and3.output) -- ++(0.5,0) |- (or1.input 3);
+            \draw (and4.output) -- ++(0.5,0) |- (or1.input 4);
+
+            % Output
+            \node[right=1cm of or1.output] (out) {$C_4(A)$};
+            \draw (or1.output) -- (out);
+        \end{tikzpicture}
+        \caption{Circuito logico per $C_4(A)$}
+        \label{fig:circuito_c4_orizzontale}
+    \end{figure}
     \begin{definition}
         La classe $CONTIME(f(n))$ è l'insieme dei linguaggi riconoscibili da macchine di Turing non deterministiche che operano in tempo $O(f(n))$ e tali che ogni stringa accettata ha almeno un cammino di computazione accettante.
 
