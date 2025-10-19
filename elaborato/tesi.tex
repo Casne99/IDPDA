@@ -25,14 +25,14 @@
 
 % Personalizzazione stile proposizione
 \newtheoremstyle{propositionstyle}
-  {12pt}   % spazio sopra
-  {12pt}   % spazio sotto
-  {\itshape} % font del corpo
-  {0pt}    % indentazione
-  {\bfseries} % font dell'intestazione
-  {.}      % punteggiatura dopo l'intestazione
-  {.5em}   % spazio dopo l'intestazione
-  {}       % specifica dell'intestazione
+{12pt}   % spazio sopra
+{12pt}   % spazio sotto
+{\itshape} % font del corpo
+{0pt}    % indentazione
+{\bfseries} % font dell'intestazione
+{.}      % punteggiatura dopo l'intestazione
+{.5em}   % spazio dopo l'intestazione
+{}       % specifica dell'intestazione
 
 \theoremstyle{propositionstyle}
 \newtheorem{prop}{Proposizione}[chapter]
@@ -79,6 +79,7 @@
 
     \pagenumbering{arabic}
 
+
     \chapter{Introduzione}
 
     Gli \emph{Input Driven Pushdown Automata}, anche detti IDPDA, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input.
@@ -99,16 +100,19 @@
 
     Per ottenere tale risultato, si può adottare un approccio a \emph{distanza minima}, ovvero determinare la stringa $y \in L$ tale che la \textit{distanza di edit} tra $x$ (la stringa ricevuta) e $y$ sia minima.
 
+
     \chapter{Definizioni}
 
+
     \section{Notazioni}
-    
+
     Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è indicata con $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
+
 
     \section{Input Driven Pushdown Automata}
 
     Una transizione di un IDPDA è determinata dal tipo di simbolo in input, appartenente all'alfabeto $\Sigma$, che stabilisce l'operazione da eseguire, eventualmente nulla.
-    
+
     Si può rappresentare l'alfabeto di input di un IDPDA come unione di tre sottoinsiemi disgiunti e finiti:
 
     \begin{itemize}
@@ -119,9 +123,11 @@
 
     Una stringa $s \in \Sigma^*$ è detta \textit{ben formata} se ogni parentesi sinistra ha una parentesi destra corrispondente, e viceversa.
 
+
     \section{Automi Input Driven Deterministici}
 
-    \begin{definition}\label{def:didpda}
+    \begin{definition}
+        \label{def:didpda}
         Un \textit{automa a pila input driven deterministico} (detto anche DIDPDA) è una settupla $A = \left(\Sigma, Q, \Gamma, q_0, \perp, \left[ \delta_a \right]_{a \in \Sigma}, F\right)$ dove:
         \begin{itemize}
             \item $\Sigma$ è un alfabeto di input, composto da tre sotto-insiemi finiti e disgiunti $\Sigma_{+1}$, $\Sigma_{-1}$, $\Sigma_{0}$
@@ -137,22 +143,23 @@
     \end{definition}
 
     Data questa definizione del modello comportamentale di un DIDPDA alla lettura di un simbolo, si può subito notare come il contenuto della pila
-    sia preso in considerazione solo quando il simbolo di input è una parentesi destra. 
-    
+    sia preso in considerazione solo quando il simbolo di input è una parentesi destra.
+
     Quando il simbolo in input è, invece, un simbolo neutro o una parentesi sinistra, il prossimo stato non dipende dal contenuto dello stack.
 
-    \begin{definition}\label{def:configuration}
-    Una configurazione di $A$ è una tripla $\left(q, w, x\right)$ dove $q \in Q$ indica lo stato, $w \in \Sigma^*$ è l'input rimanente ed  $x \in \Gamma$ è il contenuto dello stack.
-    La configurazione iniziale per una stringa $w_0 \in \Sigma^*$ è $\left(q_0, w_0, \epsilon\right)$.
-    Per ogni configurazione con almeno un singolo di input rimanente, la configurazione successiva è univocamente determinata da un singolo step della funzione di transizione:
-    \begin{itemize}
-        \item per ogni parentesi sinistra $< \in \Sigma_{+1}$ sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$, dove $\delta_{<}(q) = (q', \gamma)$
-        \item per ogni parentesi destra $> \in \Sigma_{-1}$ sia $(q, >w, \gamma x) \vdash_{A} (\delta_{>}(q, \gamma), w, x)$, e nel caso lo stack fosse vuoto $(q, >w, \epsilon) \vdash_{A} (\delta_{>}(q, \perp), w, \epsilon)$
-        \item per ogni simbolo neutro $c \in \Sigma_{0}$ sia $(q, cw, x) \vdash_{A} (\delta_{c}(q), w, x)$
-    \end{itemize}
+    \begin{definition}
+        \label{def:configuration}
+        Una configurazione di $A$ è una tripla $\left(q, w, x\right)$ dove $q \in Q$ indica lo stato, $w \in \Sigma^*$ è l'input rimanente ed  $x \in \Gamma$ è il contenuto dello stack.
+        La configurazione iniziale per una stringa $w_0 \in \Sigma^*$ è $\left(q_0, w_0, \epsilon\right)$.
+        Per ogni configurazione con almeno un singolo di input rimanente, la configurazione successiva è univocamente determinata da un singolo step della funzione di transizione:
+        \begin{itemize}
+            \item per ogni parentesi sinistra $< \in \Sigma_{+1}$ sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$, dove $\delta_{<}(q) = (q', \gamma)$
+            \item per ogni parentesi destra $> \in \Sigma_{-1}$ sia $(q, >w, \gamma x) \vdash_{A} (\delta_{>}(q, \gamma), w, x)$, e nel caso lo stack fosse vuoto $(q, >w, \epsilon) \vdash_{A} (\delta_{>}(q, \perp), w, \epsilon)$
+            \item per ogni simbolo neutro $c \in \Sigma_{0}$ sia $(q, cw, x) \vdash_{A} (\delta_{c}(q), w, x)$
+        \end{itemize}
 
-    Quando la stringa di input è stata letta, l'ultima configurazione $\left(q, \epsilon, u\right)$ è accettante se $q \in F$, a prescindere dal contenuto della pila.
-    Il linguaggio $L\left(A\right)$ riconosciuto dall'automa è l'insieme di tutte le stringhe $w \in \Sigma^*$ per le quali la computazione che parte da $\left(q_0, w, \epsilon\right)$ è accettante.
+        Quando la stringa di input è stata letta, l'ultima configurazione $\left(q, \epsilon, u\right)$ è accettante se $q \in F$, a prescindere dal contenuto della pila.
+        Il linguaggio $L\left(A\right)$ riconosciuto dall'automa è l'insieme di tutte le stringhe $w \in \Sigma^*$ per le quali la computazione che parte da $\left(q_0, w, \epsilon\right)$ è accettante.
     \end{definition}
 
     Un DIPDA può accettare stringhe con parentesi sinistre che non hanno una corrispondente parentesi destra, quello che si verifica al termine della computazione in questi casi è che la pila non è vuota.
@@ -162,31 +169,32 @@
     Se l'alfabeto contiene solo simboli neutri, ovvero $\Sigma_{-1} = \Sigma_{+1} = \emptyset$, allora un DIPDA diventa un automa a stati deterministico (DFA).
 
     \clearpage
+
     \subsection{Esempio di DIDPDA con simboli neutri}
-    
+
     Per illustrare il funzionamento di un automa input driven deterministico, consideriamo un esempio.
     L'automa seguente riconosce stringhe bilanciate con simboli neutri interni:
-    
+
     \begin{figure}[H]
         \centering
         \begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=4cm, semithick, font=\scriptsize, scale=1.5, transform shape]
-        \tikzstyle{every state}=[fill=white, draw=black, text=black, minimum size=12mm]
-        
-        \node[state, accepting] (q0) {$q_{0}$};
-        \node[state, accepting, right=4cm of q0] (q1) {$q_{1}$};
-        \node[state, below=3cm of $(q0)!0.5!(q1)$] (qerr) {$q_{\text{err}}$};
-        
-        % freccia iniziale dall'alto
-        \draw[->] ([yshift=1cm]q0.north) -- (q0.north);
-        
-        % archi di transizione
-        \path[->]
-        (q0) edge[loop below] node[below left] {$<$/push $X$} ()
-        (q0) edge[bend left=15] node[above] {$a$} (q1)
-        (q0) edge node[left] {$>$/err} (qerr)
-        (q1) edge[loop above] node[above] {$a$} ()
-        (q1) edge[bend left=15] node[below] {$>$/pop $X$} (q0)
-        (q1) edge node[right] {$>$/err} (qerr);
+            \tikzstyle{every state}=[fill=white, draw=black, text=black, minimum size=12mm]
+
+            \node[state, accepting] (q0) {$q_{0}$};
+            \node[state, accepting, right=4cm of q0] (q1) {$q_{1}$};
+            \node[state, below=3cm of $(q0)!0.5!(q1)$] (qerr) {$q_{\text{err}}$};
+
+            % freccia iniziale dall'alto
+            \draw[->] ([yshift=1cm]q0.north) -- (q0.north);
+
+            % archi di transizione
+            \path[->]
+            (q0) edge[loop below] node[below left] {$<$/push $X$} ()
+            (q0) edge[bend left=15] node[above] {$a$} (q1)
+            (q0) edge node[left] {$>$/err} (qerr)
+            (q1) edge[loop above] node[above] {$a$} ()
+            (q1) edge[bend left=15] node[below] {$>$/pop $X$} (q0)
+            (q1) edge node[right] {$>$/err} (qerr);
         \end{tikzpicture}
         \caption{DIDPDA che riconosce stringhe bilanciate con simboli neutri}
         \label{fig:esempio_didpda}
@@ -199,7 +207,7 @@
         \item $\Sigma_0 = \{a\}$ (simboli neutri)
         \item $\Gamma = \{X\}$ (alfabeto della pila)
     \end{itemize}
-    
+
     Le funzioni di transizione sono:
     \begin{align}
         \delta_{<}(q_0) &= (q_0, X) \\
@@ -207,12 +215,13 @@
         \delta_{a}(q_1) &= q_1 \\
         \delta_{>}(q_0, \gamma) &= q_{\text{err}} \\
         \delta_{>}(q_1, \gamma) &= \begin{cases}
-            q_0 & \text{se } \gamma = X \\
-            q_{\text{err}} & \text{se } \gamma = \perp
+                                       q_0 & \text{se } \gamma = X \\
+                                       q_{\text{err}} & \text{se } \gamma = \perp
         \end{cases}
     \end{align}
-    
+
     Questo automa accetta stringhe come $\epsilon$, $a$, $aa$, $<a>$, $<aa>$, $<a><aa>$, ma rifiuta stringhe come $>$, $<$, $<a$, $a>$, $<>$, $<<>>$.
+
 
     \section{Automi Input Driven non Deterministici}
 
@@ -227,19 +236,20 @@
         \end{itemize}
     \end{definition}
 
-    \begin{definition}\label{def:configuration-non-det}
+    \begin{definition}
+        \label{def:configuration-non-det}
         Una configurazione di $A$ è una tripla $\left(q, w, x\right)$, con $q \in Q$, $w \in \Sigma^*$ ed $x \in \Gamma^*$.
         Presa una stringa di input $w_0$, tutte le configurazioni $(q_0, w_0, \epsilon)$ con $q_0 \in Q_0$ sono iniziali.
         La relazione di transizione è definita come segue:
 
-    \begin{itemize}
-        \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, e per ogni coppia $\left(q', \gamma\right) in \sigma_<\left(q\right)$, sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$;
-        \item per ogni parentesi destra $> \in \Sigma_{-1}$ e per ogni $q' \in \sigma_>\left(q, \gamma\right)$, sia $(q, >w, \gamma x) \vdash_{A} (q', w, x)$, e nel caso lo stack fosse vuoto, per ogni $q' \in \sigma_>\left(q, \perp\right)$, sia $\left(q, >w, \epsilon\right) \vdash{A} \left(q', w, \epsilon\right)$
-        \item per un simbolo neutro $c \in \Sigma_0$, per ogni $q' \in \sigma_c\left(q\right)$, sia $\left(q, cw, x\right) \vdash{A} \left(q?, w, x\right)$
-    \end{itemize}
+        \begin{itemize}
+            \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, e per ogni coppia $\left(q', \gamma\right) in \sigma_<\left(q\right)$, sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$;
+            \item per ogni parentesi destra $> \in \Sigma_{-1}$ e per ogni $q' \in \sigma_>\left(q, \gamma\right)$, sia $(q, >w, \gamma x) \vdash_{A} (q', w, x)$, e nel caso lo stack fosse vuoto, per ogni $q' \in \sigma_>\left(q, \perp\right)$, sia $\left(q, >w, \epsilon\right) \vdash{A} \left(q', w, \epsilon\right)$
+            \item per un simbolo neutro $c \in \Sigma_0$, per ogni $q' \in \sigma_c\left(q\right)$, sia $\left(q, cw, x\right) \vdash{A} \left(q?, w, x\right)$
+        \end{itemize}
 
-    L'ultima configurazione $\left(q, \epsilon, u\right)$ è accettante se $q \in F$.
-    Il linguaggio $L$ riconosciuto dall'automa è l'insieme di tutte le stringhe $w \in \Sigma^*$ per le quali almeno una computazione da $\left(q_0, w, \epsilon\right)$ è accettante.
+        L'ultima configurazione $\left(q, \epsilon, u\right)$ è accettante se $q \in F$.
+        Il linguaggio $L$ riconosciuto dall'automa è l'insieme di tutte le stringhe $w \in \Sigma^*$ per le quali almeno una computazione da $\left(q_0, w, \epsilon\right)$ è accettante.
 
     \end{definition}
 
@@ -247,7 +257,7 @@
     Se ci sono solo simboli neutri nell'alfabeto $\left(\Sigma_{+1} = \Sigma_{-1} = \emptyset\right)$, allora un NIDPDA è una automa a stati finiti non deterministico (NFA)
 
     \subsection{Esempio di NIDPDA}
-    
+
     Consideriamo ora un esempio di NIDPDA. L'automa seguente riconosce stringhe bilanciate, che possono eventualmente contenere un simbolo neutro (una o più volte), anche alla loro fine:
 
     \begin{figure}[H]
@@ -292,7 +302,7 @@
         \item $\Sigma_0 = \{a\}$ (simboli neutri)
         \item $\Gamma = \{A, B\}$ (alfabeto della pila)
     \end{itemize}
-    
+
     Le funzioni di transizione sono:
     \begin{align}
         \delta_{(}(q_0) &= \{(q_1, A)\} \\
@@ -301,18 +311,19 @@
         \delta_{]}(q_1, B) &= \{q_0, q_2\} \\
         \delta_{a}(q_2) &= \{q_2\}
     \end{align}
-    
+
     Il non determinismo si manifesta quando l'automa legge una parentesi destra: può scegliere di tornare in $q_0$ (per continuare il bilanciamento) o andare in $q_2$ (per leggere simboli neutrali).
     Questo automa accetta stringhe come $()$, $[]$, $(a)$, $[aa]$, $()[]$, ma anche $()a$, $[]aa$.
+
 
     \section{Grammatiche Input-Driven}
 
     Gli Input Driven Pushdown Automata sono stati introdotti durante lo studio di particolari tipi di grammatiche, queste grammatiche sono definite
     con un alfabeto e una serie di regole che danno origine a stringhe che osservano vari criteri di \textit{corretta parentesizzazione}.
-    
+
     Il primo dei modelli studiati sono state le \textit{grammatiche di parentesi} di McNaughton, nel quale l'alfabeto conteneva una parentesi sinistra $<$, una parentesi destra $>$
     ed una serie di simboli terminali, e le regole erano nella forma $X \rightarrow <\alpha>$, con $\alpha \in \left(\Sigma_0 \cup N\right)$ (dove $N$ è l'insieme dei simboli non terminali della grammatica), oppure nella forma $X \rightarrow c$ con $c \in \Sigma_0^*$.
-    
+
     Tutte queste grammatiche vanno a dare origine a sottoclassi dei linguaggi input-driven.
 
     \begin{definition}
@@ -326,9 +337,9 @@
     \end{definition}
 
     \subsection{Esempio di grammatica input-driven}
-    
+
     Un modello più generale, studiato da Berstel e Boasson, sono le \textit{grammatiche bilanciate}, nelle quali esiste una corrispondenza biunivoca tra parentesi sinistre e destre, in modo che ogni regola $A \rightarrow <\alpha>$ debba utilizzare una coppia di parentesi corrispondenti.
-    
+
     Consideriamo un esempio di grammatica bilanciata con:
     \begin{itemize}
         \item $\Sigma_{+1} = \{<, [\}$
@@ -336,29 +347,30 @@
         \item $\Sigma_0 = \{\beta\}$
         \item $N = \{S, A\}$
     \end{itemize}
-    
+
     Le regole di produzione possono essere definite come segue:
-    
+
     \begin{align}
         S &\rightarrow < A > \mid [A] \mid \epsilon \\
         A &\rightarrow < A > \mid [A] \mid \beta \mid \epsilon
     \end{align}
-    
+
     In questo esempio ogni regola utilizza una coppia di parentesi corrispondenti, rispettando il vincolo delle grammatiche bilanciate. La grammatica genera stringhe come $<>$, $<\beta>$, $[\beta]$, $<<\beta>>$, $[[\beta]]$, $<[\beta]>$, $[<\beta>]$.
+
 
     \section{Distanze di Edit}
 
     Il problema del calcolare le distanze di edit tra stringhe è strettamente correlato al problema del trovare la stringa con distanza di edit minima rispetto ad una data (correction problem).
-    
+
     Una operazione di edit è una coppia $(a, b) \neq (\epsilon, \epsilon)$ con $|a|, |b| \leq 1$, ed è comunemente indicata con $a \rightarrow b$.
 
     Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^* \mid x = vaw, y = vbw$.
-    
+
     Dati $a, b \in \Sigma, a \neq b$, possiamo definire le operazioni $a \rightarrow b$, $a \rightarrow \epsilon$ e $\epsilon \rightarrow a$ rispettivamente
     \textit{sostituzione}, \textit{cancellazione} e \textit{inserimento}.
-    
+
     Ad ogni operazione di edit è associato un costo, rappresentato mediante la funzione $\gamma(a \rightarrow b)$.
-    
+
     Data una sequenza di operazioni di edit $S = \left(s_1, s_2, \dots, s_k\right)$, il costo di $S$ è definito come la somma dei costi delle singole operazioni di edit
     $\sum_{i=1}^{k} \gamma(s_i)$.
 
@@ -368,17 +380,17 @@
     \begin{definition}
         Date due stringhe $x, y \in \Sigma^*$, la distanza di edit $d\left(x, y\right)$ da $x$ a $y$ è il minimo dei costi delle sequenze di operazioni di edit che trasformano $x$ in $y$.
     \end{definition}
-    
+
     Ad esempio, sia $\Sigma = \{i, j\}$ e $\gamma\left(a \rightarrow b\right) = 1$ per ogni $a, b \in \Sigma \cup \{\epsilon\}$ con $a \neq b$. Per trasformare la stringa $iji$ nella stringa $jj$ si può utilizzare la seguente sequenza di operazioni:
-    
+
     $$iji \xrightarrow{i \rightarrow j} jji \xrightarrow{i \rightarrow \epsilon} jj$$
-    
+
     In questo caso sono state utilizzate una sostituzione e una cancellazione, per un costo totale di $1 + 1 = 2$.
-    
+
     Consideriamo ora un esempio con un linguaggio infinito. Sia $L = \{a^n b^n \mid n \geq 1\}$ il linguaggio delle stringhe bilanciate su $\{a, b\}$ e la stringa $x = aabb$. Con la stessa funzione di costo $\gamma(c \rightarrow d) = 1$ per $c \neq d$, abbiamo $d(L, x) = 0$ poiché $x \in L$. Se invece consideriamo $x = aaabb$, possiamo trasformarla in $aabb \in L$ mediante:
-    
+
     $$aaabb \xrightarrow{a \rightarrow \epsilon} aabb$$
-    
+
     ottenendo $d(L, aaabb) = 1$.
 
     Questa definizione di distanza si può estendere, fissando un concetto di distanza che non riguarda due stringhe ma bensì una stringa e un linguaggio.
@@ -412,55 +424,56 @@
                                        1 & \text{se } x_i \neq y_i
         \end{cases}
     \]
-    
+
     Ad esempio, consideriamo le stringhe $x = 1011$ e $y = 1101$ sull'alfabeto $\{0, 1\}$. La distanza di Hamming si calcola confrontando posizione per posizione:
     \begin{align*}
         d_H(1011, 1101) &= \sum_{i=0}^{3} \begin{cases}
-            0 & \text{se } x_i = y_i \\
-            1 & \text{se } x_i \neq y_i
+                                              0 & \text{se } x_i = y_i \\
+                                              1 & \text{se } x_i \neq y_i
         \end{cases} \\
         &= 0 + 1 + 1 + 0 = 2
     \end{align*}
-    
+
     Infatti, le stringhe differiscono nelle posizioni 1 e 2: $x_1 = 0 \neq 1 = y_1$ e $x_2 = 1 \neq 0 = y_2$.
 
     \subsection{Calcolo delle distanze di edit}
 
     Date due stringhe, la distanza di edit tra di esse può essere determinata in termini di distanza tra le loro sottostringhe.
 
-\begin{prop}
-    Siano $u,v,w,z \in \Sigma^*$. Allora vale
-    \[
-        d\left(uv, wz\right) \leq d\left(u,w\right) + d\left(v,z\right).
-    \]
-\end{prop}
+    \begin{prop}
+        Siano $u,v,w,z \in \Sigma^*$. Allora vale
+        \[
+            d\left(uv, wz\right) \leq d\left(u,w\right) + d\left(v,z\right).
+        \]
+    \end{prop}
 
-\begin{proof}
-    Per definizione, $d\left(u,w\right)$ è il costo minimo necessario per trasformare $u$ in $w$, mentre $d\left(v,z\right)$ è il costo minimo per trasformare $v$ in $z$.
-    Consideriamo dunque la seguente strategia:
-    \begin{enumerate}
-        \item trasformiamo $u$ in $w$ mediante una sequenza ottimale di operazioni, al costo $d\left(u,w\right)$;
-        \item trasformiamo $v$ in $z$ mediante una sequenza ottimale di operazioni, al costo $d\left(v,z\right)$.
-    \end{enumerate}
-    Applicando queste trasformazioni in sequenza, otteniamo una trasformazione da $uv$ a $wz$ con costo totale pari a $d\left(u,w\right)+d\left(v,z\right)$.
+    \begin{proof}
+        Per definizione, $d\left(u,w\right)$ è il costo minimo necessario per trasformare $u$ in $w$, mentre $d\left(v,z\right)$ è il costo minimo per trasformare $v$ in $z$.
+        Consideriamo dunque la seguente strategia:
+        \begin{enumerate}
+            \item trasformiamo $u$ in $w$ mediante una sequenza ottimale di operazioni, al costo $d\left(u,w\right)$;
+            \item trasformiamo $v$ in $z$ mediante una sequenza ottimale di operazioni, al costo $d\left(v,z\right)$.
+        \end{enumerate}
+        Applicando queste trasformazioni in sequenza, otteniamo una trasformazione da $uv$ a $wz$ con costo totale pari a $d\left(u,w\right)+d\left(v,z\right)$.
 
-    Poiché la distanza $d\left(uv,wz\right)$ è definita come il costo minimo tra tutte le possibili trasformazioni, segue immediatamente che
-    \[
-        d\left(uv, wz\right) \leq d\left(u,w\right) + d\left(v,z\right). \qedhere
-    \]
-\end{proof}
+        Poiché la distanza $d\left(uv,wz\right)$ è definita come il costo minimo tra tutte le possibili trasformazioni, segue immediatamente che
+        \[
+            d\left(uv, wz\right) \leq d\left(u,w\right) + d\left(v,z\right). \qedhere
+        \]
+    \end{proof}
 
-\begin{prop}
-    Per ogni $x', x'', y \in \Sigma^*$ vale:
-    \[
-        d\left(x'x'', y\right) = \min\left\{d\left(x', y'\right) + d\left(x'', y''\right) \mid y = y'y''\right\}.
-    \]
-\end{prop}
+    \begin{prop}
+        Per ogni $x', x'', y \in \Sigma^*$ vale:
+        \[
+            d\left(x'x'', y\right) = \min\left\{d\left(x', y'\right) + d\left(x'', y''\right) \mid y = y'y''\right\}.
+        \]
+    \end{prop}
 
     Si può inoltre individuare facilmente un limite superiore per il calcolo della distanza di edit
     tra un linguaggio $L$ ed una stringa $x \in \Sigma^*$.
 
-    \begin{prop}\label{prop:distanza-limitata}
+    \begin{prop}
+        \label{prop:distanza-limitata}
         Dato un linguaggio $L \in \Sigma^*$ ed una funzione di costo $\gamma$ esistono costanti $\alpha, \beta$ tali che
         $d\left(L, x\right) \leq \alpha \lvert x \rvert + \beta$
     \end{prop}
@@ -476,7 +489,8 @@
 
     Partendo da questo risultato, si possono individuare stringhe di $L$ che minimizzano questa distanza.
 
-    \begin{prop}\label{prop:stringa-limitata}
+    \begin{prop}
+        \label{prop:stringa-limitata}
         Dato un linguaggio $L \in \Sigma^*$ ed una funzione di costo $\gamma$ esistono costanti $\alpha', \beta'$ tali che
         $\forall{x \in \Sigma^*}, \forall{y \in L}$ tali che $d\left(L, x\right) = d\left(y, x\right)$ vale $\lvert y \rvert \leq \alpha' \lvert x \rvert + \beta'$
     \end{prop}
@@ -499,26 +513,74 @@
 
         Definendo ora $\displaystyle \alpha' \coloneqq \frac{\alpha}{\lambda} + 1$ e $\displaystyle \beta' \coloneqq \frac{\beta}{\lambda}$ la dimostrazione è conclusa.
     \end{proof}
-    
-    \section{Un caso di studio: la distanza di Levenshtein}
-    
+
+
+    \section{Complessità e limiti computazionali}
+
+    Il problema del calcolo delle distanze di edit presenta interessanti connessioni con alcune delle principali questioni aperte della complessità strutturale, in particolare con le relazioni $P \stackrel{?}{=} NP$ e $P \stackrel{?}{=} PSPACE$.
+
+    È stato dimostrato che esiste un linguaggio context-sensitive $L$ tale che la distanza di edit per $L$ è calcolabile in tempo polinomiale se e solo se $P = PSPACE$. Questo risultato può essere ulteriormente rafforzato: esiste un linguaggio $L$ appartenente a $\text{co-NTIME}(\log n)$ (una piccola sottoclasse di $AC^0$) la cui distanza di edit è calcolabile in tempo polinomiale se e solo se $P = NP$.
+
+    Risultati analoghi valgono per il problema di correzione, ovvero il problema di trovare una stringa appartenente al linguaggio considerato con distanza minima dalla stringa di input: il problema di correzione per linguaggi in $NP$ (rispettivamente, per linguaggi context-sensitive) è risolvibile in tempo polinomiale se e solo se $P = NP$ (rispettivamente, $P = PSPACE$).
+
+    \subsection{Classi di complessità}
+
+    \begin{definition}
+        La classe $AC^0$ è l'insieme dei linguaggi riconoscibili da famiglie di circuiti booleani di profondità costante e dimensione polinomiale, utilizzando porte AND, OR e NOT con fan-in illimitato.
+
+        Formalmente, un linguaggio $L \subseteq \{0,1\}^*$ appartiene ad $AC^0$ se esiste una famiglia di circuiti $\{C_n\}_{n \geq 0}$ tale che:
+        \begin{itemize}
+            \item per ogni $n$, il circuito $C_n$ ha $n$ input e decide l'appartenenza ad $L$ per stringhe di lunghezza $n$
+            \item esiste una costante $d$ tale che ogni $C_n$ ha profondità al massimo $d$
+            \item esiste un polinomio $p(n)$ tale che ogni $C_n$ ha al massimo $p(n)$ porte
+            \item le porte AND e OR possono avere fan-in illimitato
+        \end{itemize}
+    \end{definition}
+
+    \begin{definition}
+        La classe $CONTIME(f(n))$ è l'insieme dei linguaggi riconoscibili da macchine di Turing non deterministiche che operano in tempo $O(f(n))$ e tali che ogni stringa accettata ha almeno un cammino di computazione accettante.
+
+        Più precisamente, un linguaggio $L$ appartiene a $CONTIME(f(n))$ se esiste una macchina di Turing non deterministica $M$ tale che:
+        \begin{itemize}
+            \item $M$ opera in tempo $O(f(n))$ su input di lunghezza $n$
+            \item per ogni stringa $x \in L$, esiste almeno un cammino di computazione di $M$ su input $x$ che porta all'accettazione
+            \item per ogni stringa $x \notin L$, tutti i cammini di computazione di $M$ su input $x$ portano al rifiuto
+        \end{itemize}
+
+        La classe $CONTIME$ è l'unione di tutte le classi $CONTIME(f(n))$ per funzioni $f$ calcolabili.
+    \end{definition}
+
+    Queste definizioni sono particolarmente rilevanti nel contesto delle distanze di edit, poiché permettono di caratterizzare con precisione la complessità computazionale dei problemi considerati e di stabilire connessioni con le principali questioni aperte della teoria della complessità.
+
+    \begin{theorem}
+        Esiste un linguaggio context-sensitive $L$ tale che $P = PSPACE$ se e solo se la distanza di edit di $L$ è calcolabile in tempo polinomiale
+    \end{theorem}
+    \begin{proof}
+        Dato un linguaggio $L \in \Sigma^*$ consideriamo il problema $\Pi_L$
+    \end{proof}
+
+
+    \chapter{Un caso di studio: la distanza di Levenshtein}
+
+    \section{Definizione e limiti}
+
     La distanza di Levenshtein tra due stringhe $x$ ed $y$ è il numero minimo di operazioni di edit che consentono di trasformare $x$ in $y$. Questa distanza rappresenta un caso particolare della distanza di edit generale, dove tutti i costi delle operazioni sono uniformi.
-    
+
     Nel caso della distanza di Levenshtein, la funzione di costo $\gamma$ è definita come segue:
 
     \begin{align}
         \gamma(a \rightarrow b) &= \begin{cases}
-            0 & \text{se } a = b \\
-            1 & \text{se } a \neq b \text{ e } a, b \in \Sigma \cup \{\epsilon\}
+                                       0 & \text{se } a = b \\
+                                       1 & \text{se } a \neq b \text{ e } a, b \in \Sigma \cup \{\epsilon\}
         \end{cases}
     \end{align}
-    
+
     In altre parole, ogni operazione di sostituzione, inserimento o cancellazione ha costo unitario, mentre non modificare un simbolo ha costo nullo. Questa uniformità nei costi rende la distanza di Levenshtein particolarmente adatta per applicazioni dove tutte le operazioni di edit hanno la stessa importanza o difficoltà.
-    
+
     Consideriamo un esempio di calcolo della distanza di Levenshtein tra le stringhe $x = \text{"gatto"}$ e $y = \text{"cane"}$. Una possibile sequenza di trasformazioni è:
-    
+
     $$\text{gatto} \xrightarrow{g \rightarrow c} \text{catto} \xrightarrow{t \rightarrow n} \text{canto} \xrightarrow{t \rightarrow e} \text{caneo} \xrightarrow{o \rightarrow \epsilon} \text{cane}$$
-    
+
     Questa sequenza richiede 4 operazioni (3 sostituzioni e 1 cancellazione), quindi $d_L(\text{"gatto"}, \text{"cane"}) = 4$.
 
     Si possono fissare dei limiti per il calcolo della distanza di Levenshtein tra due stringhe $x$ ed $y$, in particolare:
@@ -529,8 +591,12 @@
         \item il limite superiore è pari alla lunghezza della stringa più lunga;
     \end{itemize}
 
+    \section{Algoritmo}
 
-    \section{Conclusioni}
+    \section{Implementazione}
+
+
+    \chapter{Conclusioni}
 
     Osservazioni finali e possibili sviluppi futuri\ldots
 
