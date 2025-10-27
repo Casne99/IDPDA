@@ -535,8 +535,109 @@
         \end{itemize}
     \end{definition}
 
-    \subsubsection{Esempio: problema $TRIANGLE$}
-    Il problema $TRIANGLE$ prevede di determinare se all'interno di un grafo semplice non orientato, rappresentato mediante matrice di adiacenza,
+    \subsubsection{Esempio 1: \textsc{Controllo di blocchi sovrapposti}}
+
+    Il problema \textsc{Controllo di blocchi sovrapposti} prevede di determinare se, in una stringa binaria, ogni coppia di bit consecutivi contiene almeno un valore $1$.
+
+    \paragraph{Input:}
+
+    Una stringa binaria $x = x_{1}x_{2}\ldots x_{n}$ di lunghezza $n$, con $x_i \in {0,1}$.
+
+    \paragraph{Output:}
+
+    $1$ se ogni coppia consecutiva $(x_i, x_{i+1})$ per $1 \leq i < n$ contiene almeno un bit uguale a $1$, ovvero se:
+
+    \[
+        f(x_1, \dots, x_n) = (x_1 \vee x_2) \wedge (x_2 \vee x_3) \wedge \dots \wedge (x_{n-1} \vee x_n)
+    \]
+
+    in caso contrario, $0$.
+
+    \paragraph{Costruzione del circuito:}
+
+    Per ogni coppia di bit consecutivi $(x_i, x_{i+1})$, si costruisce una porta \texttt{OR} a due ingressi che verifica la presenza di almeno un $1$:
+
+    \[
+        g_i = x_i \vee x_{i+1}, \quad 1 \leq i < n
+    \]
+
+    Le uscite di tutte le porte \texttt{OR} vengono poi collegate a una singola porta \texttt{AND}, che restituisce $1$ solo se tutte le condizioni locali sono soddisfatte:
+
+    \[
+        C_n(x) = \bigwedge_{i=1}^{n-1} (x_i \vee x_{i+1})
+    \]
+
+    Il numero di porte \texttt{OR} necessarie è pari a $n-1$, mentre la profondità complessiva del circuito è costante (pari a 2): un livello di \texttt{OR} e uno di \texttt{AND}.
+
+    Segue che \textsc{Controllo di blocchi sovrapposti} $\in \mathbf{AC^0}$.
+
+    \paragraph{Esempio}
+
+    Per $n = 4$ si ottengono le seguenti tre coppie consecutive:
+
+    \[
+        (1,2),\ (2,3),\ (3,4)
+    \]
+
+    Il corrispondente circuito è:
+
+    \[
+        C_4(x) = (x_1 \vee x_2) \wedge (x_2 \vee x_3) \wedge (x_3 \vee x_4)
+    \]
+
+
+    \begin{figure}[H]
+
+        \centering
+
+        \begin{tikzpicture}[circuit logic US, scale=0.9, every node/.style={scale=0.9}]
+
+% OR gates
+
+            \node[or gate, draw, logic gate inputs=nn, logic gate input sep=0.4cm] (or1) at (5,2) {};
+
+            \node[or gate, draw, logic gate inputs=nn, logic gate input sep=0.4cm] (or2) at (5,0) {};
+
+            \node[or gate, draw, logic gate inputs=nn, logic gate input sep=0.4cm] (or3) at (5,-2) {};
+
+
+            % Inputs for or1
+            \node[left=3cm of or1.input 1] (x1_1) {$x_1$};
+            \node[left=3cm of or1.input 2] (x2_1) {$x_2$};
+            \draw (x1_1.east) -- (or1.input 1);
+            \draw (x2_1.east) -- (or1.input 2);
+
+            % Inputs for or2
+            \node[left=3cm of or2.input 1] (x2_2) {$x_2$};
+            \node[left=3cm of or2.input 2] (x3_1) {$x_3$};
+            \draw (x2_2.east) -- (or2.input 1);
+            \draw (x3_1.east) -- (or2.input 2);
+
+            % Inputs for or3
+            \node[left=3cm of or3.input 1] (x3_2) {$x_3$};
+            \node[left=3cm of or3.input 2] (x4_1) {$x_4$};
+            \draw (x3_2.east) -- (or3.input 1);
+            \draw (x4_1.east) -- (or3.input 2);
+
+            % AND gate
+            \node[and gate, draw, logic gate inputs=nnn, logic gate input sep=0.4cm] (and1) at (8,0) {};
+
+            % Connections OR -> AND
+            \draw (or1.output) -- ++(1,0) |- (and1.input 1);
+            \draw (or2.output) -- ++(0.5,0) |- (and1.input 2);
+            \draw (or3.output) -- ++(1,0) |- (and1.input 3);
+
+            % Output
+            \node[right=1cm of and1.output] (out) {$C_4(x)$};
+            \draw (and1.output) -- (out);
+        \end{tikzpicture}
+        \caption{Circuito logico per $C_4(x)$}
+        \label{fig:circuito_blocchi_sovrapposti}
+
+    \end{figure}
+
+    \subsubsection{Esempio 2: \textsc{Triangle}}
+    Il problema \textsc{Triangle} prevede di determinare se all'interno di un grafo semplice non orientato, rappresentato mediante matrice di adiacenza,
     sia presente o meno un triangolo.
 
     \paragraph{Input:}
@@ -556,8 +657,8 @@
     \[
         C_n(A) = \bigvee_{1 \leq i < j < k \leq n} (a_{ij} \wedge a_{jk} \wedge a_{ki}).
     \]
-    Il numero di porte \texttt{AND} necessarie è dunque pari a $\binom{n}{3} = \frac{n(n-1)(n-2)}{6}$, mentre la profondità del circuito rimane costante (pari a 2), indipendente da $n$.
-    Pertanto, la famiglia di circuiti $\{C_n\}$ che risolve il problema \textsc{Triangle} appartiene alla classe $\mathbf{AC^0}$.
+    Il numero di porte \texttt{AND} necessarie è dunque pari a $\binom{n}{3} = \frac{n(n-1)(n-2)}{6} \sim n^3$, mentre la profondità del circuito rimane costante (pari a 2), indipendentemente da $n$.
+    Segue che $\textsc{Triangle} \in \mathbf{AC^0}$.
 
     \paragraph{Esempio}
     Per $n = 4$ si ottengono le seguenti quattro terne di vertici distinti:
@@ -625,10 +726,10 @@
             \node[or gate, draw, logic gate inputs=nnnn, logic gate input sep=0.4cm] (or1) at (9,2) {};
 
             % Connessione AND -> OR
-            \draw (and1.output) -- ++(0.5,0) |- (or1.input 1);
+            \draw (and1.output) -- ++(1.0,0) |- (or1.input 1);
             \draw (and2.output) -- ++(0.5,0) |- (or1.input 2);
             \draw (and3.output) -- ++(0.5,0) |- (or1.input 3);
-            \draw (and4.output) -- ++(0.5,0) |- (or1.input 4);
+            \draw (and4.output) -- ++(1.0,0) |- (or1.input 4);
 
             % Output
             \node[right=1cm of or1.output] (out) {$C_4(A)$};
@@ -666,6 +767,7 @@
 
     \chapter{Un caso di studio: la distanza di Levenshtein}
 
+
     \section{Definizione e limiti}
 
     La distanza di Levenshtein tra due stringhe $x$ ed $y$ è il numero minimo di operazioni di edit che consentono di trasformare $x$ in $y$. Questa distanza rappresenta un caso particolare della distanza di edit generale, dove tutti i costi delle operazioni sono uniformi.
@@ -695,7 +797,9 @@
         \item il limite superiore è pari alla lunghezza della stringa più lunga;
     \end{itemize}
 
+
     \section{Algoritmo}
+
 
     \section{Implementazione}
 
