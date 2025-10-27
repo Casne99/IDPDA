@@ -18,6 +18,8 @@
 \usepackage{mathtools}           % Formattazione titoli
 \usepackage{tikz}                % Per diagrammi TikZ
 \usetikzlibrary{automata,positioning,calc,circuits.logic.US}
+\usepackage{algorithm}           % Per algoritmi
+\usepackage{algpseudocode}       % Per pseudocodice
 
 % Definizione ambiente teorema numerato per capitolo
 \newtheorem{theorem}{Teorema}[chapter]
@@ -74,6 +76,7 @@
     \end{titlepage}
 
     \pagenumbering{Roman}
+    \setcounter{tocdepth}{3}
     \tableofcontents
     \clearpage
 
@@ -535,9 +538,9 @@
         \end{itemize}
     \end{definition}
 
-    \subsubsection{Esempio 1: \textsc{Controllo di blocchi sovrapposti}}
+    \subsubsection{Esempio 1: \textsc{Pairwise-OR}}
 
-    Il problema \textsc{Controllo di blocchi sovrapposti} prevede di determinare se, in una stringa binaria, ogni coppia di bit consecutivi contiene almeno un valore $1$.
+    Il problema \textsc{Pairwise-OR} prevede di determinare se, in una stringa binaria, ogni coppia di bit consecutivi contiene almeno un valore $1$.
 
     \paragraph{Input:}
 
@@ -569,7 +572,7 @@
 
     Il numero di porte \texttt{OR} necessarie è pari a $n-1$, mentre la profondità complessiva del circuito è costante (pari a 2): un livello di \texttt{OR} e uno di \texttt{AND}.
 
-    Segue che \textsc{Controllo di blocchi sovrapposti} $\in \mathbf{AC^0}$.
+    Segue che \textsc{Pairwise-OR} $\in \mathbf{AC^0}$.
 
     \paragraph{Esempio}
 
@@ -758,10 +761,23 @@
     Risultati analoghi valgono per il problema di correzione, ovvero il problema di trovare una stringa appartenente al linguaggio considerato con distanza minima dalla stringa di input: il problema di correzione per linguaggi in $NP$ (rispettivamente, per linguaggi context-sensitive) è risolvibile in tempo polinomiale se e solo se $P = NP$ (rispettivamente, $P = PSPACE$).
 
     \begin{theorem}
-        Esiste un linguaggio context-sensitive $L$ tale che $P = PSPACE$ se e solo se la distanza di edit di $L$ è calcolabile in tempo polinomiale
+        Esiste un linguaggio context-sensitive $L$ tale che $P = NP$ se e solo se la distanza di edit di $L$ è calcolabile in tempo polinomiale
     \end{theorem}
     \begin{proof}
-        Dato un linguaggio $L \in \Sigma^*$ consideriamo il problema $\Pi_L$
+        Dato un linguaggio $L \in \Sigma^*$ consideriamo il problema $\Pi_L$ del decidere, dati $x \in \Sigma^*, k \geq 0$ se $d\left(L, x\right) \leq k$.
+        Il problema $\Pi_L$ è risolvibile dal seguente algoritmo non deterministico:
+
+        \begin{algorithm}
+            \begin{algorithmic}[1]
+                \State \textbf{input} $x, k$
+                \State \textbf{indovina} una stringa $y \in \Sigma^*$, con $|y| \le \alpha'|x| + \beta'$
+                \If{$y \in L$ \textbf{e} $d(y, x) \le k$}
+                    \State \textbf{accetta}
+                \Else
+                    \State \textbf{rifiuta}
+                \EndIf
+            \end{algorithmic}
+        \end{algorithm}
     \end{proof}
 
 
