@@ -524,7 +524,7 @@
 
     Nella sottosezione che segue saranno date preliminarmente le definizioni delle classi di complessità di interesse per la nostra trattazione del problema del calcolo delle distanze di edit.
 
-    \subsection{Classi di complessità}
+    \subsection{$AC^0$}
 
     \begin{definition}
         La classe $AC^0$ è l'insieme dei linguaggi riconoscibili da famiglie di circuiti booleani di profondità costante e dimensione polinomiale, utilizzando porte AND, OR e NOT con fan-in illimitato.
@@ -741,17 +741,19 @@
         \caption{Circuito logico per $C_4(A)$}
         \label{fig:circuito_c4_orizzontale}
     \end{figure}
+    
+    \subsection{$\text{co-NTIME}(\log n)$}
     \begin{definition}
-        La classe $CONTIME(f(n))$ è l'insieme dei linguaggi riconoscibili da macchine di Turing non deterministiche che operano in tempo $O(f(n))$ e tali che ogni stringa accettata ha almeno un cammino di computazione accettante.
+        La classe $\text{co-NTIME}(\log n)$ è l'insieme dei linguaggi riconoscibili da macchine di Turing non deterministiche che operano in tempo $O(f(n))$ e tali che ogni stringa accettata ha almeno un cammino di computazione accettante.
 
-        Più precisamente, un linguaggio $L$ appartiene a $CONTIME(f(n))$ se esiste una macchina di Turing non deterministica $M$ tale che:
+        Più precisamente, un linguaggio $L$ appartiene a $\text{co-NTIME}(\log n)$ se esiste una macchina di Turing non deterministica $M$ tale che:
         \begin{itemize}
             \item $M$ opera in tempo $O(f(n))$ su input di lunghezza $n$
             \item per ogni stringa $x \in L$, esiste almeno un cammino di computazione di $M$ su input $x$ che porta all'accettazione
             \item per ogni stringa $x \notin L$, tutti i cammini di computazione di $M$ su input $x$ portano al rifiuto
         \end{itemize}
 
-        La classe $CONTIME$ è l'unione di tutte le classi $CONTIME(f(n))$ per funzioni $f$ calcolabili.
+        La classe $CONTIME$ è l'unione di tutte le classi $\text{co-NTIME}(\log n)$ per funzioni $f$ calcolabili.
     \end{definition}
 
     Queste definizioni sono particolarmente rilevanti nel contesto delle distanze di edit, poiché permettono di caratterizzare con precisione la complessità computazionale dei problemi considerati e di stabilire connessioni con le principali questioni aperte della teoria della complessità.
@@ -766,6 +768,8 @@
     \begin{proof}
         Dato un linguaggio $L \in \Sigma^*$ consideriamo il problema $\Pi_L$ del decidere, dati $x \in \Sigma^*, k \geq 0$ se $d\left(L, x\right) \leq k$.
         Il problema $\Pi_L$ è risolvibile dal seguente algoritmo non deterministico:
+        
+        \vspace{0.5em}
 
         \begin{algorithm}
             \begin{algorithmic}[1]
@@ -786,7 +790,7 @@
 
     \section{Definizione e limiti}
 
-    La distanza di Levenshtein tra due stringhe $x$ ed $y$ è il numero minimo di operazioni di edit che consentono di trasformare $x$ in $y$. Questa distanza rappresenta un caso particolare della distanza di edit generale, dove tutti i costi delle operazioni sono uniformi.
+    La distanza di Levenshtein tra due stringhe $x$ ed $y$ è il numero minimo di operazioni di edit che consentono di trasformare $x$ in $y$.
 
     Nel caso della distanza di Levenshtein, la funzione di costo $\gamma$ è definita come segue:
 
