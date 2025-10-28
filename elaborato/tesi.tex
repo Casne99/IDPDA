@@ -161,7 +161,7 @@
         \label{def:configuration}
         Una configurazione di $A$ è una tripla $\left(q, w, x\right)$ dove $q \in Q$ indica lo stato, $w \in \Sigma^*$ è l'input rimanente ed  $x \in \Gamma$ è il contenuto dello stack.
         La configurazione iniziale per una stringa $w_0 \in \Sigma^*$ è $\left(q_0, w_0, \epsilon\right)$.
-        Per ogni configurazione con almeno un singolo di input rimanente, la configurazione successiva è univocamente determinata da un singolo step della funzione di transizione:
+        Per ogni configurazione con almeno un simbolo di input rimanente, la configurazione successiva è univocamente determinata da un singolo step della funzione di transizione:
         \begin{itemize}
             \item per ogni parentesi sinistra $< \in \Sigma_{+1}$ sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$, dove $\delta_{<}(q) = (q', \gamma)$
             \item per ogni parentesi destra $> \in \Sigma_{-1}$ sia $(q, >w, \gamma x) \vdash_{A} (\delta_{>}(q, \gamma), w, x)$, e nel caso lo stack fosse vuoto $(q, >w, \epsilon) \vdash_{A} (\delta_{>}(q, \perp), w, \epsilon)$
@@ -254,8 +254,8 @@
 
         \begin{itemize}
             \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, e per ogni coppia $\left(q', \gamma\right) in \sigma_<\left(q\right)$, sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$;
-            \item per ogni parentesi destra $> \in \Sigma_{-1}$ e per ogni $q' \in \sigma_>\left(q, \gamma\right)$, sia $(q, >w, \gamma x) \vdash_{A} (q', w, x)$, e nel caso lo stack fosse vuoto, per ogni $q' \in \sigma_>\left(q, \perp\right)$, sia $\left(q, >w, \epsilon\right) \vdash{A} \left(q', w, \epsilon\right)$
-            \item per un simbolo neutro $c \in \Sigma_0$, per ogni $q' \in \sigma_c\left(q\right)$, sia $\left(q, cw, x\right) \vdash{A} \left(q?, w, x\right)$
+            \item per ogni parentesi destra $> \in \Sigma_{-1}$ e per ogni $q' \in \sigma_>\left(q, \gamma\right)$, sia $(q, >w, \gamma x) \vdash_{A} (q', w, x)$, e nel caso lo stack fosse vuoto, per ogni $q' \in \sigma_>\left(q, \perp\right)$, sia $\left(q, >w, \epsilon\right) \vdash_{A} \left(q', w, \epsilon\right)$
+            \item per un simbolo neutro $c \in \Sigma_0$, per ogni $q' \in \sigma_c\left(q\right)$, sia $\left(q, cw, x\right) \vdash_{A} \left(q', w, x\right)$
         \end{itemize}
 
         L'ultima configurazione $\left(q, \epsilon, u\right)$ è accettante se $q \in F$.
