@@ -93,10 +93,12 @@
     Gli IDPDA risultano particolarmente utili in diversi ambiti, tra cui il \emph{parsing} dei linguaggi di programmazione, dei documenti XML e, più in generale, in tutti i contesti in cui la struttura dell'input riflette la struttura gerarchica dei dati.
     In particolare, gli IDPDA sono stati introdotti per riconoscere linguaggi che rispettano specifiche regole di parentesizzazione.
 
-    È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari, pur essendo più ampia.
+    In termini generali, un IDPDA si comporta come un automa a stati finiti (DFA); tuttavia, durante la lettura della stringa di input, la categoria a cui appartiene ciascun simbolo analizzato stabilisce in modo univoco se l’automa debba eseguire un’operazione di \textit{push}, di \textit{pop} oppure lasciare invariato il contenuto della pila.
 
     A differenza degli automi a stati finiti (DFA), che possono riconoscere solo linguaggi regolari, gli IDPDA sono in grado di gestire strutture annidate e bilanciate grazie alla presenza della pila.
     Gli automi a stati finiti, infatti, non possono riconoscere linguaggi come $\{a^n b^n \mid n \geq 0\}$ a causa della loro memoria limitata agli stati, mentre gli IDPDA possono facilmente gestire tali costrutti utilizzando la pila (e le operazioni \textit{push} e \textit{pop} ad essa associate) per tenere traccia delle informazioni sul bilanciamento.
+
+    È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari, pur essendo più ampia.
 
     \section{Distanze}
 
