@@ -253,7 +253,7 @@
         La relazione di transizione è definita come segue:
 
         \begin{itemize}
-            \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, e per ogni coppia $\left(q', \gamma\right) in \sigma_<\left(q\right)$, sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$;
+            \item per ogni parentesi sinistra $< \in \Sigma_{+1}$, e per ogni coppia $\left(q', \gamma\right) \in \sigma_<\left(q\right)$, sia $(q, <w, x) \vdash_{A} (q', w, \gamma x)$;
             \item per ogni parentesi destra $> \in \Sigma_{-1}$ e per ogni $q' \in \sigma_>\left(q, \gamma\right)$, sia $(q, >w, \gamma x) \vdash_{A} (q', w, x)$, e nel caso lo stack fosse vuoto, per ogni $q' \in \sigma_>\left(q, \perp\right)$, sia $\left(q, >w, \epsilon\right) \vdash_{A} \left(q', w, \epsilon\right)$
             \item per un simbolo neutro $c \in \Sigma_0$, per ogni $q' \in \sigma_c\left(q\right)$, sia $\left(q, cw, x\right) \vdash_{A} \left(q', w, x\right)$
         \end{itemize}
