@@ -531,6 +531,33 @@
 
     Nella sottosezione che segue saranno date preliminarmente le definizioni delle classi di complessità di interesse per la nostra trattazione del problema del calcolo delle distanze di edit.
 
+    \subsection{$P$}
+
+    \begin{definition}
+        La classe $P$ (Polynomial time) è l'insieme dei linguaggi decisionali che possono essere risolti da una macchina di Turing deterministica in tempo polinomiale.
+        Formalmente, un linguaggio $L \subseteq \{0,1\}^*$ appartiene a $P$ se esiste una macchina di Turing deterministica $M$ e un polinomio $p(n)$ tali che:
+        \[
+            \forall x \in \{0,1\}^*, \quad M(x) \text{ termina in tempo } O(p(|x|)) \text{ e accetta } x \iff x \in L.
+        \]
+        In altre parole, $P$ rappresenta la classe dei problemi decisionali per i quali esiste un algoritmo deterministico efficiente, il cui tempo di esecuzione cresce al più in modo polinomiale rispetto alla dimensione dell’input.
+    \end{definition}
+
+    \subsection{$NP$}
+
+    \begin{definition}
+        La classe $NP$ (Nondeterministic Polynomial time) è l'insieme dei linguaggi decisionali per i quali una macchina di Turing non deterministica può fornire una risposta affermativa in tempo polinomiale.
+        Equivalentemente, $NP$ è l'insieme dei linguaggi per i quali una soluzione candidata può essere verificata in tempo polinomiale da una macchina deterministica.
+
+        Formalmente, un linguaggio $L \subseteq \{0,1\}^*$ appartiene a $NP$ se esiste un linguaggio polinomiale $R(x, y)$ (detto \emph{relazione di verifica}) e un polinomio $p(n)$ tali che:
+        \[
+            x \in L \iff \exists y \text{ con } |y| \leq p(|x|) \text{ tale che } R(x, y) = 1.
+        \]
+        Il valore $y$ è detto \emph{certificato} o \emph{testimone} dell’appartenenza di $x$ a $L$.
+
+        Intuitivamente, i problemi in $NP$ sono quelli per cui, se ci viene fornita una soluzione, possiamo verificarne la correttezza in tempo polinomiale, anche se non è noto un metodo altrettanto efficiente per trovarla.
+    \end{definition}
+
+
     \subsection{$AC^0$}
 
     \begin{definition}
@@ -749,19 +776,10 @@
         \label{fig:circuito_c4_orizzontale}
     \end{figure}
     
-    \subsection{$\text{co-NTIME}(\log n)$}
-    \begin{definition}
-        La classe $\text{co-NTIME}(\log n)$ è l'insieme dei linguaggi riconoscibili da macchine di Turing non deterministiche che operano in tempo $O(f(n))$ e tali che ogni stringa accettata ha almeno un cammino di computazione accettante.
+    Nella trattazione che segue si farà riferimento a $\textit{co-NTIME(log n)} \in \mathbf{AC^0}$
+    \clearpage
+    %TODO: va tenuto?%
 
-        Più precisamente, un linguaggio $L$ appartiene a $\text{co-NTIME}(\log n)$ se esiste una macchina di Turing non deterministica $M$ tale che:
-        \begin{itemize}
-            \item $M$ opera in tempo $O(f(n))$ su input di lunghezza $n$
-            \item per ogni stringa $x \in L$, esiste almeno un cammino di computazione di $M$ su input $x$ che porta all'accettazione
-            \item per ogni stringa $x \notin L$, tutti i cammini di computazione di $M$ su input $x$ portano al rifiuto
-        \end{itemize}
-
-        La classe $CONTIME$ è l'unione di tutte le classi $\text{co-NTIME}(\log n)$ per funzioni $f$ calcolabili.
-    \end{definition}
 
     Queste definizioni sono particolarmente rilevanti nel contesto delle distanze di edit, poiché permettono di caratterizzare con precisione la complessità computazionale dei problemi considerati e di stabilire connessioni con le principali questioni aperte della teoria della complessità.
 
@@ -789,6 +807,14 @@
                 \EndIf
             \end{algorithmic}
         \end{algorithm}
+
+    dove $\alpha'$ e $\beta'$ sono le costanti date in ~\ref{prop:stringa-limitata}.
+    Dato che la distanza tra due stringhe è calcolabile in un tempo proporzionale al prodotto delle loro lunghezze,
+    non è difficile vedere che se $L \in NP$ allora $\Pi_L$ è risolvibile non deterministicamente in tempo polinomiale.
+    Quindi $P = NP$ implica $\Pi_L \in P$, per ogni linguaggio $L \in NP$.
+
+    Si può ricavare un algoritmo che calcola $d\left(L, x\right)$ stabilendo l'appartenenza a $\Pi_L$ di coppie $\left(x, k\right)$, per valori crescenti di $k$.
+    Ricordando che $d\left(L, x\right) \leq \alpha\lvert x\rvert + \beta$, date delle costanti adatte $\alpha$ e $\beta$, si nota che se $\Pi_L \in P$ allora questo algoritmo opera in tempo polinomiale deterministico.
     \end{proof}
 
 
