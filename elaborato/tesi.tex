@@ -85,6 +85,7 @@
 
     \chapter{Introduzione}
 
+
     \section{Automi}
 
     Gli \emph{Input Driven Pushdown Automata}, anche detti IDPDA, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input.
@@ -99,6 +100,7 @@
     Gli automi a stati finiti, infatti, non possono riconoscere linguaggi come $\{a^n b^n \mid n \geq 0\}$ a causa della loro memoria limitata agli stati, mentre gli IDPDA possono facilmente gestire tali costrutti utilizzando la pila (e le operazioni \textit{push} e \textit{pop} ad essa associate) per tenere traccia delle informazioni sul bilanciamento.
 
     È interessante notare come la famiglia dei linguaggi riconosciuti dagli IDPDA mantenga molte delle proprietà tipiche dei linguaggi regolari, pur essendo più ampia.
+
 
     \section{Distanze}
 
@@ -180,7 +182,7 @@
 
     \clearpage
 
-    \subsection{Esempio di DIDPDA con simboli neutri}
+    \subsection{Esempio di DIDPDA}
 
     Per illustrare il funzionamento di un automa input driven deterministico, consideriamo un esempio.
     L'automa seguente riconosce stringhe bilanciate con simboli neutri interni:
@@ -601,7 +603,6 @@
 
     Inoltre, \textsc{QBF} è $PSPACE$-completo, il che implica che ogni problema in $PSPACE$ può essere ridotto ad esso tramite una riduzione calcolabile in tempo polinomiale.
 
-
     \subsection{$NP$}
 
     \begin{definition}
@@ -644,6 +645,7 @@
     L'esistenza o meno di un algoritmo deterministico in tempo polinomiale per la risoluzione generale di \textsc{SAT} costituisce il nodo centrale del problema aperto $P \stackrel{?}{=} NP$.
 
     % TODO: cambiare stile nomi problemi, eliminare prenessa, cambiare stile titoli esempi
+
     \subsection{$AC^0$}
 
     \begin{definition}
@@ -861,8 +863,7 @@
         \caption{Circuito logico per $C_4(A)$}
         \label{fig:circuito_c4_orizzontale}
     \end{figure}
-    
-    Nella trattazione che segue si farà riferimento a $\textit{co-NTIME(log n)} \in \mathbf{AC^0}$
+
     \clearpage
     %TODO: va tenuto?%
 
@@ -874,12 +875,12 @@
     Risultati analoghi valgono per il problema di correzione, ovvero il problema di trovare una stringa appartenente al linguaggio considerato con distanza minima dalla stringa di input: il problema di correzione per linguaggi in $NP$ (rispettivamente, per linguaggi context-sensitive) è risolvibile in tempo polinomiale se e solo se $P = NP$ (rispettivamente, $P = PSPACE$).
 
     \begin{theorem}
-        Esiste un linguaggio context-sensitive $L$ tale che $P = NP$ se e solo se la distanza di edit di $L$ è calcolabile in tempo polinomiale
+        Se $P = NP$ allora la distanza di edit di un qualunque linguaggio in $NP$ è calcolabile in tempo polinomiale
     \end{theorem}
     \begin{proof}
         Dato un linguaggio $L \in \Sigma^*$ consideriamo il problema $\Pi_L$ del decidere, dati $x \in \Sigma^*, k \geq 0$ se $d\left(L, x\right) \leq k$.
         Il problema $\Pi_L$ è risolvibile dal seguente algoritmo non deterministico:
-        
+
         \vspace{0.5em}
 
         \begin{algorithm}
@@ -894,13 +895,33 @@
             \end{algorithmic}
         \end{algorithm}
 
-    dove $\alpha'$ e $\beta'$ sono le costanti date in ~\ref{prop:stringa-limitata}.
-    Dato che la distanza tra due stringhe è calcolabile in un tempo proporzionale al prodotto delle loro lunghezze,
-    non è difficile vedere che se $L \in NP$ allora $\Pi_L$ è risolvibile non deterministicamente in tempo polinomiale.
-    Quindi $P = NP$ implica $\Pi_L \in P$, per ogni linguaggio $L \in NP$.
+        dove $\alpha'$ e $\beta'$ sono le costanti date in ~\ref{prop:stringa-limitata}.
+        Dato che la distanza tra due stringhe è calcolabile in un tempo proporzionale al prodotto delle loro lunghezze,
+        non è difficile vedere che se $L \in NP$ allora $\Pi_L$ è risolvibile non deterministicamente in tempo polinomiale.
+        Quindi $P = NP$ implica $\Pi_L \in P$, per ogni linguaggio $L \in NP$.
 
-    Si può ricavare un algoritmo che calcola $d\left(L, x\right)$ stabilendo l'appartenenza a $\Pi_L$ di coppie $\left(x, k\right)$, per valori crescenti di $k$.
-    Ricordando che $d\left(L, x\right) \leq \alpha\lvert x\rvert + \beta$, date delle costanti adatte $\alpha$ e $\beta$, si nota che se $\Pi_L \in P$ allora questo algoritmo opera in tempo polinomiale deterministico.
+        Si può ricavare un algoritmo che calcola $d\left(L, x\right)$ stabilendo l'appartenenza a $\Pi_L$ di coppie $\left(x, k\right)$, per valori crescenti di $k$.
+        Ricordando che $d\left(L, x\right) \leq \alpha\lvert x\rvert + \beta$, date delle costanti adatte $\alpha$ e $\beta$, si nota che se $\Pi_L \in P$ allora questo algoritmo opera in tempo polinomiale deterministico.
+    \end{proof}
+
+    \begin{theorem}[Teorema 3.2 -- Edit distance e PSPACE]
+        Esiste un linguaggio context-sensitive \(L\) tale che il problema di calcolare la distanza di edit verso \(L\) è risolvibile in tempo polinomiale se e solo se \(P = PSPACE\).
+    \end{theorem}
+
+    \begin{proof}[Idea della dimostrazione]
+        Come dimostrato da Karp~\cite{Karp 1}, esiste un linguaggio context-sensitive \(L\) che è \(PSPACE\)-completo rispetto alle riduzioni in tempo polinomiale.
+
+        Supponiamo che la distanza di edit verso \(L\) sia calcolabile in tempo polinomiale. Allora, dato un input \(x\), possiamo decidere in tempo polinomiale se \(x \in L\) osservando che
+        \[
+            x \in L \iff d(x,L) = 0.
+        \]
+        Ne consegue che \(L \in P\). Essendo \(L\) \(PSPACE\)-completo, segue che
+        \[
+            PSPACE \subseteq P,
+        \]
+        e quindi \(P = PSPACE\).
+
+        La direzione inversa è conseguenza del Teorema 3.1: se \(P = PSPACE\), allora ogni problema \(PSPACE\)-completo, e in particolare \(L\), ha una distanza di edit calcolabile in tempo polinomiale.
     \end{proof}
 
 
@@ -953,10 +974,15 @@
         \bibitem{okhotin-salomaa}
         Alexander Okhotin, Kai Salomaa,
         \textit{Complexity of Input-Driven Pushdown Automata}.
-
         \bibitem{pighizzini}
         Giovanni Pighizzini,
-        \textit{How Hard Is Computing the Edit Distance?}
+        \textit{How Hard Is Computing the Edit Distance?}.
+        \bibitem{Karp 1}
+        Karp, R. (1972),
+        \textit{Reducibility among combinatorial problems, in “Complexity of Computer Computations”}.
+        \bibitem{Chandra}
+        Chandra, A., Kozen, D., and Stockmeyer, L. (1981),
+        \textit{Alternation, J. Assoc. Comput. Mach. 28, 114–133}.
 
 % Aggiungere altre fonti
 
