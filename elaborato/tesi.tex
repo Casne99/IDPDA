@@ -542,6 +542,66 @@
         In altre parole, $P$ rappresenta la classe dei problemi decisionali per i quali esiste un algoritmo deterministico efficiente, il cui tempo di esecuzione cresce al più in modo polinomiale rispetto alla dimensione dell’input.
     \end{definition}
 
+    \subsubsection{Esempio di problema appartenente a $P$}
+
+    Un esempio classico di problema appartenente alla classe $P$ è il problema dell'\emph{ordinamento}.
+    Sia $A = (a_1, a_2, \dots, a_n)$ una sequenza di elementi appartenenti a un insieme totalmente ordinato. Il problema dell'ordinamento consiste nel determinare una permutazione $\pi$ degli indici $\{1, \dots, n\}$ tale che:
+    \[
+        a_{\pi(1)} \leq a_{\pi(2)} \leq \dots \leq a_{\pi(n)}.
+    \]
+
+    Dal punto di vista computazionale, il problema dell'ordinamento ammette algoritmi deterministici che operano in tempo polinomiale rispetto alla dimensione dell'input. In particolare, algoritmi come \emph{Merge Sort} e \emph{Heap Sort} risolvono il problema in tempo $O(n \log n)$.
+
+    Poiché il tempo di esecuzione è limitato superiormente da una funzione polinomiale della dimensione dell'input, il problema dell'ordinamento (o, più formalmente, una sua versione decisionale equivalente, come la verifica che una sequenza sia ordinata) appartiene alla classe $P$.
+
+    \subsection{$PSPACE$}
+
+    \begin{definition}
+        La classe $PSPACE$ è l'insieme dei linguaggi decisionali che possono essere risolti da una macchina di Turing deterministica utilizzando una quantità di spazio polinomiale rispetto alla dimensione dell'input.
+
+        Formalmente, un linguaggio $L \subseteq \{0,1\}^*$ appartiene a $PSPACE$ se esiste una macchina di Turing deterministica $M$ e un polinomio $p(n)$ tali che:
+        \[
+            \forall x \in \{0,1\}^*, \quad M(x) \text{ decide se } x \in L \text{ utilizzando al più } O(p(|x|)) \text{ celle di nastro}.
+        \]
+
+        Non vi è alcun vincolo esplicito sul tempo di esecuzione, che può essere anche esponenziale, purché lo spazio utilizzato resti polinomiale.
+    \end{definition}
+
+    Intuitivamente, $PSPACE$ rappresenta la classe dei problemi che possono essere risolti con una quantità ragionevole di memoria, anche a costo di tempi di esecuzione molto elevati.
+
+    È noto che valgono le seguenti inclusioni:
+    \[
+        P \subseteq NP \subseteq PSPACE,
+    \]
+    mentre è tuttora aperto il problema di stabilire se tali inclusioni siano proprie.
+
+    \subsubsection{Esempio di problema appartenente a $PSPACE$}
+
+    Un esempio classico di problema $PSPACE$-completo è il problema della \emph{soddisfacibilità booleana quantificata} (\textsc{QBF}).
+
+    Un'istanza di \textsc{QBF} è una formula booleana in forma prenessa del tipo:
+    \[
+        Q_1 x_1 \, Q_2 x_2 \, \dots \, Q_n x_n \; \varphi(x_1, \dots, x_n),
+    \]
+    dove ciascun $Q_i \in \{\forall, \exists\}$ è un quantificatore e $\varphi$ è una formula booleana proposizionale.
+
+    Il problema decisionale consiste nel determinare se la formula è vera.
+
+    Ad esempio, la formula:
+    \[
+        \forall x \, \exists y \; (x \lor y)
+    \]
+    è vera, mentre:
+    \[
+        \exists x \, \forall y \; (x \land y)
+    \]
+    è falsa.
+
+    Il problema \textsc{QBF} appartiene a $PSPACE$ poiché può essere risolto tramite una valutazione ricorsiva dei quantificatori utilizzando spazio polinomiale, memorizzando soltanto l'assegnazione corrente delle variabili.
+
+    Inoltre, \textsc{QBF} è $PSPACE$-completo, il che implica che ogni problema in $PSPACE$ può essere ridotto ad esso tramite una riduzione calcolabile in tempo polinomiale.
+
+
     \subsection{$NP$}
 
     \begin{definition}
@@ -557,7 +617,33 @@
         Intuitivamente, i problemi in $NP$ sono quelli per cui, se ci viene fornita una soluzione, possiamo verificarne la correttezza in tempo polinomiale, anche se non è noto un metodo altrettanto efficiente per trovarla.
     \end{definition}
 
+    \subsubsection{Esempio di problema appartenente a $NP$}
 
+    Un problema fondamentale appartenente alla classe $NP$ è il problema della \emph{soddisfacibilità booleana} (\textsc{SAT}).
+    Un'istanza del problema \textsc{SAT} è una formula booleana $\varphi$ costruita a partire da un insieme finito di variabili proposizionali $X = \{x_1, x_2, \dots, x_n\}$ mediante l'uso dei connettivi logici $\land$, $\lor$ e $\lnot$.
+
+    Il problema decisionale associato a \textsc{SAT} consiste nel determinare se esiste un'assegnazione di verità
+    \[
+        \alpha : X \rightarrow \{0,1\}
+    \]
+    tale che la formula $\varphi$ risulti vera sotto l'assegnazione $\alpha$.
+
+    Ad esempio, si consideri la seguente istanza di \textsc{SAT}:
+    \[
+        \varphi = (x_1 \lor \lnot x_2) \land (\lnot x_1 \lor x_3) \land (x_2 \lor x_3).
+    \]
+    L'assegnazione
+    \[
+        \alpha(x_1) = 1, \quad \alpha(x_2) = 0, \quad \alpha(x_3) = 1
+    \]
+    soddisfa la formula, e quindi l'istanza è un'istanza affermativa del problema \textsc{SAT}.
+
+    Il problema \textsc{SAT} appartiene alla classe $NP$ poiché, data una formula booleana $\varphi$ e una assegnazione candidata $\alpha$ (detta \emph{certificato}), è possibile verificare in tempo polinomiale rispetto alla dimensione di $\varphi$ se $\alpha$ soddisfa la formula.
+    Tale verifica può essere eseguita valutando la formula in tempo lineare nel numero di simboli che la compongono.
+
+    L'esistenza o meno di un algoritmo deterministico in tempo polinomiale per la risoluzione generale di \textsc{SAT} costituisce il nodo centrale del problema aperto $P \stackrel{?}{=} NP$.
+
+    % TODO: cambiare stile nomi problemi, eliminare prenessa, cambiare stile titoli esempi
     \subsection{$AC^0$}
 
     \begin{definition}
