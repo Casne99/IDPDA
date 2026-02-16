@@ -870,7 +870,8 @@
 
     Queste definizioni sono particolarmente rilevanti nel contesto delle distanze di edit, poiché permettono di caratterizzare con precisione la complessità computazionale dei problemi considerati e di stabilire connessioni con le principali questioni aperte della teoria della complessità.
 
-    È stato dimostrato che esiste un linguaggio context-sensitive $L$ tale che la distanza di edit per $L$ è calcolabile in tempo polinomiale se e solo se $P = PSPACE$. Questo risultato può essere ulteriormente rafforzato: esiste un linguaggio $L$ appartenente a $\text{co-NTIME}(\log n)$ (una piccola sottoclasse di $AC^0$) la cui distanza di edit è calcolabile in tempo polinomiale se e solo se $P = NP$.
+    È stato dimostrato che esiste un linguaggio context-sensitive $L$ tale che la distanza di edit per $L$ è calcolabile in tempo polinomiale se e solo se $P = PSPACE$.
+    Questo risultato può essere ulteriormente rafforzato: esiste un linguaggio $L$ appartenente a $\text{co-NTIME}(\log n)$ (una piccola sottoclasse di $AC^0$) la cui distanza di edit è calcolabile in tempo polinomiale se e solo se $P = NP$.
 
     Risultati analoghi valgono per il problema di correzione, ovvero il problema di trovare una stringa appartenente al linguaggio considerato con distanza minima dalla stringa di input: il problema di correzione per linguaggi in $NP$ (rispettivamente, per linguaggi context-sensitive) è risolvibile in tempo polinomiale se e solo se $P = NP$ (rispettivamente, $P = PSPACE$).
 
@@ -908,7 +909,7 @@
         Esiste un linguaggio context-sensitive \(L\) tale che il problema di calcolare la distanza di edit verso \(L\) è risolvibile in tempo polinomiale se e solo se \(P = PSPACE\).
     \end{theorem}
 
-    \begin{proof}[Idea della dimostrazione]
+    \begin{proof}[Dimostrazione]
         Come dimostrato da Karp~\cite{Karp 1}, esiste un linguaggio context-sensitive \(L\) che è \(PSPACE\)-completo rispetto alle riduzioni in tempo polinomiale.
 
         Supponiamo che la distanza di edit verso \(L\) sia calcolabile in tempo polinomiale. Allora, dato un input \(x\), possiamo decidere in tempo polinomiale se \(x \in L\) osservando che
@@ -924,44 +925,26 @@
         La direzione inversa è conseguenza del Teorema 3.1: se \(P = PSPACE\), allora ogni problema \(PSPACE\)-completo, e in particolare \(L\), ha una distanza di edit calcolabile in tempo polinomiale.
     \end{proof}
 
+    Ci focalizziamo adesso sulla classe $\text{co-NTIME}(\log n)$.
+    Come mostrato da Pighizzini[2] la distanza di edit per i problemi in questa classe è calcolabile in tempo polinomiale se e solo se $P = NP$.
+    La dimostrazione fa uso del linguaggio $L_{acc}$ che, dato un insieme $L$ NP-completo, accettato da una macchina di Turing non deterministica $M$ in tempo polinomiale,
+    rappresenta le stringhe che codificano computazioni accettanti di $M$, formalmente:
 
-    \chapter{Un caso di studio: la distanza di Levenshtein}
+    \[
+        L_{\text{acc}} = \left\{
+                             x \# \omega_0 \# \omega_1 \# \dots \# \omega_{p(n)}
+                             \;\middle|\;
+                             \begin{array}{l}
+                                 x \in \Sigma^*,\; n = |x|, \\[4pt]
+                                 \omega_i \text{ è una configurazione di } M, \\[4pt]
+                                 \lvert \omega_i \rvert = p'(n), \\[4pt]
+                                 \omega_0 \text{ è la configurazione iniziale di } M \text{ su input } x, \\[4pt]
+                                 \forall j = 1, \dots, p(n),\; \omega_{j-1} \vdash_M \omega_j, \\[4pt]
+                                 \omega_{p(n)} \text{ è una configurazione accettante}
+                             \end{array}
+        \right\}
+    \]
 
-
-    \section{Definizione e limiti}
-
-    La distanza di Levenshtein tra due stringhe $x$ ed $y$ è il numero minimo di operazioni di edit che consentono di trasformare $x$ in $y$.
-
-    Nel caso della distanza di Levenshtein, la funzione di costo $\gamma$ è definita come segue:
-
-    \begin{align}
-        \gamma(a \rightarrow b) &= \begin{cases}
-                                       0 & \text{se } a = b \\
-                                       1 & \text{se } a \neq b \text{ e } a, b \in \Sigma \cup \{\epsilon\}
-        \end{cases}
-    \end{align}
-
-    In altre parole, ogni operazione di sostituzione, inserimento o cancellazione ha costo unitario, mentre non modificare un simbolo ha costo nullo. Questa uniformità nei costi rende la distanza di Levenshtein particolarmente adatta per applicazioni dove tutte le operazioni di edit hanno la stessa importanza o difficoltà.
-
-    Consideriamo un esempio di calcolo della distanza di Levenshtein tra le stringhe $x = \text{"gatto"}$ e $y = \text{"cane"}$. Una possibile sequenza di trasformazioni è:
-
-    $$\text{gatto} \xrightarrow{g \rightarrow c} \text{catto} \xrightarrow{t \rightarrow n} \text{canto} \xrightarrow{t \rightarrow e} \text{caneo} \xrightarrow{o \rightarrow \epsilon} \text{cane}$$
-
-    Questa sequenza richiede 4 operazioni (3 sostituzioni e 1 cancellazione), quindi $d_L(\text{"gatto"}, \text{"cane"}) = 4$.
-
-    Si possono fissare dei limiti per il calcolo della distanza di Levenshtein tra due stringhe $x$ ed $y$, in particolare:
-    \begin{itemize}
-        \item è almeno pari alla differenza tra la lunghezza delle due stringhe.
-        \item è pari a 0 se e solo se $x = y$;
-        \item se $x = y$, $d_L(x, y)$ non supera $d_H(x, y)$ (distanza di Hamming);
-        \item il limite superiore è pari alla lunghezza della stringa più lunga;
-    \end{itemize}
-
-
-    \section{Algoritmo}
-
-
-    \section{Implementazione}
 
 
     \chapter{Conclusioni}
