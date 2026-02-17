@@ -113,7 +113,7 @@
     Per ottenere tale risultato, si può adottare un approccio a \emph{distanza minima}, ovvero determinare la stringa $y \in L$ tale che la \textit{distanza di edit} tra $x$ (la stringa ricevuta) e $y$ sia minima.
 
 
-    \chapter{Definizioni}
+    \chapter{Automi Input Driven}
 
 
     \section{Notazioni}
@@ -370,6 +370,9 @@
     In questo esempio ogni regola utilizza una coppia di parentesi corrispondenti, rispettando il vincolo delle grammatiche bilanciate. La grammatica genera stringhe come $<>$, $<\beta>$, $[\beta]$, $<<\beta>>$, $[[\beta]]$, $<[\beta]>$, $[<\beta>]$.
 
 
+    \chapter{Distanze e complessità}
+
+
     \section{Distanze di Edit}
 
     Il problema del calcolare le distanze di edit tra stringhe è strettamente correlato al problema del trovare la stringa con distanza di edit minima rispetto ad una data (correction problem).
@@ -533,7 +536,7 @@
 
     Nella sottosezione che segue saranno date preliminarmente le definizioni delle classi di complessità di interesse per la nostra trattazione del problema del calcolo delle distanze di edit.
 
-    \subsection{$P$}
+    \subsection{Classe $P$}
 
     \begin{definition}
         La classe $P$ (Polynomial time) è l'insieme dei linguaggi decisionali che possono essere risolti da una macchina di Turing deterministica in tempo polinomiale.
@@ -544,7 +547,7 @@
         In altre parole, $P$ rappresenta la classe dei problemi decisionali per i quali esiste un algoritmo deterministico efficiente, il cui tempo di esecuzione cresce al più in modo polinomiale rispetto alla dimensione dell’input.
     \end{definition}
 
-    \subsubsection{Esempio di problema appartenente a $P$}
+    \subsubsection{Esempio: ordinamento}
 
     Un esempio classico di problema appartenente alla classe $P$ è il problema dell'\emph{ordinamento}.
     Sia $A = (a_1, a_2, \dots, a_n)$ una sequenza di elementi appartenenti a un insieme totalmente ordinato. Il problema dell'ordinamento consiste nel determinare una permutazione $\pi$ degli indici $\{1, \dots, n\}$ tale che:
@@ -556,7 +559,7 @@
 
     Poiché il tempo di esecuzione è limitato superiormente da una funzione polinomiale della dimensione dell'input, il problema dell'ordinamento (o, più formalmente, una sua versione decisionale equivalente, come la verifica che una sequenza sia ordinata) appartiene alla classe $P$.
 
-    \subsection{$PSPACE$}
+    \subsection{Classe $PSPACE$}
 
     \begin{definition}
         La classe $PSPACE$ è l'insieme dei linguaggi decisionali che possono essere risolti da una macchina di Turing deterministica utilizzando una quantità di spazio polinomiale rispetto alla dimensione dell'input.
@@ -577,7 +580,7 @@
     \]
     mentre è tuttora aperto il problema di stabilire se tali inclusioni siano proprie.
 
-    \subsubsection{Esempio di problema appartenente a $PSPACE$}
+    \subsubsection{Esempio: \textsc{QBF}}
 
     Un esempio classico di problema $PSPACE$-completo è il problema della \emph{soddisfacibilità booleana quantificata} (\textsc{QBF}).
 
@@ -603,7 +606,7 @@
 
     Inoltre, \textsc{QBF} è $PSPACE$-completo, il che implica che ogni problema in $PSPACE$ può essere ridotto ad esso tramite una riduzione calcolabile in tempo polinomiale.
 
-    \subsection{$NP$}
+    \subsection{Classe $NP$}
 
     \begin{definition}
         La classe $NP$ (Nondeterministic Polynomial time) è l'insieme dei linguaggi decisionali per i quali una macchina di Turing non deterministica può fornire una risposta affermativa in tempo polinomiale.
@@ -618,7 +621,7 @@
         Intuitivamente, i problemi in $NP$ sono quelli per cui, se ci viene fornita una soluzione, possiamo verificarne la correttezza in tempo polinomiale, anche se non è noto un metodo altrettanto efficiente per trovarla.
     \end{definition}
 
-    \subsubsection{Esempio di problema appartenente a $NP$}
+    \subsubsection{Esempio: \textsc{SAT}}
 
     Un problema fondamentale appartenente alla classe $NP$ è il problema della \emph{soddisfacibilità booleana} (\textsc{SAT}).
     Un'istanza del problema \textsc{SAT} è una formula booleana $\varphi$ costruita a partire da un insieme finito di variabili proposizionali $X = \{x_1, x_2, \dots, x_n\}$ mediante l'uso dei connettivi logici $\land$, $\lor$ e $\lnot$.
@@ -865,9 +868,8 @@
     \end{figure}
 
     \clearpage
-    %TODO: va tenuto?%
 
-
+    \subsection{Implicazioni}
     Queste definizioni sono particolarmente rilevanti nel contesto delle distanze di edit, poiché permettono di caratterizzare con precisione la complessità computazionale dei problemi considerati e di stabilire connessioni con le principali questioni aperte della teoria della complessità.
 
     È stato dimostrato che esiste un linguaggio context-sensitive $L$ tale che la distanza di edit per $L$ è calcolabile in tempo polinomiale se e solo se $P = PSPACE$.
@@ -927,7 +929,7 @@
 
     Ci focalizziamo adesso sulla classe $\text{co-NTIME}(\log n)$.
     Come mostrato da Pighizzini[2] la distanza di edit per i problemi in questa classe è calcolabile in tempo polinomiale se e solo se $P = NP$.
-    La dimostrazione fa uso del linguaggio $L_{acc}$ che, dato un insieme $L$ NP-completo, accettato da una macchina di Turing non deterministica $M$ in tempo polinomiale,
+    La dimostrazione fa uso del linguaggio $L_{acc}$ che, dato un insieme $L$ $NP$-completo, accettato da una macchina di Turing non deterministica $M$ in tempo polinomiale,
     rappresenta le stringhe che codificano computazioni accettanti di $M$, formalmente:
 
     \[
@@ -935,16 +937,15 @@
                              x \# \omega_0 \# \omega_1 \# \dots \# \omega_{p(n)}
                              \;\middle|\;
                              \begin{array}{l}
-                                 x \in \Sigma^*,\; n = |x|, \\[4pt]
+                                 x \in \Sigma^*,\; n = |x|, \# \notin \Sigma \cup \Gamma \cup Q, \\[4pt]
                                  \omega_i \text{ è una configurazione di } M, \\[4pt]
-                                 \lvert \omega_i \rvert = p'(n), \\[4pt]
+                                 \lvert \omega_i \rvert = p'(n), \omega_i \in \Gamma \cup Q \\[4pt]
                                  \omega_0 \text{ è la configurazione iniziale di } M \text{ su input } x, \\[4pt]
                                  \forall j = 1, \dots, p(n),\; \omega_{j-1} \vdash_M \omega_j, \\[4pt]
                                  \omega_{p(n)} \text{ è una configurazione accettante}
                              \end{array}
         \right\}
     \]
-
 
 
     \chapter{Conclusioni}
