@@ -112,14 +112,11 @@
 
     Per ottenere tale risultato, si può adottare un approccio a \emph{distanza minima}, ovvero determinare la stringa $y \in L$ tale che la \textit{distanza di edit} tra $x$ (la stringa ricevuta) e $y$ sia minima.
 
-
-    \chapter{Automi Input Driven}
-
-
     \section{Notazioni}
 
     Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è indicata con $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
 
+    \chapter{Automi Input Driven}
 
     \section{Input Driven Pushdown Automata}
 
@@ -645,7 +642,7 @@
     Il problema \textsc{SAT} appartiene alla classe $NP$ poiché, data una formula booleana $\varphi$ e una assegnazione candidata $\alpha$ (detta \emph{certificato}), è possibile verificare in tempo polinomiale rispetto alla dimensione di $\varphi$ se $\alpha$ soddisfa la formula.
     Tale verifica può essere eseguita valutando la formula in tempo lineare nel numero di simboli che la compongono.
 
-    L'esistenza o meno di un algoritmo deterministico in tempo polinomiale per la risoluzione generale di \textsc{SAT} costituisce il nodo centrale del problema aperto $P \stackrel{?}{=} NP$.
+    L'esistenza o meno di un algoritmo deterministico in tempo polinomiale per la risoluzione generale di \textsc{SAT} è nodo centrale del problema aperto $P \stackrel{?}{=} NP$.
 
     % TODO: cambiare stile nomi problemi, eliminare prenessa, cambiare stile titoli esempi
 
@@ -870,7 +867,7 @@
     \clearpage
 
     \subsection{Implicazioni}
-    Queste definizioni sono particolarmente rilevanti nel contesto delle distanze di edit, poiché permettono di caratterizzare con precisione la complessità computazionale dei problemi considerati e di stabilire connessioni con le principali questioni aperte della teoria della complessità.
+    Le definizioni appena date sono particolarmente rilevanti nel contesto delle distanze di edit, poiché permettono di caratterizzare con precisione la complessità computazionale dei problemi considerati e di stabilire connessioni con le principali questioni aperte della teoria della complessità.
 
     È stato dimostrato che esiste un linguaggio context-sensitive $L$ tale che la distanza di edit per $L$ è calcolabile in tempo polinomiale se e solo se $P = PSPACE$.
     Questo risultato può essere ulteriormente rafforzato: esiste un linguaggio $L$ appartenente a $\text{co-NTIME}(\log n)$ (una piccola sottoclasse di $AC^0$) la cui distanza di edit è calcolabile in tempo polinomiale se e solo se $P = NP$.
@@ -907,22 +904,29 @@
         Ricordando che $d\left(L, x\right) \leq \alpha\lvert x\rvert + \beta$, date delle costanti adatte $\alpha$ e $\beta$, si nota che se $\Pi_L \in P$ allora questo algoritmo opera in tempo polinomiale deterministico.
     \end{proof}
 
-    \begin{theorem}[Teorema 3.2 -- Edit distance e PSPACE]
+    \begin{theorem}
         Esiste un linguaggio context-sensitive \(L\) tale che il problema di calcolare la distanza di edit verso \(L\) è risolvibile in tempo polinomiale se e solo se \(P = PSPACE\).
     \end{theorem}
 
     \begin{proof}[Dimostrazione]
         Come dimostrato da Karp~\cite{Karp 1}, esiste un linguaggio context-sensitive \(L\) che è \(PSPACE\)-completo rispetto alle riduzioni in tempo polinomiale.
 
-        Supponiamo che la distanza di edit verso \(L\) sia calcolabile in tempo polinomiale. Allora, dato un input \(x\), possiamo decidere in tempo polinomiale se \(x \in L\) osservando che
+        Supponiamo che la distanza di edit verso \(L\) sia calcolabile in tempo polinomiale.
+        Allora, dato un input \(x\), possiamo decidere in tempo polinomiale se \(x \in L\) osservando che
         \[
-            x \in L \iff d(x,L) = 0.
+            x \in L \iff d(x,L) = 0,
         \]
-        Ne consegue che \(L \in P\). Essendo \(L\) \(PSPACE\)-completo, segue che
+        o, in altre parole, il calcolo della distanza di edit tra \(x\) e \(L\) generalizza il problema dell’appartenenza di \(x\) a \(L\). \\
+        Ne consegue che \(L \in P\). \\
+        Essendo \(L\) \(PSPACE\)-completo, segue che
         \[
             PSPACE \subseteq P,
         \]
-        e quindi \(P = PSPACE\).
+        e quindi
+        \[
+            P = PSPACE.
+        \]
+
 
         La direzione inversa è conseguenza del Teorema 3.1: se \(P = PSPACE\), allora ogni problema \(PSPACE\)-completo, e in particolare \(L\), ha una distanza di edit calcolabile in tempo polinomiale.
     \end{proof}
@@ -939,13 +943,16 @@
                              \begin{array}{l}
                                  x \in \Sigma^*,\; n = |x|, \# \notin \Sigma \cup \Gamma \cup Q, \\[4pt]
                                  \forall i = 0,\dots,p(n),\; \omega_i \text{ è una configurazione di } M, \\[4pt]
-                                 \forall i = 0,\dots,p(n),\; \lvert \omega_i \rvert = p'(n), \; \omega_i \in \Gamma \cup Q \\[4pt]
+                                 \forall i = 0,\dots,p(n),\; \lvert \omega_i \rvert = p'(n), \; \omega_i \in \left(\Gamma \cup Q \right)^* \\[4pt]
                                  \omega_0 \text{ è la configurazione iniziale di } M \text{ su input } x, \\[4pt]
                                  \forall j = 1, \dots, p(n),\; \omega_{j-1} \vdash_M \omega_j, \\[4pt]
                                  \omega_{p(n)} \text{ è una configurazione accettante}
                              \end{array}
         \right\}
     \]
+
+    Inoltre è stato osservato che il linguaggio $L_{acc}$ è accettato da un automa pushdown deterministico a due vie.
+    Segue quindi che esiste \ldots
 
 
     \chapter{Conclusioni}
