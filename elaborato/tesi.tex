@@ -112,6 +112,21 @@
 
     Per ottenere tale risultato, si può adottare un approccio a \emph{distanza minima}, ovvero determinare la stringa $y \in L$ tale che la \textit{distanza di edit} tra $x$ (la stringa ricevuta) e $y$ sia minima.
 
+    Questo conduce naturalmente al cosiddetto \textit{correction problem}.
+
+    Dato un linguaggio $L$ e una stringa $x \in \Sigma^*$, il problema della correzione consiste non solo nel calcolare la distanza di edit tra $x$ e $L$, ma anche nel determinare esplicitamente una stringa $y \in L$ tale che tale distanza sia minima.
+
+
+    Formalmente, si tratta quindi di risolvere un problema di ottimizzazione: trovare
+
+    \[
+        y = \arg\min_{w \in L} d(x,w)
+    \]
+
+    Il \textit{correction problem} richiede la costruzione effettiva di una correzione ottimale.
+    In ambito applicativo, esso riveste particolare importanza in contesti quali il parsing robusto, il riconoscimento di input rumorosi e i sistemi di correzione automatica.
+
+
     \section{Notazioni}
 
     Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è indicata con $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
@@ -931,8 +946,8 @@
         La direzione inversa è conseguenza del Teorema 3.1: se \(P = PSPACE\), allora ogni problema \(PSPACE\)-completo, e in particolare \(L\), ha una distanza di edit calcolabile in tempo polinomiale.
     \end{proof}
 
-    Ci focalizziamo adesso sulla classe $\text{co-NTIME}(\log n)$.
-    Come mostrato da Pighizzini[2] la distanza di edit per i problemi in questa classe è calcolabile in tempo polinomiale se e solo se $P = NP$.
+    Ci focalizziamo adesso sulla classe $\text{co-NTIME}(\log n)$. \\
+    Come mostrato da Pighizzini~\cite{pighizzini} la distanza di edit per i problemi in questa classe è calcolabile in tempo polinomiale se e solo se $P = NP$.
     La dimostrazione fa uso del linguaggio $L_{acc}$ che, dato un insieme $L$ $NP$-completo, accettato da una macchina di Turing non deterministica $M$ in tempo polinomiale,
     rappresenta le stringhe che codificano computazioni accettanti di $M$, formalmente:
 
@@ -952,7 +967,12 @@
     \]
 
     Inoltre è stato osservato che il linguaggio $L_{acc}$ è accettato da un automa pushdown deterministico a due vie.
-    Segue quindi che esiste \ldots
+    Segue quindi che:
+
+    \begin{prop}
+        Esiste un linguaggio $L$ accettato da un automa pushdown deterministico a due vie tale che che $P = NP$ se e solo se
+        la distanza di edit di $L$ è calcolabile in tempo polinomiale.
+    \end{prop}
 
 
     \chapter{Conclusioni}
