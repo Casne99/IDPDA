@@ -19,7 +19,9 @@
 \usepackage{tikz}                % Per diagrammi TikZ
 \usetikzlibrary{automata,positioning,calc,circuits.logic.US}
 \usepackage{algorithm}           % Per algoritmi
-\usepackage{algpseudocode}       % Per pseudocodice
+\usepackage{algpseudocode}
+\usepackage{amstext}            % Per \text{} in ambiente matematico
+\usepackage{amsopn}             % Per \arg\min e operatori simili
 
 % Definizione ambiente teorema numerato per capitolo
 \newtheorem{theorem}{Teorema}[chapter]
@@ -131,11 +133,13 @@
 
     Nel seguito, $\Sigma$ denota un alfabeto finito e $\Sigma^*$ è l'insieme delle stringhe su $\Sigma$, $\epsilon$ è la stringa vuota e la lunghezza di una stringa $w \in \Sigma^*$ è indicata con $|w|$. Dati gli insiemi $S$ e $T$, l'insieme delle funzioni parziali da $S$ a $T$ è denotato da $T^S$. La cardinalità di un insieme finito $S$ è $|S|$. Il simbolo $\perp$ denota la pila vuota e $2^S$ denota l'insieme delle parti dell'insieme $S$.
 
+
     \chapter{Automi Input Driven}
+
 
     \section{Input Driven Pushdown Automata}
 
-    Una transizione di un IDPDA è determinata dal tipo di simbolo in input, appartenente all'alfabeto $\Sigma$, che stabilisce l'operazione da eseguire, eventualmente nulla.
+    Una transizione di un IDPDA è determinata dal tipo di simbolo in input, appartenente all'alfabeto $\Sigma$, che stabilisce l'operazione da eseguire sulla pila, eventualmente nulla.
 
     Si può rappresentare l'alfabeto di input di un IDPDA come unione di tre sottoinsiemi disgiunti e finiti:
 
@@ -348,7 +352,7 @@
     Il primo dei modelli studiati sono state le \textit{grammatiche di parentesi} di McNaughton, nel quale l'alfabeto conteneva una parentesi sinistra $<$, una parentesi destra $>$
     ed una serie di simboli terminali, e le regole erano nella forma $X \rightarrow <\alpha>$, con $\alpha \in \left(\Sigma_0 \cup N\right)$ (dove $N$ è l'insieme dei simboli non terminali della grammatica), oppure nella forma $X \rightarrow c$ con $c \in \Sigma_0^*$.
 
-    Tutte queste grammatiche vanno a dare origine a sottoclassi dei linguaggi input-driven.
+    Tutte queste grammatiche danno origine a sottoclassi dei linguaggi input-driven.
 
     \begin{definition}
         Una grammatica input-driven è una quadrupla $G = \left(\Sigma, N, R, S\right)$ dove:
@@ -391,7 +395,7 @@
 
     Una operazione di edit è una coppia $(a, b) \neq (\epsilon, \epsilon)$ con $|a|, |b| \leq 1$, ed è comunemente indicata con $a \rightarrow b$.
 
-    Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^* \mid x = vaw, y = vbw$.
+    Una certa stringa $y$ può essere derivata da un'altra stringa $x$ tramite una operazione di edit $a \rightarrow b$, se $\exists v, w \in \Sigma^*$ tale che $x = vaw, y = vbw$.
 
     Dati $a, b \in \Sigma, a \neq b$, possiamo definire le operazioni $a \rightarrow b$, $a \rightarrow \epsilon$ e $\epsilon \rightarrow a$ rispettivamente
     \textit{sostituzione}, \textit{cancellazione} e \textit{inserimento}.
@@ -410,13 +414,17 @@
 
     Ad esempio, sia $\Sigma = \{i, j\}$ e $\gamma\left(a \rightarrow b\right) = 1$ per ogni $a, b \in \Sigma \cup \{\epsilon\}$ con $a \neq b$. Per trasformare la stringa $iji$ nella stringa $jj$ si può utilizzare la seguente sequenza di operazioni:
 
-    $$iji \xrightarrow{i \rightarrow j} jji \xrightarrow{i \rightarrow \epsilon} jj$$
+    \[
+        iji \xrightarrow{i \rightarrow j} jji \xrightarrow{i \rightarrow \epsilon} jj
+    \]
 
     In questo caso sono state utilizzate una sostituzione e una cancellazione, per un costo totale di $1 + 1 = 2$.
 
     Consideriamo ora un esempio con un linguaggio infinito. Sia $L = \{a^n b^n \mid n \geq 1\}$ il linguaggio delle stringhe bilanciate su $\{a, b\}$ e la stringa $x = aabb$. Con la stessa funzione di costo $\gamma(c \rightarrow d) = 1$ per $c \neq d$, abbiamo $d(L, x) = 0$ poiché $x \in L$. Se invece consideriamo $x = aaabb$, possiamo trasformarla in $aabb \in L$ mediante:
 
-    $$aaabb \xrightarrow{a \rightarrow \epsilon} aabb$$
+    \[
+        aaabb \xrightarrow{a \rightarrow \epsilon} aabb
+    \]
 
     ottenendo $d(L, aaabb) = 1$.
 
@@ -509,9 +517,10 @@
         Scegliamo una stringa $z \in L$, allora $d\left(L, x\right) \leq d\left(z, x\right)$.
         Si può inoltre trasformare $z$ in $x$ concatenando $z$ con $x$ e cancellando in seguito $z$ dalla stringa risultante:
 
-        $$\displaystyle d\left(L, x\right) \leq d\left(z, x\right) \leq \sum_{i=1}^{\lvert x \rvert} \gamma\left(\epsilon \rightarrow x_i\right) + \sum_{i=1}^{\lvert z \rvert} \gamma\left(z_i \rightarrow \epsilon\right) \leq \alpha \lvert x \rvert + \beta$$
-
-        In questo caso, $\alpha = \max\left\{\gamma\left(\epsilon \rightarrow b\right) \mid b \in \Sigma\right\}$ e $\beta = \sum_{i=1}^{\lvert z \rvert} \gamma\left(z_i \rightarrow \epsilon\right)$
+        \[
+            \displaystyle d\left(L, x\right) \leq d\left(z, x\right) \leq \sum_{i=1}^{|x|} \gamma(\epsilon \rightarrow x_i) + \sum_{i=1}^{|z|} \gamma(z_i \rightarrow \epsilon) \leq \alpha |x| + \beta
+        \]
+        Definendo $\alpha = \max\{\gamma(\epsilon \rightarrow b) \mid b \in \Sigma\}$ e $\beta = \sum_{i=1}^{|z|} \gamma(z_i \rightarrow \epsilon)$ la dimostrazione è conclusa.
     \end{proof}
 
     Partendo da questo risultato, si possono individuare stringhe di $L$ che minimizzano questa distanza.
@@ -525,21 +534,56 @@
     \begin{proof}
         Scegliamo $y \in L$ tale che $d\left(L, x\right) = d\left(y, x\right)$ e definiamo $\lambda$ come il minimo tra i costi degli inserimenti e delle cancellazioni:
 
-        $$ \lambda = \min\bigl\{\{\gamma\left(\epsilon \rightarrow c\right) \mid c \in \Sigma\} \cup \{\gamma\left(c \rightarrow \epsilon\right) \mid c \in \Sigma\}\bigr\}$$
+        \[
+            \lambda = \min\bigl\{\{\gamma\left(\epsilon \rightarrow c\right) \mid c \in \Sigma\} \cup \{\gamma\left(c \rightarrow \epsilon\right) \mid c \in \Sigma\}\bigr\}
+        \]
 
         Si può affermare che per derivare una stringa $y$ da una stringa $x$, si dovranno effettuare operazioni di cancellazione o inserimento in numero pari
         ad almeno la differenza in lunghezza tra le due stringhe, segue quindi che $d\left(y, x\right) \geq \lambda\bigl|\left(\lvert y \rvert - \lvert x \rvert\right)\bigr|$.
         Si può quindi esprimere la disuguaglianza in termini di $y$:
 
-        $$\lvert y \rvert \leq \lvert x \rvert + \frac{1}{\lambda}d\left(y, x\right)$$
-
+        \[
+            \lvert y \rvert \leq \lvert x \rvert + \frac{1}{\lambda}d\left(y, x\right)
+        \]
         Usando la Proposizione~\ref{prop:distanza-limitata} e ricordando che $d\left(L, x\right) = d\left(y, x\right)$ otteniamo:
 
-        $$\lvert y \rvert \leq \left(\frac{\alpha}{\lambda} + 1\right)\lvert x \rvert + \frac{\beta}{\lambda}$$
+        \[
+            \lvert y \rvert \leq \left(\frac{\alpha}{\lambda} + 1\right)\lvert x \rvert + \frac{\beta}{\lambda}
+        \]
         \vspace{0.5em}
 
         Definendo ora $\displaystyle \alpha' \coloneqq \frac{\alpha}{\lambda} + 1$ e $\displaystyle \beta' \coloneqq \frac{\beta}{\lambda}$ la dimostrazione è conclusa.
     \end{proof}
+
+    \subsection{\textit{k}-vicinato}
+
+    Esiste una nozione rilevante di distanza di \textit{k}-vicinato, date una distanza di edit ed un linguaggio, definita come l'insieme di tutte le stringhe a distanza al più \textit{k} da un qualche elemento in quel linguaggio.
+    La famiglia dei linguaggi riconosciuti da un IDPDA è chiusa rispetto a questa operazione, ovvero se $L$ è un linguaggio riconosciuto da un IDPDA, allora anche il suo \textit{k}-vicinato è riconosciuto da un IDPDA.
+
+    \subsubsection{Distanza di edit per automi input driven}
+
+    Sia $\Sigma$ un alfabeto e $a \in \Sigma$ un simbolo.
+    Dato un linguaggio $L \subseteq \Sigma^*$, l'insieme di tutte le stringhe ottenuto inserendo $a$ in qualunque posizione, per qualunque stringa in $L$, è definito come:
+    \[
+        ins_a(L) = \{\, u a v \mid u v \in L \,\}.
+    \]
+
+    Analogamente, l'insieme di tutte le stringhe ottenuto cancellando $a$ da qualunque posizione, per qualunque stringa in $L$, è definito come:
+    \[
+        del_a(L) = \{\, u v \mid u a v \in L \,\}.
+    \]
+
+    L'insieme di tutte le stringhe a distanza al più $k$ da una stringa $w$ è chiamato \textit{k}-vicinato di $w$ e si indica con $E_k(w)$ ed è definito come:
+
+    \begin{align*}
+        E_0(w) &= \{w\}, \\
+        E_{k+1}(w) &= E_k(w) \cup \bigcup_{w' \in E_k\left(w\right)} \bigcup_{a \in \Sigma} \left(ins_a(w') \cup del_a(w')\right)
+    \end{align*}
+
+    Il \textit{k}-vicinato di un linguaggio $L$ è definito come l'unione dei \textit{k}-vicinati di tutte le stringhe in $L$:
+    \[
+        E_k(L) = \bigcup_{w \in L} E_k(w).
+    \]
 
 
     \section{Complessità e limiti computazionali}
@@ -585,12 +629,6 @@
     \end{definition}
 
     Intuitivamente, $PSPACE$ rappresenta la classe dei problemi che possono essere risolti con una quantità ragionevole di memoria, anche a costo di tempi di esecuzione molto elevati.
-
-    È noto che valgono le seguenti inclusioni:
-    \[
-        P \subseteq NP \subseteq PSPACE,
-    \]
-    mentre è tuttora aperto il problema di stabilire se tali inclusioni siano proprie.
 
     \subsubsection{Esempio: \textsc{QBF}}
 
@@ -659,14 +697,19 @@
 
     L'esistenza o meno di un algoritmo deterministico in tempo polinomiale per la risoluzione generale di \textsc{SAT} è nodo centrale del problema aperto $P \stackrel{?}{=} NP$.
 
+    È noto che valgono le seguenti inclusioni:
+    \[
+        P \subseteq NP \subseteq PSPACE,
+    \]
+    mentre è tuttora aperto il problema di stabilire se tali inclusioni siano proprie.
     % TODO: cambiare stile nomi problemi, eliminare prenessa, cambiare stile titoli esempi
 
     \subsection{$AC^0$}
 
     \begin{definition}
-        La classe $AC^0$ è l'insieme dei linguaggi riconoscibili da famiglie di circuiti booleani di profondità costante e dimensione polinomiale, utilizzando porte AND, OR e NOT con fan-in illimitato.
+        La classe $AC^0$ è l'insieme dei linguaggi riconoscibili da famiglie uniformi di circuiti booleani di profondità costante e dimensione polinomiale, utilizzando porte AND, OR e NOT con fan-in illimitato.
 
-        Formalmente, un linguaggio $L \subseteq \{0,1\}^*$ appartiene ad $AC^0$ se esiste una famiglia di circuiti $\{C_n\}_{n \geq 0}$ tale che:
+        Formalmente, un linguaggio $L \subseteq \{0,1\}^*$ appartiene ad $AC^0$ se esiste una famiglia uniforme di circuiti $\{C_n\}_{n \geq 0}$ tale che:
         \begin{itemize}
             \item per ogni $n$, il circuito $C_n$ ha $n$ input e decide l'appartenenza ad $L$ per stringhe di lunghezza $n$
             \item esiste una costante $d$ tale che ogni $C_n$ ha profondità al massimo $d$
@@ -706,7 +749,6 @@
     \[
         C_n(x) = \bigwedge_{i=1}^{n-1} (x_i \vee x_{i+1})
     \]
-
     Il numero di porte \texttt{OR} necessarie è pari a $n-1$, mentre la profondità complessiva del circuito è costante (pari a 2): un livello di \texttt{OR} e uno di \texttt{AND}.
 
     Segue che \textsc{Pairwise-OR} $\in \mathbf{AC^0}$.
@@ -910,7 +952,7 @@
             \end{algorithmic}
         \end{algorithm}
 
-        dove $\alpha'$ e $\beta'$ sono le costanti date in ~\ref{prop:stringa-limitata}.
+        \noindent dove $\alpha'$ e $\beta'$ sono le costanti date in~\ref{prop:stringa-limitata}. \\
         Dato che la distanza tra due stringhe è calcolabile in un tempo proporzionale al prodotto delle loro lunghezze,
         non è difficile vedere che se $L \in NP$ allora $\Pi_L$ è risolvibile non deterministicamente in tempo polinomiale.
         Quindi $P = NP$ implica $\Pi_L \in P$, per ogni linguaggio $L \in NP$.
@@ -966,11 +1008,11 @@
         \right\}
     \]
 
-    Inoltre è stato osservato che il linguaggio $L_{acc}$ è accettato da un automa pushdown deterministico a due vie.
+    Inoltre è stato osservato che il linguaggio $L_{acc}$ è accettato da un automa pushdown deterministico con nastro di input bidirezionale.
     Segue quindi che:
 
     \begin{prop}
-        Esiste un linguaggio $L$ accettato da un automa pushdown deterministico a due vie tale che che $P = NP$ se e solo se
+        Esiste un linguaggio $L$ accettato da un automa pushdown deterministico con nastro di input bidirezionale tale che che $P = NP$ se e solo se
         la distanza di edit di $L$ è calcolabile in tempo polinomiale.
     \end{prop}
 
@@ -994,9 +1036,6 @@
         \bibitem{Chandra}
         Chandra, A., Kozen, D., and Stockmeyer, L. (1981),
         \textit{Alternation, J. Assoc. Comput. Mach. 28, 114–133}.
-
-% Aggiungere altre fonti
-
     \end{thebibliography}
 
 \end{document}
