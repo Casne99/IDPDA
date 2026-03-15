@@ -1,0 +1,230 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+
+\title{Input Driven Pushdown Automata ed Edit Distances}
+\subtitle{Presentazione del lavoro di tesi}
+\author{Luca Casnedi}
+\institute{Universit\`a degli Studi di Milano\\Corso di Laurea in Informatica}
+\date{Anno Accademico 2024--2025}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Obiettivi della tesi}
+\begin{itemize}
+  \item Studiare il modello degli \emph{Input Driven Pushdown Automata} (IDPDA).
+  \item Formalizzare la distanza di edit tra stringa e linguaggio.
+  \item Collegare il problema della correzione ai limiti computazionali.
+  \item Evidenziare risultati di chiusura e implicazioni in complessit\`a.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Motivazione}
+Gli IDPDA estendono i DFA introducendo una pila con comportamento guidato dal simbolo letto.
+
+\vspace{0.4em}
+\begin{itemize}
+  \item Adatti a strutture annidate e bilanciate.
+  \item Utili in parsing robusto e input rumorosi.
+  \item Consentono analisi su distanza minima da un linguaggio.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Alfabeto input-driven}
+Per un IDPDA, l'alfabeto si partiziona in tre insiemi disgiunti:
+\[
+\Sigma = \Sigma_{+1} \cup \Sigma_{-1} \cup \Sigma_0.
+\]
+\begin{itemize}
+  \item $\Sigma_{+1}$: parentesi sinistre (operazione di \textit{push}).
+  \item $\Sigma_{-1}$: parentesi destre (operazione di \textit{pop}).
+  \item $\Sigma_0$: simboli neutri (nessuna operazione su pila).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{DIDPDA: definizione (idea)}
+Un DIDPDA e' una settupla
+\[
+A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F)
+\]
+con transizioni determinate dalla categoria del simbolo in input.
+
+\vspace{0.4em}
+\begin{itemize}
+  \item $\delta_{<}:Q\to Q\times\Gamma$ per $<\in\Sigma_{+1}$.
+  \item $\delta_{>}:Q\times(\Gamma\cup\{\perp\})\to Q$ per $>\in\Sigma_{-1}$.
+  \item $\delta_c:Q\to Q$ per $c\in\Sigma_0$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{NIDPDA: estensione non deterministica}
+Nel modello non deterministico, le transizioni restituiscono insiemi di stati possibili.
+
+\vspace{0.4em}
+\begin{itemize}
+  \item Possibile insieme di stati iniziali $Q_0$.
+  \item Per ogni simbolo, la computazione puo' biforcarsi.
+  \item La stringa e' accettata se esiste almeno una computazione accettante.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Grammatiche input-driven}
+Le grammatiche input-driven usano lo stesso schema tripartito dell'alfabeto.
+
+\vspace{0.4em}
+Regole tipiche:
+\[
+A\rightarrow <B>C,\qquad A\rightarrow aC,\qquad A\rightarrow \epsilon.
+\]
+
+\begin{itemize}
+  \item Origine storica: grammatiche di parentesi e grammatiche bilanciate.
+  \item Vincolo centrale: corretta parentesizzazione.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Distanza di edit tra stringhe}
+Operazioni elementari: sostituzione, cancellazione, inserimento.
+
+\vspace{0.4em}
+\[
+d(x,y)=\min\{\text{costo delle sequenze di edit che trasformano }x\text{ in }y\}.
+\]
+
+\begin{itemize}
+  \item Costo complessivo = somma dei costi delle operazioni.
+  \item Caso particolare: distanza di Hamming (solo sostituzioni).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Distanza stringa-linguaggio e correction problem}
+Per $L\subseteq\Sigma^*$ e $x\in\Sigma^*$:
+\[
+d(L,x)=\min\{d(y,x)\mid y\in L\}.
+\]
+
+\vspace{0.4em}
+\textbf{Correction problem:}
+\[
+\text{trovare }y\in L\text{ tale che }d(y,x)=d(L,x).
+\]
+
+\begin{itemize}
+  \item Non solo valutare una distanza, ma costruire una correzione ottima.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Proprieta' utili per il calcolo}
+Dalla tesi emergono due idee chiave:
+\begin{itemize}
+  \item \textbf{Decomposizione:}
+  \[
+  d(uv,wz)\le d(u,w)+d(v,z).
+  \]
+  \item \textbf{Limite superiore lineare:} esistono $\alpha,\beta$ tali che
+  \[
+  d(L,x)\le \alpha|x|+\beta.
+  \]
+\end{itemize}
+Questo permette anche di limitare la lunghezza delle correzioni ottime.
+\end{frame}
+
+\begin{frame}{$k$-vicinato}
+Definizione ricorsiva del vicinato di edit:
+\[
+E_0(w)=\{w\},\quad
+E_{k+1}(w)=E_k(w)\cup\bigcup_{w'\in E_k(w)}\bigcup_{a\in\Sigma}(ins_a(w')\cup del_a(w')).
+\]
+
+Per un linguaggio:
+\[
+E_k(L)=\bigcup_{w\in L}E_k(w).
+\]
+
+\begin{itemize}
+  \item Risultato: la famiglia dei linguaggi IDPDA e' chiusa rispetto al $k$-vicinato.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Classi di complessita' considerate}
+\begin{itemize}
+  \item $P$: tempo polinomiale deterministico.
+  \item $NP$: verifica polinomiale di certificati.
+  \item $PSPACE$: spazio polinomiale.
+  \item $AC^0$: circuiti di profondita' costante e taglia polinomiale.
+\end{itemize}
+
+Relazioni note:
+\[
+P\subseteq NP\subseteq PSPACE.
+\]
+\end{frame}
+
+\begin{frame}{Teorema: collegamento con $P=NP$}
+Dalla tesi:
+\begin{block}{Risultato}
+Se $P=NP$, allora la distanza di edit di qualunque linguaggio in $NP$ e' calcolabile in tempo polinomiale.
+\end{block}
+
+Idea della prova:
+\begin{itemize}
+  \item si considera il problema decisionale $\Pi_L$: ``$d(L,x)\le k$?'';
+  \item si indovina una correzione candidata di lunghezza limitata;
+  \item si verifica appartenenza a $L$ e distanza in tempo polinomiale.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Teorema: collegamento con $P=PSPACE$}
+\begin{block}{Risultato}
+Esiste un linguaggio context-sensitive $L$ tale che
+\[
+\text{edit-distance verso }L\in P\iff P=PSPACE.
+\]
+\end{block}
+
+Interpretazione:
+\begin{itemize}
+  \item calcolare la distanza generalizza il test di appartenenza ($d(x,L)=0$);
+  \item quindi, per opportuni linguaggi ``difficili'', la complessita' del problema riflette separazioni tra classi.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusioni}
+\begin{itemize}
+  \item Gli IDPDA offrono un compromesso potente tra espressivita' e struttura.
+  \item La distanza di edit estende il riconoscimento a scenari rumorosi.
+  \item I risultati di complessita' mostrano limiti profondi del problema.
+  \item Aperture: algoritmi pratici di correzione, euristiche e varianti di costo.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Riferimenti principali}
+\footnotesize
+\begin{thebibliography}{9}
+\bibitem{okhotin-salomaa-2014}
+A. Okhotin, K. Salomaa, \emph{Complexity of Input-Driven Pushdown Automata}, 2014.
+
+\bibitem{pighizzini-2001}
+G. Pighizzini, \emph{How Hard Is Computing the Edit Distance?}, 2001.
+
+\bibitem{okhotin-salomaa-2018}
+A. Okhotin, K. Salomaa, \emph{Edit distance neighbourhoods of input-driven pushdown automata}, 2018.
+\end{thebibliography}
+\end{frame}
+
+\end{document}
+
