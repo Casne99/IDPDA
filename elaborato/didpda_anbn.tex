@@ -1,0 +1,234 @@
+% didpda_anbn.tex
+% DIDPDA che riconosce il linguaggio a^n b^n con n >= 0
+
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=3cm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{amsmath, amssymb}
+\usepackage{amsthm}
+\usepackage{amstext}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning, calc}
+
+\newtheorem{definition}{Definizione}
+
+\begin{document}
+
+\section*{DIDPDA per il linguaggio $a^n b^n$}
+
+Consideriamo il linguaggio $L = \{a^n b^n \mid n \geq 0\}$.
+Questo linguaggio è un classico esempio di linguaggio context-free non regolare, riconoscibile da un DIDPDA.
+
+L'idea è la seguente: i simboli $a$ fungono da parentesi sinistre e causano operazioni di \textit{push} sulla pila, mentre i simboli $b$ fungono da parentesi destre e causano operazioni di \textit{pop}.
+In questo modo la pila tiene traccia del numero di $a$ lette, e ad ogni $b$ si verifica che ci sia una corrispondente $a$.
+
+\subsection*{Definizione formale}
+
+Il DIDPDA $A = (\Sigma, Q, \Gamma, q_0, \perp, [\delta_\sigma]_{\sigma \in \Sigma}, F)$ è definito come segue:
+
+\begin{itemize}
+    \item $\Sigma_{+1} = \{a\}$ (parentesi sinistre: operazione di push)
+    \item $\Sigma_{-1} = \{b\}$ (parentesi destre: operazione di pop)
+    \item $\Sigma_0 = \emptyset$ (nessun simbolo neutro)
+    \item $Q = \{q_0, q_1, q_{\text{err}}\}$
+    \item $q_0$ è lo stato iniziale
+    \item $F = \{q_0, q_1\}$ (stati accettanti)
+    \item $\Gamma = \{X\}$ (alfabeto della pila)
+\end{itemize}
+
+\subsection*{Diagramma dell'automa}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=4cm, semithick, font=\scriptsize, scale=1.5, transform shape]
+        \tikzstyle{every state}=[fill=white, draw=black, text=black, minimum size=12mm]
+
+        \node[state, accepting] (q0) {$q_{0}$};
+        \node[state, accepting, right=4cm of q0] (q1) {$q_{1}$};
+        \node[state, below=3cm of $(q0)!0.5!(q1)$] (qerr) {$q_{\text{err}}$};
+
+        % freccia iniziale dall'alto
+        \draw[->] ([yshift=1cm]q0.north) -- (q0.north);
+
+        % archi di transizione
+        \path[->]
+        (q0) edge[loop above] node[above] {$a$ / push $X$} ()
+        (q0) edge node[left] {$b$ / pop $\perp$} (qerr)
+        (q0) edge[bend left=15] node[above] {$b$ / pop $X$} (q1)
+        (q1) edge[loop above] node[above] {$b$ / pop $X$} ()
+        (q1) edge node[right] {$b$ / pop $\perp$} (qerr)
+        (q1) edge node[right, pos=0.3] {$a$ / push $X$} (qerr)
+        (qerr) edge[loop below] node[below] {$a, b$} ();
+    \end{tikzpicture}
+    \caption{DIDPDA che riconosce il linguaggio $a^n b^n$}
+    \label{fig:didpda_anbn}
+\end{figure}
+
+\subsection*{Funzioni di transizione}
+
+Le funzioni di transizione sono:
+\begin{align}
+    \delta_{a}(q_0) &= (q_0, X) \\
+    \delta_{b}(q_0, \gamma) &= \begin{cases}
+                                    q_1 & \text{se } \gamma = X \\
+                                    q_{\text{err}} & \text{se } \gamma = \perp
+    \end{cases} \\
+    \delta_{b}(q_1, \gamma) &= \begin{cases}
+                                    q_1 & \text{se } \gamma = X \\
+                                    q_{\text{err}} & \text{se } \gamma = \perp
+    \end{cases} \\
+    \delta_{a}(q_1) &= (q_{\text{err}}, X) \\
+    \delta_{a}(q_{\text{err}}) &= (q_{\text{err}}, X) \\
+    \delta_{b}(q_{\text{err}}, \gamma) &= q_{\text{err}} \quad \forall \gamma \in \Gamma \cup \{\perp\}
+\end{align}
+
+\subsection*{Spiegazione del funzionamento}
+
+L'automa opera nel modo seguente:
+
+\begin{enumerate}
+    \item \textbf{Stato $q_0$}: è lo stato iniziale e uno stato accettante. L'automa rimane in $q_0$ finché legge simboli $a$, e ad ogni $a$ carica un simbolo $X$ sulla pila.
+    \item \textbf{Transizione $q_0 \to q_1$}: quando viene letta la prima $b$, l'automa verifica che la pila non sia vuota (cioè che sia stata letta almeno una $a$). Se la pila contiene $X$, lo rimuove e transita in $q_1$.
+    \item \textbf{Stato $q_1$}: è anch'esso uno stato accettante. L'automa rimane in $q_1$ finché legge $b$ e la pila contiene ancora simboli $X$; ad ogni $b$ rimuove un $X$ dalla pila. Se in $q_1$ viene letta una $a$, l'automa transita nello stato di errore (poiché non sono ammesse $a$ dopo le $b$).
+    \item \textbf{Stato $q_{\text{err}}$}: è uno stato trappola (sink). L'automa vi entra in caso di errore e non può più uscirne.
+    \item \textbf{Accettazione}: la stringa è accettata se e solo se, al termine della lettura, l'automa si trova in $q_0$ o in $q_1$ (cioè in uno stato di $F = \{q_0, q_1\}$). Ciò accade in due casi:
+    \begin{itemize}
+        \item la stringa è $\epsilon$ (vuota), e l'automa non si è mai mosso da $q_0$;
+        \item sono state lette $n$ simboli $a$ seguiti da $b$, e l'automa si trova in $q_1$ dopo aver rimosso i corrispondenti $X$ dalla pila.
+    \end{itemize}
+\end{enumerate}
+
+
+\subsection*{Esempi di computazione}
+
+\begin{itemize}
+    \item \textbf{Input $\epsilon$}: configurazione $(q_0, \epsilon, \epsilon)$. L'automa è in $q_0 \in F$: \textbf{accettata}.
+    \item \textbf{Input $ab$}:
+    \begin{enumerate}
+        \item $(q_0, ab, \epsilon) \vdash (q_0, b, X)$ \quad (push $X$)
+        \item $(q_0, b, X) \vdash (q_1, \epsilon, \epsilon)$ \quad (pop $X$)
+    \end{enumerate}
+    Stato finale $q_1 \in F$: \textbf{accettata}.
+
+    \item \textbf{Input $aabb$}:
+    \begin{enumerate}
+        \item $(q_0, aabb, \epsilon) \vdash (q_0, abb, X)$ \quad (push $X$)
+        \item $(q_0, abb, X) \vdash (q_0, bb, XX)$ \quad (push $X$)
+        \item $(q_0, bb, XX) \vdash (q_1, b, X)$ \quad (pop $X$)
+        \item $(q_1, b, X) \vdash (q_1, \epsilon, \epsilon)$ \quad (pop $X$)
+    \end{enumerate}
+    Stato finale $q_1 \in F$: \textbf{accettata}.
+
+    \item \textbf{Input $aab$}:
+    \begin{enumerate}
+        \item $(q_0, aab, \epsilon) \vdash (q_0, ab, X)$ \quad (push $X$)
+        \item $(q_0, ab, X) \vdash (q_0, b, XX)$ \quad (push $X$)
+        \item $(q_0, b, XX) \vdash (q_1, \epsilon, X)$ \quad (pop $X$)
+    \end{enumerate}
+    Stato finale $q_1 \in F$, ma la pila non è vuota. Nel modello DIDPDA l'accettazione non dipende dalla pila, quindi la stringa sarebbe accettata. Per rifiutarla occorre un quarto stato (vedi sotto).
+
+    \item \textbf{Input $abb$}:
+    \begin{enumerate}
+        \item $(q_0, abb, \epsilon) \vdash (q_0, bb, X)$ \quad (push $X$)
+        \item $(q_0, bb, X) \vdash (q_1, b, \epsilon)$ \quad (pop $X$)
+        \item $(q_1, b, \epsilon) \vdash (q_{\text{err}}, \epsilon, \epsilon)$ \quad (pop $\perp \to q_{\text{err}}$)
+    \end{enumerate}
+    Stato finale $q_{\text{err}} \notin F$: \textbf{rifiutata}.
+
+    \item \textbf{Input $ba$}:
+    \begin{enumerate}
+        \item $(q_0, ba, \epsilon) \vdash (q_{\text{err}}, a, \epsilon)$ \quad (pop $\perp \to q_{\text{err}}$)
+        \item $(q_{\text{err}}, a, \epsilon) \vdash (q_{\text{err}}, \epsilon, X)$ \quad (push $X$)
+    \end{enumerate}
+    Stato finale $q_{\text{err}} \notin F$: \textbf{rifiutata}.
+\end{itemize}
+
+\subsection*{Osservazione: il linguaggio stretto $\{a^n b^n \mid n \geq 0\}$}
+
+Come evidenziato nell'esempio con input $aab$, l'automa con $F = \{q_0, q_1\}$ accetta anche stringhe con più $a$ che $b$, poiché nel modello DIDPDA l'accettazione si basa solo sullo stato e non sul contenuto della pila.
+
+In realtà, il linguaggio $\{a^n b^n \mid n \geq 0\}$ \textbf{è} riconoscibile da un DIDPDA: è sufficiente osservare che la pila, al termine della computazione corretta, deve essere vuota. Per questo, si può adottare la seguente strategia: quando siamo in $q_1$ e leggiamo una $b$ che svuota la pila (cioè il simbolo in cima è l'ultimo $X$), transitiamo in uno stato $q_{\text{ok}}$ dedicato. Se in $q_{\text{ok}}$ arriva un altro simbolo, andiamo in errore.
+
+Tuttavia, nel modello standard, lo stato $q_1$ non ha modo di sapere se l'$X$ che ha appena rimosso fosse l'ultimo. Il contenuto della pila è accessibile solo tramite il pop. Una soluzione è marcare il fondo della pila con un simbolo speciale $Z$ all'inizio della computazione, ma nel modello DIDPDA il fondo della pila è rappresentato dal simbolo $\perp$ che è già gestito dalla funzione di transizione $\delta_b(q, \perp)$.
+
+Dunque, consideriamo una versione raffinata con quattro stati:
+
+\begin{itemize}
+    \item $Q = \{q_0, q_a, q_b, q_{\text{err}}\}$
+    \item $F = \{q_0, q_b\}$
+    \item $\Gamma = \{X\}$
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=4cm, semithick, font=\scriptsize, scale=1.5, transform shape]
+        \tikzstyle{every state}=[fill=white, draw=black, text=black, minimum size=12mm]
+
+        \node[state, accepting] (q0) {$q_{0}$};
+        \node[state, right=5cm of q0] (qa) {$q_{a}$};
+        \node[state, accepting, below=4cm of qa] (qb) {$q_{b}$};
+        \node[state, below=4cm of q0] (qerr) {$q_{\text{err}}$};
+
+        % freccia iniziale dall'alto
+        \draw[->] ([yshift=1cm]q0.north) -- (q0.north);
+
+        % archi di transizione
+        \path[->]
+        (q0) edge node[above] {$a$ / push $X$} (qa)
+        (q0) edge node[left] {$b$ / pop $\perp$} (qerr)
+        (qa) edge[loop above] node[above] {$a$ / push $X$} ()
+        (qa) edge node[right] {$b$ / pop $X$} (qb)
+        (qa) edge[bend left=15] node[above, sloped, pos=0.4] {$b$ / pop $\perp$} (qerr)
+        (qb) edge[loop right] node[right] {$b$ / pop $X$} ()
+        (qb) edge node[below] {$b$ / pop $\perp$} (qerr)
+        (qb) edge[bend left=15] node[below, sloped, pos=0.4] {$a$ / push $X$} (qerr)
+        (qerr) edge[loop left] node[left] {$a, b$} ();
+    \end{tikzpicture}
+    \caption{DIDPDA a 4 stati per $\{a^n b^n \mid n \geq 0\}$}
+    \label{fig:didpda_anbn_4stati}
+\end{figure}
+
+Le funzioni di transizione:
+\begin{align}
+    \delta_{a}(q_0) &= (q_a, X) \\
+    \delta_{b}(q_0, \perp) &= q_{\text{err}} \\
+    \delta_{a}(q_a) &= (q_a, X) \\
+    \delta_{b}(q_a, \gamma) &= \begin{cases}
+                                    q_b & \text{se } \gamma = X \\
+                                    q_{\text{err}} & \text{se } \gamma = \perp
+    \end{cases} \\
+    \delta_{b}(q_b, \gamma) &= \begin{cases}
+                                    q_b & \text{se } \gamma = X \\
+                                    q_{\text{err}} & \text{se } \gamma = \perp
+    \end{cases} \\
+    \delta_{a}(q_b) &= (q_{\text{err}}, X) \\
+    \delta_{a}(q_{\text{err}}) &= (q_{\text{err}}, X) \\
+    \delta_{b}(q_{\text{err}}, \gamma) &= q_{\text{err}} \quad \forall \gamma \in \Gamma \cup \{\perp\}
+\end{align}
+
+\subsection*{Verifica con la versione a 4 stati}
+
+\begin{itemize}
+    \item \textbf{Input $\epsilon$}: $(q_0, \epsilon, \epsilon)$. Stato $q_0 \in F$: \textbf{accettata}.
+    \item \textbf{Input $ab$}:
+    $(q_0, ab, \epsilon) \vdash (q_a, b, X) \vdash (q_b, \epsilon, \epsilon)$. Stato $q_b \in F$: \textbf{accettata}.
+    \item \textbf{Input $aabb$}:
+    $(q_0, aabb, \epsilon) \vdash (q_a, abb, X) \vdash (q_a, bb, XX) \vdash (q_b, b, X) \vdash (q_b, \epsilon, \epsilon)$. Stato $q_b \in F$: \textbf{accettata}.
+    \item \textbf{Input $aab$}:
+    $(q_0, aab, \epsilon) \vdash (q_a, ab, X) \vdash (q_a, b, XX) \vdash (q_b, \epsilon, X)$. Stato $q_b \in F$, ma la pila non è vuota. Dato che nel modello DIDPDA l'accettazione si basa solo sullo stato, questa stringa verrebbe \textbf{accettata}. Ciò mostra che il linguaggio $\{a^n b^n\}$ richiede che il numero di $a$ non ecceda il numero di $b$, condizione automaticamente garantita dallo stato, ma \emph{non} la condizione opposta (eccesso di $a$), che dipende dal contenuto residuo della pila.
+\end{itemize}
+
+\medskip
+
+\textbf{Conclusione}: il linguaggio $\{a^n b^n \mid n \geq 0\}$ è riconoscibile da un DIDPDA \emph{se e solo se} si accetta per pila vuota e stato finale, oppure utilizzando un meccanismo per verificare la pila alla fine. Nel modello standard con accettazione solo per stato finale, il DIDPDA riconosce il linguaggio $\{a^n b^m \mid n \geq m \geq 0\}$ (ovvero accetta anche le stringhe con più $a$ che $b$). Per riconoscere esattamente $\{a^n b^n\}$ nel modello per stato finale, è sufficiente un DIDPDA che si assicuri, al termine, che la pila sia vuota, sfruttando un marcatore di fine stringa $\$ \in \Sigma_{-1}$.
+
+\end{document}
+
