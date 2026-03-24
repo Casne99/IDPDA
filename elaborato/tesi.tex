@@ -349,7 +349,7 @@
     Gli Input Driven Pushdown Automata sono stati introdotti durante lo studio di particolari tipi di grammatiche, queste grammatiche sono definite
     con un alfabeto e una serie di regole che danno origine a stringhe che osservano vari criteri di \textit{corretta parentesizzazione}.
 
-    Il primo dei modelli studiati sono state le \textit{grammatiche di parentesi} di McNaughton, nel quale l'alfabeto conteneva una parentesi sinistra $<$, una parentesi destra $>$
+    Il primo dei modelli studiati sono state le \textit{grammatiche di parentesi} di McNaughton~\cite{mcnaughton}, nel quale l'alfabeto conteneva una parentesi sinistra $<$, una parentesi destra $>$
     ed una serie di simboli terminali, e le regole erano nella forma $X \rightarrow <\alpha>$, con $\alpha \in \left(\Sigma_0 \cup N\right)$ (dove $N$ è l'insieme dei simboli non terminali della grammatica), oppure nella forma $X \rightarrow c$ con $c \in \Sigma_0^*$.
 
     Tutte queste grammatiche danno origine a sottoclassi dei linguaggi input-driven.
@@ -558,7 +558,9 @@
     \subsection{\textit{k}-vicinato}
 
     Esiste una nozione rilevante di distanza di \textit{k}-vicinato, date una distanza di edit ed un linguaggio, definita come l'insieme di tutte le stringhe a distanza al più \textit{k} da un qualche elemento in quel linguaggio.
-    La famiglia dei linguaggi riconosciuti da un IDPDA è chiusa rispetto a questa operazione, ovvero se $L$ è un linguaggio riconosciuto da un IDPDA, allora anche il suo \textit{k}-vicinato è riconosciuto da un IDPDA.
+    La famiglia dei linguaggi riconosciuti da un IDPDA è chiusa rispetto a questa operazione, ovvero se $L$ è un linguaggio riconosciuto da un IDPDA, allora anche il suo \textit{k}-vicinato è riconosciuto da un IDPDA. \\
+    La dimostrazione~\cite{neighborhood} prende in esame un linguaggio su un un alfabeto $\Sigma = \Sigma_{-1} \cup \Sigma_{0} \cup \Sigma_{+1}$ riconosciuto da un IDPDA, e costruisce
+    un altro IDPDA che riconosce il vicinato di quel linguaggio, trattando separatamente i sei casi di inserimento, cancellazione e sostituzione per ogni tipo di simbolo dell'alfabeto (rispettivamente parentesi sinistre, destre e simboli neutri).
 
     \subsubsection{Distanza di edit per automi input driven}
 
@@ -702,7 +704,6 @@
         P \subseteq NP \subseteq PSPACE,
     \]
     mentre è tuttora aperto il problema di stabilire se tali inclusioni siano proprie.
-    % TODO: cambiare stile nomi problemi, eliminare prenessa, cambiare stile titoli esempi
 
     \subsection{$AC^0$}
 
@@ -1016,6 +1017,15 @@
         la distanza di edit di $L$ è calcolabile in tempo polinomiale.
     \end{prop}
 
+    \subsection{Calcolo efficiente della distanza di edit}
+
+    Di seguito sono riportati alcuni risultati riguardanti il calcolo della distanza di edit per alcune classi di linguaggi. \\
+    Aho e Peterson~\cite{aho-peterson} hannno dimostrato che la distanza di edit per i linguaggi context-free è calcolabile in tempo $O(n^3)$, dove $n$ è la lunghezza della stringa di input.
+    La distanza di edit dei linguaggi regolari è calcolabile in tempo $O(n)$~\cite{wagner}. \\
+    Gli algoritmi citati funzionano sotto l'assunzione che il costo delle operazioni di edit sia unitario. \\
+    Pighizzini~\cite{pighizzini} mostra un algoritmo parallelo con complessità temporale $O(\log n)$ che utilizza un numero polinomiale di processori per calcolare
+    le distanze di edit per una classe di linguaggi posta tra i linguaggi context-free ed i linguaggi context-sensitive, ovvero la classe dei linguaggi accettati da automi 1-NAuxPDA~\cite{brandeburg}.
+
 
     \chapter{Conclusioni}
 
@@ -1023,19 +1033,33 @@
 
     \clearpage
     \begin{thebibliography}{9}
-
         \bibitem{okhotin-salomaa}
         Alexander Okhotin, Kai Salomaa (2014),
-        \textit{Complexity of Input-Driven Pushdown Automata}.
+        \textit{Complexity of Input-Driven Pushdown Automata, ACM SIGACT News, vol. 45, no. 2}.
         \bibitem{pighizzini}
         Giovanni Pighizzini (2001),
-        \textit{How Hard Is Computing the Edit Distance?}.
+        \textit{How Hard Is Computing the Edit Distance? Information and Computation 165, 1-13}.
         \bibitem{Karp 1}
         Karp, R. (1972),
-        \textit{Reducibility among combinatorial problems, in “Complexity of Computer Computations”}.
+        \textit{Reducibility among combinatorial problems, in “Complexity of Computer Computations” (R. Miller and J. Thatcher, Eds.), pp. 85-103, Plenum Press, New York}.
         \bibitem{Chandra}
         Chandra, A., Kozen, D., and Stockmeyer, L. (1981),
         \textit{Alternation, J. Assoc. Comput. Mach. 28, 114–133}.
+        \bibitem{mcnaughton}
+        R. McNaughton (1967),
+        \textit{Parenthesis grammars, Journal of the ACM, 14:3, 490-500}.
+        \bibitem{neighborhood}
+        Alexander Okhotin, Kai Salomaa (2019),
+        \textit{Edit distance neighbourhoods of input-driven pushdown automata, Theoretical Computer Science 777, 417-430}.
+        \bibitem{aho-peterson}
+        Aho, A., Peterson, T. (1972),
+        \textit{A minimum distance error-correcting parser for context free languages, SIAM J. Comput. 1, 305-312}.
+        \bibitem{wagner}
+        Wagner, R. (1974),
+        \textit{Order-n correction for regular languages, Comm. Assoc. Comput. Mach. 17, 265-268}.
+        \bibitem{brandeburg}
+        Brandeburg, F. (1977),
+        \textit{On one-way auxiliary pushdown automata, in “Proc. 3rd GI Conference”, Lecture Notes in Computer Science, Vol. 48, pp. 133-144, Springer-Verlag, Berlin/New York}.
     \end{thebibliography}
 
 \end{document}
