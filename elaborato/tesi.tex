@@ -90,7 +90,7 @@
 
     \section{Automi}
 
-    Gli \emph{Input Driven Pushdown Automata}, anche detti IDPDA, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input.
+    Gli \emph{Input Driven Pushdown Automata}~\cite{okhotin-salomaa}, anche detti IDPDA, sono una classe di automi a pila in cui le operazioni sulla pila sono esclusivamente determinate dal simbolo di input.
     In particolare, il simbolo di input determina se l'automa compierà un'operazione di \emph{push} sulla pila, di \emph{pop}, oppure se lascerà la pila invariata.
 
     Gli IDPDA risultano particolarmente utili in diversi ambiti, tra cui il \emph{parsing} dei linguaggi di programmazione, dei documenti XML e, più in generale, in tutti i contesti in cui la struttura dell'input riflette la struttura gerarchica dei dati.
@@ -366,7 +366,7 @@
 
     \subsection{Esempio di grammatica input-driven}
 
-    Un modello più generale, studiato da Berstel e Boasson, sono le \textit{grammatiche bilanciate}, nelle quali esiste una corrispondenza biunivoca tra parentesi sinistre e destre, in modo che ogni regola $A \rightarrow <\alpha>$ debba utilizzare una coppia di parentesi corrispondenti.
+    Un modello più generale, studiato da Berstel e Boasson~\cite{berstel-boasson}, sono le \textit{grammatiche bilanciate}, nelle quali esiste una corrispondenza biunivoca tra parentesi sinistre e destre, in modo che ogni regola $A \rightarrow <\alpha>$ debba utilizzare una coppia di parentesi corrispondenti.
 
     Consideriamo un esempio di grammatica bilanciata con:
     \begin{itemize}
@@ -967,7 +967,7 @@
     \end{theorem}
 
     \begin{proof}[Dimostrazione]
-        Come dimostrato da Karp~\cite{Karp 1}, esiste un linguaggio context-sensitive \(L\) che è \(PSPACE\)-completo rispetto alle riduzioni in tempo polinomiale.
+        Come dimostrato da Karp~\cite{Karp-1}, esiste un linguaggio context-sensitive \(L\) che è \(PSPACE\)-completo rispetto alle riduzioni in tempo polinomiale.
 
         Supponiamo che la distanza di edit verso \(L\) sia calcolabile in tempo polinomiale.
         Allora, dato un input \(x\), possiamo decidere in tempo polinomiale se \(x \in L\) osservando che
@@ -1024,7 +1024,7 @@
     La distanza di edit dei linguaggi regolari è calcolabile in tempo $O(n)$~\cite{wagner}. \\
     Gli algoritmi citati funzionano sotto l'assunzione che il costo delle operazioni di edit sia unitario. \\
     Pighizzini~\cite{pighizzini} mostra un algoritmo parallelo con complessità temporale $O(\log n)$ che utilizza un numero polinomiale di processori per calcolare
-    le distanze di edit per una classe di linguaggi posta tra i linguaggi context-free ed i linguaggi context-sensitive, ovvero la classe dei linguaggi accettati da specifici automi input-driven non deterministici 1-NAuxPDA~\cite{brandeburg}. \\
+    le distanze di edit per una classe di linguaggi posta tra i linguaggi context-free ed i linguaggi context-sensitive, ovvero la classe dei linguaggi accettati da specifici automi input-driven non deterministici 1-NAuxPDA~\cite{brandenburg}. \\
     Quest'ultima è la più grande classe di linguaggi per cui è noto un algoritmo efficiente per il calcolo della distanza di edit.
 
 
@@ -1046,28 +1046,31 @@
     \clearpage
     \begin{thebibliography}{9}
         \bibitem{okhotin-salomaa}
-        Alexander Okhotin, Kai Salomaa (2014),
-        \textit{Complexity of Input-Driven Pushdown Automata, ACM SIGACT News, vol. 45, no. 2}.
+        Alexander Okhotin, Kai Salomaa,
+        \textit{Complexity of Input-Driven Pushdown Automata, ACM SIGACT News, June 2014, vol. 45, no. 2}.
+        \bibitem{berstel-boasson}
+        J. Berstel, L. Boasson,
+        \textit{“Balanced grammars and their languages”, Formal and Natural Computing 2002, LNCS 2300, 3-25}.
         \bibitem{pighizzini}
-        Giovanni Pighizzini (2001),
-        \textit{How Hard Is Computing the Edit Distance? Information and Computation 165, 1-13}.
-        \bibitem{Karp 1}
+        Giovanni Pighizzini,
+        \textit{How Hard Is Computing the Edit Distance? Information and Computation 165, 1-13 (2001)}.
+        \bibitem{Karp-1}
         Karp, R. (1972),
         \textit{Reducibility among combinatorial problems, in “Complexity of Computer Computations” (R. Miller and J. Thatcher, Eds.), pp. 85-103, Plenum Press, New York}.
         \bibitem{mcnaughton}
-        R. McNaughton (1967),
-        \textit{Parenthesis grammars, Journal of the ACM, 14:3, 490-500}.
+        R. McNaughton,
+        \textit{Parenthesis grammars, Journal of the ACM, 14:3 (1967), 490-500}.
         \bibitem{neighborhood}
-        Alexander Okhotin, Kai Salomaa (2019),
-        \textit{Edit distance neighbourhoods of input-driven pushdown automata, Theoretical Computer Science 777, 417-430}.
+        Alexander Okhotin, Kai Salomaa,
+        \textit{Edit distance neighbourhoods of input-driven pushdown automata, Theoretical Computer Science 777 (2019), 417-430}.
         \bibitem{aho-peterson}
         Aho, A., Peterson, T. (1972),
         \textit{A minimum distance error-correcting parser for context free languages, SIAM J. Comput. 1, 305-312}.
         \bibitem{wagner}
         Wagner, R. (1974),
         \textit{Order-n correction for regular languages, Comm. Assoc. Comput. Mach. 17, 265-268}.
-        \bibitem{brandeburg}
-        Brandeburg, F. (1977),
+        \bibitem{brandenburg}
+        Brandenburg, F. (1977),
         \textit{On one-way auxiliary pushdown automata, in “Proc. 3rd GI Conference”, Lecture Notes in Computer Science, Vol. 48, pp. 133-144, Springer-Verlag, Berlin/New York}.
     \end{thebibliography}
 
