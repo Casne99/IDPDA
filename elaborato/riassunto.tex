@@ -1,0 +1,25 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=2.8cm}
+\usepackage{setspace}
+\onehalfspacing
+
+\begin{document}
+
+    \section*{Riassunto}
+
+    In questo lavoro analizziamo il problema del calcolo della distanza di edit tra una stringa e un linguaggio, con particolare attenzione ai linguaggi riconosciuti dagli \emph{Input Driven Pushdown Automata} (IDPDA).
+    Questi automi a pila, caratterizzati dal fatto che la classe di appartenenza di ogni simbolo di input letto determina univocamente l’operazione da eseguire sulla pila (\textit{push}, \textit{pop} o nessuna operazione), costituiscono un modello interessante per riconoscere linguaggi che rispettano specifiche regole di parentesizzazione.
+
+    Dopo aver introdotto il modello, nelle sue varianti deterministica e non deterministica, il lavoro si concentra sulla nozione di distanza di edit, definita come il costo minimo di una sequenza di operazioni elementari che trasformano una stringa data in una stringa appartenente al linguaggio.
+    Tale misura è alla base del \emph{correction problem}, che richiede non solo di determinare quanto un input sia distante dal linguaggio, ma anche di individuare una stringa del linguaggio che realizzi tale distanza minima.
+
+    La trattazione discute inoltre vincoli utili a limitare lo spazio di ricerca delle soluzioni ottimali, come i bound sulla lunghezza delle stringhe candidate e alcune nozioni accessorie come quella di \emph{k}-vicinato.
+    Questi strumenti permettono di inquadrare il problema in un contesto di complessità più ampio, mettendo in evidenza come la difficoltà computazionale del calcolo della distanza di edit dipenda in modo significativo dalla classe di linguaggi considerata.
+    Accanto a casi risolvibili in modo efficiente, emergono connessioni con questioni aperte fondamentali, quali $P \stackrel{?}{=} NP$ e $P \stackrel{?}{=} PSPACE$.
+
+\end{document}

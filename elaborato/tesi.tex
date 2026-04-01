@@ -126,7 +126,7 @@
     \]
 
     Il \textit{correction problem} richiede la costruzione effettiva di una correzione ottimale.
-    In ambito applicativo, esso riveste particolare importanza in contesti quali il parsing robusto, il riconoscimento di input rumorosi e i sistemi di correzione automatica.
+    In ambito applicativo, esso riveste particolare importanza in contesti quali il parsing robusto, il riconoscimento di input affetti da rumore e i sistemi di correzione automatica.
 
 
     \section{Notazioni}
@@ -282,7 +282,7 @@
     \end{definition}
 
     Un NIDPDA $B$ diventa un DIPDA se $\lvert Q_0\rvert = 1$ e le sue funzioni di transizione $\sigma_a$, $a \in \Sigma$ forniscono al più una azione possibile per ogni simbolo di input, stato e simbolo in cima alla pila.
-    Se ci sono solo simboli neutri nell'alfabeto $\left(\Sigma_{+1} = \Sigma_{-1} = \emptyset\right)$, allora un NIDPDA è una automa a stati finiti non deterministico (NFA)
+    Se ci sono solo simboli neutri nell'alfabeto $\left(\Sigma_{+1} = \Sigma_{-1} = \emptyset\right)$, allora un NIDPDA è un automa a stati finiti non deterministico (NFA)
 
     \subsection{Esempio di NIDPDA}
 
@@ -441,7 +441,7 @@
 
     \subsection{Esempio: distanza di Hamming}
 
-    La \textit{distanza di Hamming} è definita solo per stringhe di uguale lunghezza e considera esclusivamente operazioni di sostituzione, ovvero le operazioni di cancellazione ed inserimento hanno costo infinito.
+    La \textit{distanza di Hamming} è definita solo per stringhe di uguale lunghezza e considera esclusivamente operazioni di sostituzione, pertanto le operazioni di cancellazione ed inserimento hanno costo infinito.
 
     Formalmente, data una funzione di costo generale $\gamma$, la distanza di Hamming si ottiene ponendo:
     \begin{align}
@@ -558,9 +558,11 @@
     \subsection{\textit{k}-vicinato}
 
     Esiste una nozione di distanza di \textit{k}-vicinato, date una distanza di edit ed un linguaggio, definita come l'insieme di tutte le stringhe a distanza al più \textit{k} da un qualche elemento in quel linguaggio.
-    La famiglia dei linguaggi riconosciuti da un IDPDA è chiusa rispetto a questa operazione, ovvero se $L$ è un linguaggio riconosciuto da un IDPDA, allora anche il suo \textit{k}-vicinato è riconosciuto da un IDPDA. \\
+    La famiglia dei linguaggi riconosciuti da un IDPDA è chiusa rispetto al \textit{k}-vicinato, ovvero se $L$ è un linguaggio riconosciuto da un IDPDA, allora anche il suo \textit{k}-vicinato è riconosciuto da un IDPDA. \\
     La dimostrazione~\cite{neighborhood} prende in esame un linguaggio $L$ su un un alfabeto $\Sigma = \Sigma_{-1} \cup \Sigma_{0} \cup \Sigma_{+1}$ riconosciuto da un IDPDA, e costruisce
-    un altro IDPDA che riconosce il vicinato del linguaggio $L$, trattando separatamente i sei casi di inserimento, cancellazione e sostituzione per ogni tipo di simbolo dell'alfabeto (parentesi sinistre, destre e simboli neutri).
+    un altro IDPDA che riconosce il vicinato del linguaggio $L$, trattando separatamente i sei casi di inserimento e cancellazione per ogni tipo di simbolo dell'alfabeto (parentesi sinistre, destre e simboli neutri).
+    Includere l'operazione di sostituzione porterebbe a dover trattare ulteriori nove casi, ognuno identificato dalle classi del simbolo sostituto e sostituito.
+    L'inclusione di questa operazione non cambia comunque il risultato ottenuto, la chiusura rispetto al \textit{k}-vicinato è mantenuta anche considerando operazioni di sostituzione.
 
     \subsubsection{Distanza di edit per automi input driven}
 
@@ -1030,6 +1032,7 @@
 
     \chapter{Conclusioni}
 
+
     \section{Considerazioni finali}
 
     In questo elaborato abbiamo analizzato il problema del calcolo della distanza di edit rispetto a diverse classi di linguaggi, mettendo in relazione il problema stesso con gli Input Driven Pushdown Automata.
@@ -1040,8 +1043,8 @@
 
     Infine, la trattazione ha collocato il problema in un quadro di complessità più ampio.
     I risultati discussi mostrano che l’efficienza del calcolo della distanza di edit dipenda in modo profondo dalla classe del linguaggio considerato: accanto a casi trattabili con algoritmi noti, emergono connessioni dirette con questioni fondamentali come $P \stackrel{?}{=} NP$ e $P \stackrel{?}{=} PSPACE$.
-    Abbiamo inoltre richiamato risultati consolidati, tra cui l’individuazione della più ampia classe di linguaggi per cui sia noto un algoritmo efficiente per il calcolo della distanza di edit, vale a dire la classe dei linguaggi accettati da automi 1-NAuxPDA.
-    Questo aspetto evidenzia come il problema della distanza di edit non sia soltanto uno strumento applicativo per la correzione di input rumorosi, ma anche un punto di incontro tra teoria degli automi, parsing e teoria della complessità.
+    Abbiamo inoltre richiamato risultati consolidati, tra cui l’individuazione della più ampia classe di linguaggi per cui sia noto un algoritmo efficiente per il calcolo della distanza di edit, vale a dire la classe dei linguaggi accettati da automi 1-NAuxPDA\@.
+    Questo aspetto evidenzia come il problema della distanza di edit non sia soltanto uno strumento applicativo per la correzione di input affetti da rumore, ma anche un punto di incontro tra teoria degli automi, parsing e teoria della complessità.
 
     \clearpage
     \begin{thebibliography}{9}
