@@ -10,7 +10,8 @@
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{booktabs}
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta}
+\usetikzlibrary{positioning,arrows.meta,automata,calc}
+\usepackage{listings}
 
 \title{Input Driven Pushdown Automata ed Edit Distances}
 \subtitle{Presentazione del lavoro di tesi}
@@ -18,7 +19,26 @@
 \institute{Universit\`a degli Studi di Milano\\Corso di Laurea in Informatica}
 \date{Anno Accademico 2024--2025}
 
+% --- DECORAZIONI GLOBALI ---
+% Barra colorata sottile in alto
+\setbeamertemplate{headline}{%
+  \leavevmode
+  \hbox{%
+    \color{blue!60!black}\rule{\paperwidth}{1.5pt}%
+  }%
+}
+% Linea sottile in basso
+\setbeamertemplate{footline}{%
+  \leavevmode
+  \hbox{%
+    \color{gray!60}\rule{\paperwidth}{0.5pt}%
+  }%
+}
+% Margine slide leggermente aumentato per non "toccare" le barre
+\addtobeamertemplate{frametitle}{}{\vspace{-0.5em}}
+
 \begin{document}
+\setbeamertemplate{navigation symbols}{}
 
 \begin{frame}
   \titlepage
@@ -27,9 +47,9 @@
 \begin{frame}{Obiettivi della tesi}
 \begin{itemize}
   \item Studiare il modello degli \emph{Input Driven Pushdown Automata} (IDPDA).
-  \item Formalizzare la distanza di edit tra stringa e linguaggio.
-  \item Collegare il problema della correzione ai limiti computazionali.
-  \item Evidenziare risultati di chiusura e implicazioni in complessit\`a.
+  \item Studiare il problema del calcolo della distanza di edit stringa-stringa e stringa-linguaggio.
+  \item Evidenziare collegamenti tra automi input-driven e problema del calcolo delle distanze di edit.
+  \item Evidenziare legami tra correction problem e questioni aperte in teoria della complessità.
 \end{itemize}
 \end{frame}
 
@@ -39,8 +59,8 @@ Gli IDPDA estendono i DFA introducendo una pila con comportamento guidato dal si
 \vspace{0.4em}
 \begin{itemize}
   \item Adatti a strutture annidate e bilanciate.
-  \item Utili in parsing robusto e input rumorosi.
-  \item Consentono analisi su distanza minima da un linguaggio.
+  \item Riconoscono sottoclasse di linguaggi context-free.
+  \item Operazione sulla pila determinata dal tipo di simbolo in input.
 \end{itemize}
 \end{frame}
 
@@ -69,6 +89,52 @@ con transizioni determinate dalla categoria del simbolo in input.
   \item $\delta_{>}:Q\times(\Gamma\cup\{\perp\})\to Q$ per $>\in\Sigma_{-1}$.
   \item $\delta_c:Q\to Q$ per $c\in\Sigma_0$.
 \end{itemize}
+\end{frame}
+
+% Slide con diagramma a sinistra, divisorio nero centrale (fino in fondo) e liste a destra
+
+\begin{frame}{Esempio di DIDPDA: diagramma}
+\begin{columns}[T,onlytextwidth]
+  \column{0.60\textwidth}
+  \centering
+  \begin{tikzpicture}[>=stealth, shorten >=1pt, auto, node distance=4cm, semithick, font=\scriptsize, scale=1.15, transform shape]
+      \tikzstyle{every state}=[fill=white, draw=black, text=black, minimum size=12mm]
+      \node[state, accepting] (q0) {$q_{0}$};
+      \node[state, accepting, right=4cm of q0] (q1) {$q_{1}$};
+      \node[state, below=3cm of $(q0)!0.5!(q1)$] (qerr) {$q_{\text{err}}$};
+      % freccia iniziale dall'alto
+      \draw[->] ([yshift=1cm]q0.north) -- (q0.north);
+      % archi di transizione
+      \path[->]
+          (q0) edge[loop below] node[below left] {$<$/push $X$} ()
+          (q0) edge[bend left=15] node[above] {$a$} (q1)
+          (q0) edge node[left] {$>$/err} (qerr)
+          (q1) edge[loop above] node[above] {$a$} ()
+          (q1) edge[bend left=15] node[below] {$>$/pop $X$} (q0)
+          (q1) edge node[right] {$>$/err} (qerr);
+  \end{tikzpicture}%
+  \hspace{2.5em}% Spazio aumentato tra diagramma e linea
+  \column{0.015\textwidth}
+  \begin{tikzpicture}[baseline={(current bounding box.center)}]
+    \draw[black, thick] (0,0) -- (0,\dimexpr\textheight-2.5em\relax);
+  \end{tikzpicture}
+  \column{0.37\textwidth}
+  \textbf{Stringhe accettate:}
+  \begin{itemize}
+    \item $<a>$
+    \item $<<a>>$
+    \item $a$
+    \item $aa$
+  \end{itemize}
+  \vspace{0.5em}
+  \textbf{Stringhe rifiutate:}
+  \begin{itemize}
+    \item $<<$
+    \item $<a$
+    \item $<>$
+  \end{itemize}
+\end{columns}
+\vspace{0.5em}
 \end{frame}
 
 \begin{frame}{NIDPDA: estensione non deterministica}
@@ -129,7 +195,7 @@ d(L,x)=\min\{d(y,x)\mid y\in L\}.
 \end{frame}
 
 \begin{frame}{Proprieta' utili per il calcolo}
-Dalla tesi emergono due idee chiave:
+Emergono due idee chiave:
 \begin{itemize}
   \item \textbf{Decomposizione:}
   \[
@@ -175,7 +241,6 @@ P\subseteq NP\subseteq PSPACE.
 \end{frame}
 
 \begin{frame}{Teorema: collegamento con $P=NP$}
-Dalla tesi:
 \begin{block}{Risultato}
 Se $P=NP$, allora la distanza di edit di qualunque linguaggio in $NP$ e' calcolabile in tempo polinomiale.
 \end{block}
