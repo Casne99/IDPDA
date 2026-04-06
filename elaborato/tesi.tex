@@ -77,6 +77,14 @@
         {\large Anno Accademico 2024--2025\par}
     \end{titlepage}
 
+    \cleardoublepage
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{flushright}
+    \small \textit{Alla mia famiglia}
+    \end{flushright}
+    \cleardoublepage
+
     \pagenumbering{Roman}
     \setcounter{tocdepth}{3}
     \tableofcontents
@@ -561,7 +569,7 @@
     La famiglia dei linguaggi riconosciuti da un IDPDA è chiusa rispetto al \textit{k}-vicinato, ovvero se $L$ è un linguaggio riconosciuto da un IDPDA, allora anche il suo \textit{k}-vicinato è riconosciuto da un IDPDA. \\
     La dimostrazione~\cite{neighborhood} prende in esame un linguaggio $L$ su un un alfabeto $\Sigma = \Sigma_{-1} \cup \Sigma_{0} \cup \Sigma_{+1}$ riconosciuto da un IDPDA, e costruisce
     un altro IDPDA che riconosce il vicinato del linguaggio $L$, trattando separatamente i sei casi di inserimento e cancellazione per ogni tipo di simbolo dell'alfabeto (parentesi sinistre, destre e simboli neutri).
-    Includere l'operazione di sostituzione porterebbe a dover trattare ulteriori nove casi, ognuno identificato dalle classi del simbolo sostituto e sostituito.
+    Includere l'operazione di sostituzione inserirebbe ulteriori nove casi da trattare, ognuno identificato dalle classi del simbolo sostituto e sostituito.
     L'inclusione di questa operazione non cambia comunque il risultato ottenuto, la chiusura rispetto al \textit{k}-vicinato è mantenuta anche considerando operazioni di sostituzione.
 
     \subsubsection{Distanza di edit per automi input driven}
@@ -737,7 +745,7 @@
         f(x_1, \dots, x_n) = (x_1 \vee x_2) \wedge (x_2 \vee x_3) \wedge \dots \wedge (x_{n-1} \vee x_n)
     \]
 
-    in caso contrario, $0$.
+    \noindent in caso contrario, $0$.
 
     \paragraph{Costruzione del circuito:}
 
