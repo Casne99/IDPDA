@@ -13,10 +13,11 @@
     \section*{Riassunto}
 
     In questo lavoro analizziamo il problema del calcolo della distanza di edit tra una stringa e un linguaggio, con particolare attenzione ai linguaggi riconosciuti dagli \emph{Input Driven Pushdown Automata} (IDPDA).
-    Questi automi a pila, caratterizzati dal fatto che la classe di appartenenza di ogni simbolo di input letto determina univocamente l’operazione da eseguire sulla pila (\textit{push}, \textit{pop} o nessuna operazione), costituiscono un modello interessante per riconoscere linguaggi che rispettano specifiche regole di parentesizzazione.
+    Questi automi a pila, caratterizzati dal fatto che la classe di appartenenza di ogni simbolo di input letto determina univocamente l’operazione da eseguire sulla pila (caricamento, rimozione o nessuna operazione), costituiscono un modello interessante per riconoscere linguaggi che rispettano specifiche regole di parentesizzazione.
 
     Dopo aver introdotto il modello, nelle sue varianti deterministica e non deterministica, il lavoro si concentra sulla nozione di distanza di edit, definita come il costo minimo di una sequenza di operazioni elementari che trasformano una stringa data in una stringa appartenente al linguaggio.
-    Tale misura è alla base del \emph{correction problem}, che richiede non solo di determinare quanto un input sia distante dal linguaggio, ma anche di individuare una stringa del linguaggio che realizzi tale distanza minima.
+    Tale misura è alla base del \emph{correction problem}, che richiede non solo di determinare quanto un input sia distante dal linguaggio, ma anche di individuare una stringa del linguaggio che realizzi tale distanza minima (un esempio pratico potrebbe essere quello individuare una parola errata in italiano e suggerirne la correzione).
+    Esempi noti di distanza di edit includono la distanza di Levenshtein, che considera operazioni di inserimento, cancellazione e sostituzione di simboli, e la distanza di Hamming, che si limita alla sostituzione.
 
     La trattazione discute inoltre vincoli utili a limitare lo spazio di ricerca delle soluzioni ottimali, come i bound sulla lunghezza delle stringhe candidate e alcune nozioni accessorie come quella di \emph{k}-vicinato.
     Questi strumenti permettono di inquadrare il problema in un contesto di complessità più ampio, mettendo in evidenza come la difficoltà computazionale del calcolo della distanza di edit dipenda in modo significativo dalla classe di linguaggi considerata.
