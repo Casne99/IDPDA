@@ -49,46 +49,33 @@
   \item Studiare il modello degli \emph{Input Driven Pushdown Automata} (IDPDA).
   \item Studiare il problema del calcolo della distanza di edit stringa-stringa e stringa-linguaggio.
   \item Evidenziare collegamenti tra automi input-driven e problema del calcolo delle distanze di edit.
-  \item Evidenziare legami tra correction problem e questioni aperte in teoria della complessità.
+  \item Evidenziare legami tra distanze di edit e questioni aperte in teoria della complessità.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Motivazione}
-Gli IDPDA estendono i DFA introducendo una pila con comportamento guidato dal simbolo letto.
-
-\vspace{0.4em}
-\begin{itemize}
-  \item Adatti a strutture annidate e bilanciate.
-  \item Riconoscono sottoclasse di linguaggi context-free.
-  \item Operazione sulla pila determinata dal tipo di simbolo in input.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Alfabeto input-driven}
-Per un IDPDA, l'alfabeto si partiziona in tre insiemi disgiunti:
-\[
-\Sigma = \Sigma_{+1} \cup \Sigma_{-1} \cup \Sigma_0.
-\]
-\begin{itemize}
-  \item $\Sigma_{+1}$: parentesi sinistre (operazione di \textit{push}).
-  \item $\Sigma_{-1}$: parentesi destre (operazione di \textit{pop}).
-  \item $\Sigma_0$: simboli neutri (nessuna operazione su pila).
-\end{itemize}
-\end{frame}
-
-\begin{frame}{DIDPDA: definizione (idea)}
+\begin{frame}{DIDPDA: alfabeto e definizione}
 Un DIDPDA e' una settupla
 \[
-A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F)
+A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F),\quad
+\Sigma = \Sigma_{+1} \cup \Sigma_{-1} \cup \Sigma_0.
 \]
-con transizioni determinate dalla categoria del simbolo in input.
 
-\vspace{0.4em}
-\begin{itemize}
-  \item $\delta_{<}:Q\to Q\times\Gamma$ per $<\in\Sigma_{+1}$.
-  \item $\delta_{>}:Q\times(\Gamma\cup\{\perp\})\to Q$ per $>\in\Sigma_{-1}$.
-  \item $\delta_c:Q\to Q$ per $c\in\Sigma_0$.
-\end{itemize}
+\vfill
+\begin{columns}[T,onlytextwidth]
+  \column{0.5\textwidth}
+  \begin{itemize}
+    \item $\Sigma_{+1}$: parentesi sinistre
+    \item $\Sigma_{-1}$: parentesi destre
+    \item $\Sigma_0$: simboli neutri
+  \end{itemize}
+
+  \column{0.5\textwidth}
+  \begin{itemize}
+    \item $\delta_{<}:Q\to Q\times\Gamma$.
+    \item $\delta_{>}:Q\times(\Gamma\cup\{\perp\})\to Q$.
+    \item $\delta_c:Q\to Q$.
+  \end{itemize}
+\end{columns}
 \end{frame}
 
 % Slide con diagramma a sinistra, divisorio nero centrale (fino in fondo) e liste a destra
@@ -122,95 +109,62 @@ con transizioni determinate dalla categoria del simbolo in input.
   \textbf{Stringhe accettate:}
   \begin{itemize}
     \item $<a>$
-    \item $<<a>>$
-    \item $a$
-    \item $aa$
+    \item $<a><a>$
+    \item $aaa$
+    \item \ldots
   \end{itemize}
   \vspace{0.5em}
   \textbf{Stringhe rifiutate:}
   \begin{itemize}
-    \item $<<$
-    \item $<a$
+    \item $<a>>$
+    \item $a>$
     \item $<>$
+    \item \ldots
   \end{itemize}
 \end{columns}
 \vspace{0.5em}
 \end{frame}
 
-\begin{frame}{NIDPDA: estensione non deterministica}
-Nel modello non deterministico, le transizioni restituiscono insiemi di stati possibili.
+\begin{frame}{Distanze di edit: definizioni}
 
-\vspace{0.4em}
-\begin{itemize}
-  \item Possibile insieme di stati iniziali $Q_0$.
-  \item Per ogni simbolo, la computazione puo' biforcarsi.
-  \item La stringa e' accettata se esiste almeno una computazione accettante.
-\end{itemize}
-\end{frame}
+  \begin{itemize}
+    \setlength{\itemsep}{0.55em}
+    \item \textbf{Operazione di edit:} coppia $(a,b)\neq(\epsilon,\epsilon)$ con $|a|,|b|\le 1$, indicata con $a\rightarrow b$.
+    \item \textbf{Sequenza di edit:} $S=(s_1,\dots,s_k)$ con costo $\mathrm{cost}(S)=\sum_{i=1}^{k}\gamma(s_i)$.
+    \item $y$ si ottiene da $x$ con $a\rightarrow b$ se $\exists v,w\in\Sigma^*$ tali che $x=vaw$ e $y=vbw$.
+  \end{itemize}
 
-\begin{frame}{Grammatiche input-driven}
-Le grammatiche input-driven usano lo stesso schema tripartito dell'alfabeto.
+  \[
+    d(x,y)=\min\{\mathrm{cost}(S)\mid S\text{ trasforma }x\text{ in }y\}.
+  \]
 
-\vspace{0.4em}
-Regole tipiche:
-\[
-A\rightarrow <B>C,\qquad A\rightarrow aC,\qquad A\rightarrow \epsilon.
-\]
+  \vspace{0.2em}
+  \textbf{Esempio: distanza di Hamming}
+  \[
+    d_H(x, y) = \sum_{i=1}^{n} \begin{cases}
+                                 0 & \text{se } x_i = y_i \\
+                                 1 & \text{se } x_i \neq y_i
+    \end{cases}
+  \]
 
-\begin{itemize}
-  \item Origine storica: grammatiche di parentesi e grammatiche bilanciate.
-  \item Vincolo centrale: corretta parentesizzazione.
-\end{itemize}
-\end{frame}
 
-\begin{frame}{Distanza di edit tra stringhe}
-Operazioni elementari: sostituzione, cancellazione, inserimento.
-
-\vspace{0.4em}
-\[
-d(x,y)=\min\{\text{costo delle sequenze di edit che trasformano }x\text{ in }y\}.
-\]
-
-\begin{itemize}
-  \item Costo complessivo = somma dei costi delle operazioni.
-  \item Caso particolare: distanza di Hamming (solo sostituzioni).
-\end{itemize}
 \end{frame}
 
 \begin{frame}{Distanza stringa-linguaggio e correction problem}
 Per $L\subseteq\Sigma^*$ e $x\in\Sigma^*$:
 \[
-d(L,x)=\min\{d(y,x)\mid y\in L\}.
+d(L,x)=\min_{w\in L} d(x,w).
 \]
 
-\vspace{0.4em}
-\textbf{Correction problem:}
+\vspace{0.6em}
+\textbf{Correction problem:} trovare una correzione ottima
 \[
-\text{trovare }y\in L\text{ tale che }d(y,x)=d(L,x).
+y=\arg\min_{w\in L} d(x,w).
 \]
-
-\begin{itemize}
-  \item Non solo valutare una distanza, ma costruire una correzione ottima.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Proprieta' utili per il calcolo}
-Emergono due idee chiave:
-\begin{itemize}
-  \item \textbf{Decomposizione:}
-  \[
-  d(uv,wz)\le d(u,w)+d(v,z).
-  \]
-  \item \textbf{Limite superiore lineare:} esistono $\alpha,\beta$ tali che
-  \[
-  d(L,x)\le \alpha|x|+\beta.
-  \]
-\end{itemize}
-Questo permette anche di limitare la lunghezza delle correzioni ottime.
 \end{frame}
 
 \begin{frame}{$k$-vicinato}
-Definizione ricorsiva del vicinato di edit:
+Definizione induttiva del vicinato di edit:
 \[
 E_0(w)=\{w\},\quad
 E_{k+1}(w)=E_k(w)\cup\bigcup_{w'\in E_k(w)}\bigcup_{a\in\Sigma}(ins_a(w')\cup del_a(w')).
@@ -231,49 +185,41 @@ E_k(L)=\bigcup_{w\in L}E_k(w).
   \item $P$: tempo polinomiale deterministico.
   \item $NP$: verifica polinomiale di certificati.
   \item $PSPACE$: spazio polinomiale.
-  \item $AC^0$: circuiti di profondita' costante e taglia polinomiale.
 \end{itemize}
-
-Relazioni note:
-\[
-P\subseteq NP\subseteq PSPACE.
-\]
+\vspace{0.5em}
+\begin{columns}[T,onlytextwidth]
+    \column{0.5\textwidth}
+    Relazioni note:
+    \[
+    P\subseteq NP\subseteq PSPACE.
+    \]
+    \column{0.5\textwidth}
+    Questione aperta:
+    \[
+    P \stackrel{?}{=} NP.
+    \]
+\end{columns}
 \end{frame}
 
-\begin{frame}{Teorema: collegamento con $P=NP$}
-\begin{block}{Risultato}
+\begin{frame}{Collegamento con $P=NP$}
+\begin{block}{Teorema}
 Se $P=NP$, allora la distanza di edit di qualunque linguaggio in $NP$ e' calcolabile in tempo polinomiale.
 \end{block}
 
 Idea della prova:
 \begin{itemize}
-  \item si considera il problema decisionale $\Pi_L$: ``$d(L,x)\le k$?'';
-  \item si indovina una correzione candidata di lunghezza limitata;
-  \item si verifica appartenenza a $L$ e distanza in tempo polinomiale.
+  \item Si considera il problema decisionale $\Pi_L$: ``$d(L,x)\le k$?''.
+  \item Si indovina una stringa candidata $y$ di lunghezza polinomiale in $|x|$.
+  \item Si verifica se $y \in L$ e $d(y, x) \le k$.
+  \item Si calcola $d(L,x)$ valutando $\Pi_L$ per valori crescenti di $k$.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Teorema: collegamento con $P=PSPACE$}
-\begin{block}{Risultato}
-Esiste un linguaggio context-sensitive $L$ tale che
-\[
-\text{edit-distance verso }L\in P\iff P=PSPACE.
-\]
-\end{block}
-
-Interpretazione:
+\begin{frame}{Risultati noti}
 \begin{itemize}
-  \item calcolare la distanza generalizza il test di appartenenza ($d(x,L)=0$);
-  \item quindi, per opportuni linguaggi ``difficili'', la complessita' del problema riflette separazioni tra classi.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Conclusioni}
-\begin{itemize}
-  \item Gli IDPDA offrono un compromesso potente tra espressivita' e struttura.
-  \item La distanza di edit estende il riconoscimento a scenari rumorosi.
-  \item I risultati di complessita' mostrano limiti profondi del problema.
-  \item Aperture: algoritmi pratici di correzione, euristiche e varianti di costo.
+  \item $O(n)$ per linguaggi regolari.
+  \item $O(n^3)$ per linguaggi context-free.
+  \item La classe dei linguaggi riconosciuti da automi input-driven (1-NAuxPDA) è la più ampia per cui si conosce un algoritmo efficiente per il calcolo della distanza di edit.
 \end{itemize}
 \end{frame}
 
