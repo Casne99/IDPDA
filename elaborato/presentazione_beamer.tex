@@ -180,6 +180,14 @@ E_k(L)=\bigcup_{w\in L}E_k(w).
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Risultati noti}
+    \begin{itemize}
+        \item $O(n)$ per linguaggi regolari.
+        \item $O(n^3)$ per linguaggi context-free.
+        \item La classe dei linguaggi riconosciuti da automi 1-NAuxPDA è la più ampia per cui si conosce un algoritmo efficiente per il calcolo della distanza di edit.
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Classi di complessita' considerate}
 \begin{itemize}
   \item $P$: tempo polinomiale deterministico.
@@ -212,14 +220,6 @@ Idea della prova:
   \item Si indovina una stringa candidata $y$ di lunghezza polinomiale in $|x|$.
   \item Si verifica se $y \in L$ e $d(y, x) \le k$.
   \item Si calcola $d(L,x)$ valutando $\Pi_L$ per valori crescenti di $k$.
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Risultati noti}
-\begin{itemize}
-  \item $O(n)$ per linguaggi regolari.
-  \item $O(n^3)$ per linguaggi context-free.
-  \item La classe dei linguaggi riconosciuti da automi input-driven (1-NAuxPDA) è la più ampia per cui si conosce un algoritmo efficiente per il calcolo della distanza di edit.
 \end{itemize}
 \end{frame}
 
