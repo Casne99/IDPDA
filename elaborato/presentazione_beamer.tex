@@ -201,27 +201,28 @@ A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F),\quad
                 y=\arg\min_{w\in L} d(x,w).
             \]
         \end{column}
-        \begin{column}{0.5\textwidth}
+\begin{column}{0.5\textwidth}
             \centering
             \begin{tikzpicture}[scale=0.9, transform shape]
                 % Stringhe in L sparpagliate
-                \node (w1) at (0.5, 1.2) {$ab$};
-                \node (w2) at (-0.8, -0.5) {$aabb$};
-                \node (w3) at (1, -1) {$aaabbb$};
-                \node at (0.2, 0.2) {$\dots$};
+                \node at (0, 1.2) {UNIMI};
+                \node at (-1.5, 0) {UNIMIB};
+                \node at (1.5, 0) {POLIMI};
+                \node at (-0.8, -1.2) {IULM};
+                \node at (1.2, -1.2) {BOCCONI};
 
                 % Insieme L (sfondo)
                 \begin{pgfonlayer}{background}
-                    \draw[blue, thick] (0.5,0) ellipse (2.5cm and 2cm);
+                    \draw[blue, thick] (0,0) ellipse (3cm and 2.2cm);
                 \end{pgfonlayer}
-                \node[blue] at (0.5, 2.5) {$L = \{a^n b^n \mid n \ge 1\}$};
+                \node[blue] at (0, 2.5) {$L = \text{Università di Milano (alcune)}$};
 
             \end{tikzpicture}
 
             \vspace{1em}
-            Per $x=aaba$:
+            Per $x=\text{POLITO}$:
             \[
-                d(L,x) = 1, \quad \underset{w \in L}{\text{argmin }} d(x,w) = aabb
+                d(L,x) = 2, \quad \underset{w \in L}{\text{argmin }} d(x,w) = \text{POLIMI}
             \]
         \end{column}
     \end{columns}
@@ -265,8 +266,13 @@ E_k(L)=\bigcup_{w\in L}E_k(w).
     \vfill
     \footnotesize
     \begin{thebibliography}{9}
+        \bibitem{wagner}
+        Wagner, R., 1974.
+        \bibitem{aho-peterson}
+        Aho, A., Peterson, T., 1972.
         \bibitem{pighizzini}
         G. Pighizzini, 2001.
+
     \end{thebibliography}
 \end{frame}
 
