@@ -10,13 +10,13 @@
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{booktabs}
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta,automata,calc}
+\usetikzlibrary{positioning,arrows.meta,automata,calc,backgrounds}
 \usepackage{listings}
 
 \title{Input Driven Pushdown Automata ed Edit Distances}
 \subtitle{Presentazione del lavoro di tesi}
 \author{Luca Casnedi}
-\institute{Universit\`a degli Studi di Milano\\Corso di Laurea in Informatica}
+\institute{Università degli Studi di Milano\\Corso di Laurea in Informatica}
 \date{Anno Accademico 2024--2025}
 
 % --- DECORAZIONI GLOBALI ---
@@ -54,7 +54,7 @@
 \end{frame}
 
 \begin{frame}{Input Driven Pushdown Automata}
-Un Input Driven Pushdown Automata deterministico e' una settupla
+Un Input Driven Pushdown Automata deterministico è una settupla
 \[
 A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F),\quad
 \Sigma = \Sigma_{+1} \cup \Sigma_{-1} \cup \Sigma_0.
@@ -76,6 +76,13 @@ A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F),\quad
     \item $\delta_c:Q\to Q$.
   \end{itemize}
 \end{columns}
+
+\vfill
+\footnotesize
+\begin{thebibliography}{9}
+    \bibitem{okhotin-salomaa-2014}
+    A. Okhotin, K. Salomaa, 2014.
+\end{thebibliography}
 \end{frame}
 
 % Slide con diagramma a sinistra, divisorio nero centrale (fino in fondo) e liste a destra
@@ -126,55 +133,98 @@ A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F),\quad
 \end{frame}
 
 \begin{frame}{Distanze di edit: definizioni}
-    \begin{center}
-        \begin{tikzpicture}[font=\Large\ttfamily]
-            % Stringa GATTO
-            \node at (0,0) {G};
-            \node at (1,0) {A};
-            \node[red] at (2,0) {T};
-            \node at (3,0) {T};
-            \node at (4,0) {O};
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+        \hspace{1cm}
+            \begin{tikzpicture}[font=\Large\ttfamily, scale=0.8, transform shape]
+                % Stringa GATTO
+                \node at (0,0) {G};
+                \node at (1,0) {A};
+                \node[red] at (2,0) {T};
+                \node[red] at (3,0) {T};
+                \node at (4,0) {O};
 
-            % Stringa GALLO
-            \node at (0,-1) {G};
-            \node at (1,-1) {A};
-            \node[red] at (2,-1) {L};
-            \node at (3,-1) {L};
-            \node at (4,-1) {O};
+                % Stringa GALLO
+                \node at (0,-1) {G};
+                \node at (1,-1) {A};
+                \node[red] at (2,-1) {L};
+                \node[red] at (3,-1) {L};
+                \node at (4,-1) {O};
 
-            % Frecce e costi
-            \draw[->, gray] (0, -0.3) -- (0, -0.7);
-            \draw[->, gray] (1, -0.3) -- (1, -0.7);
-            \draw[->, red, thick] (2, -0.3) -- (2, -0.7);
-            \draw[->, red, thick] (3, -0.3) -- (3, -0.7);
-            \draw[->, gray] (4, -0.3) -- (4, -0.7);
+                % Frecce e costi
+                \draw[->, gray] (0, -0.3) -- (0, -0.7);
+                \draw[->, gray] (1, -0.3) -- (1, -0.7);
+                \draw[->, red, thick] (2, -0.3) -- (2, -0.7);
+                \draw[->, red, thick] (3, -0.3) -- (3, -0.7);
+                \draw[->, gray] (4, -0.3) -- (4, -0.7);
 
-            \node[font=\normalsize] at (0, -1.5) {0};
-            \node[font=\normalsize] at (1, -1.5) {0};
-            \node[font=\normalsize, red] at (2, -1.5) {1};
-            \node[font=\normalsize, red] at (3, -1.5) {1};
-            \node[font=\normalsize] at (4, -1.5) {0};
-        \end{tikzpicture}
-    \end{center}
+                \node[font=\normalsize] at (0, -1.5) {0};
+                \node[font=\normalsize] at (1, -1.5) {0};
+                \node[font=\normalsize, red] at (2, -1.5) {1};
+                \node[font=\normalsize, red] at (3, -1.5) {1};
+                \node[font=\normalsize] at (4, -1.5) {0};
+            \end{tikzpicture}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \[
+                d_H(x, y) = \sum_{i=1}^{n} \begin{cases}
+                                     0 & \text{se } x_i = y_i \\
+                                     1 & \text{se } x_i \neq y_i
+                \end{cases}
+            \]
+        \end{column}
+    \end{columns}
 
     \vfill
-    La \textbf{distanza di Hamming} tra due stringhe della stessa lunghezza è il numero di posizioni in cui i simboli corrispondenti sono diversi.
-    \[
-        d_H(\text{GATTO}, \text{GALLO}) = 0 + 0 + 1 + 1 + 0 = 2
-    \]
+    \begin{itemize}
+        \item \textbf{Distanza di Hamming:} numero di posizioni in cui due stringhe della stessa lunghezza sono diverse.
+        \[
+            d_H(\text{GATTO}, \text{GALLO}) = 2
+        \]
+        \item Stiamo considerando solo sostituzioni di simboli; se accettiamo anche inserimenti e cancellazioni abbiamo la \textbf{distanza di edit}.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Distanza stringa-linguaggio e correction problem}
-Per $L\subseteq\Sigma^*$ e $x\in\Sigma^*$:
-\[
-d(L,x)=\min_{w\in L} d(x,w).
-\]
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \textbf{Idea:} dati $x \in \Sigma^*$ e $L \subseteq \Sigma^*$, trovare la stringa $y \in L$ da cui $x$ ha distanza minima.
 
-\vspace{0.6em}
-\textbf{Correction problem:} trovare una correzione ottima
-\[
-y=\arg\min_{w\in L} d(x,w).
-\]
+            \vspace{1em}
+            \[
+                d(L,x)=\min_{w\in L} d(x,w).
+            \]
+
+            \vspace{1em}
+            \textbf{Correction problem:} trovare una correzione ottima
+            \[
+                y=\arg\min_{w\in L} d(x,w).
+            \]
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \begin{tikzpicture}[scale=0.9, transform shape]
+                % Stringhe in L sparpagliate
+                \node (w1) at (0.5, 1.2) {$ab$};
+                \node (w2) at (-0.8, -0.5) {$aabb$};
+                \node (w3) at (1, -1) {$aaabbb$};
+                \node at (0.2, 0.2) {$\dots$};
+
+                % Insieme L (sfondo)
+                \begin{pgfonlayer}{background}
+                    \draw[blue, thick] (0.5,0) ellipse (2.5cm and 2cm);
+                \end{pgfonlayer}
+                \node[blue] at (0.5, 2.5) {$L = \{a^n b^n \mid n \ge 1\}$};
+
+            \end{tikzpicture}
+
+            \vspace{1em}
+            Per $x=aaba$:
+            \[
+                d(L,x) = 1, \quad \underset{w \in L}{\text{argmin }} d(x,w) = aabb
+            \]
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}{$k$-vicinato di un linguaggio $L$}
@@ -235,7 +285,7 @@ E_k(L)=\bigcup_{w\in L}E_k(w).
 \end{columns}
 
 \begin{block}{Teorema}
-Se $P=NP$, allora la distanza di edit di qualunque linguaggio in $NP$ e' calcolabile in tempo polinomiale.
+Se $P=NP$, allora la distanza di edit di qualunque linguaggio in $NP$ è calcolabile in tempo polinomiale.
 \end{block}
 
 Idea della prova:
