@@ -46,15 +46,15 @@
 
 \begin{frame}{Obiettivi della tesi}
 \begin{itemize}
-  \item Studiare il modello degli \emph{Input Driven Pushdown Automata} (IDPDA).
-  \item Studiare il problema del calcolo della distanza di edit stringa-stringa e stringa-linguaggio.
-  \item Evidenziare collegamenti tra automi input-driven e problema del calcolo delle distanze di edit.
-  \item Evidenziare legami tra distanze di edit e questioni aperte in teoria della complessità.
+  \item Modello degli \emph{Input Driven Pushdown Automata} (IDPDA).
+  \item Calcolo della distanza di edit stringa-stringa e stringa-linguaggio.
+  \item Collegamenti tra automi input-driven e problema del calcolo delle distanze di edit.
+  \item Legami tra distanze di edit e questioni aperte in teoria della complessità.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{DIDPDA: alfabeto e definizione}
-Un DIDPDA e' una settupla
+\begin{frame}{Input Driven Pushdown Automata}
+Un Input Driven Pushdown Automata deterministico e' una settupla
 \[
 A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F),\quad
 \Sigma = \Sigma_{+1} \cup \Sigma_{-1} \cup \Sigma_0.
@@ -126,28 +126,42 @@ A=(\Sigma,Q,\Gamma,q_0,\perp,[\delta_a]_{a\in\Sigma},F),\quad
 \end{frame}
 
 \begin{frame}{Distanze di edit: definizioni}
+    \begin{center}
+        \begin{tikzpicture}[font=\Large\ttfamily]
+            % Stringa GATTO
+            \node at (0,0) {G};
+            \node at (1,0) {A};
+            \node[red] at (2,0) {T};
+            \node at (3,0) {T};
+            \node at (4,0) {O};
 
-  \begin{itemize}
-    \setlength{\itemsep}{0.55em}
-    \item \textbf{Operazione di edit:} coppia $(a,b)\neq(\epsilon,\epsilon)$ con $|a|,|b|\le 1$, indicata con $a\rightarrow b$.
-    \item \textbf{Sequenza di edit:} $S=(s_1,\dots,s_k)$ con costo $\mathrm{cost}(S)=\sum_{i=1}^{k}\gamma(s_i)$.
-    \item $y$ si ottiene da $x$ con $a\rightarrow b$ se $\exists v,w\in\Sigma^*$ tali che $x=vaw$ e $y=vbw$.
-  \end{itemize}
+            % Stringa GALLO
+            \node at (0,-1) {G};
+            \node at (1,-1) {A};
+            \node[red] at (2,-1) {L};
+            \node at (3,-1) {L};
+            \node at (4,-1) {O};
 
-  \[
-    d(x,y)=\min\{\mathrm{cost}(S)\mid S\text{ trasforma }x\text{ in }y\}.
-  \]
+            % Frecce e costi
+            \draw[->, gray] (0, -0.3) -- (0, -0.7);
+            \draw[->, gray] (1, -0.3) -- (1, -0.7);
+            \draw[->, red, thick] (2, -0.3) -- (2, -0.7);
+            \draw[->, red, thick] (3, -0.3) -- (3, -0.7);
+            \draw[->, gray] (4, -0.3) -- (4, -0.7);
 
-  \vspace{0.2em}
-  \textbf{Esempio: distanza di Hamming}
-  \[
-    d_H(x, y) = \sum_{i=1}^{n} \begin{cases}
-                                 0 & \text{se } x_i = y_i \\
-                                 1 & \text{se } x_i \neq y_i
-    \end{cases}
-  \]
+            \node[font=\normalsize] at (0, -1.5) {0};
+            \node[font=\normalsize] at (1, -1.5) {0};
+            \node[font=\normalsize, red] at (2, -1.5) {1};
+            \node[font=\normalsize, red] at (3, -1.5) {1};
+            \node[font=\normalsize] at (4, -1.5) {0};
+        \end{tikzpicture}
+    \end{center}
 
-
+    \vfill
+    La \textbf{distanza di Hamming} tra due stringhe della stessa lunghezza è il numero di posizioni in cui i simboli corrispondenti sono diversi.
+    \[
+        d_H(\text{GATTO}, \text{GALLO}) = 0 + 0 + 1 + 1 + 0 = 2
+    \]
 \end{frame}
 
 \begin{frame}{Distanza stringa-linguaggio e correction problem}
@@ -163,7 +177,7 @@ y=\arg\min_{w\in L} d(x,w).
 \]
 \end{frame}
 
-\begin{frame}{$k$-vicinato}
+\begin{frame}{$k$-vicinato di un linguaggio $L$}
 Definizione induttiva del vicinato di edit:
 \[
 E_0(w)=\{w\},\quad
@@ -178,38 +192,48 @@ E_k(L)=\bigcup_{w\in L}E_k(w).
 \begin{itemize}
   \item Risultato: la famiglia dei linguaggi IDPDA e' chiusa rispetto al $k$-vicinato.
 \end{itemize}
+
+\vfill
+\footnotesize
+\begin{thebibliography}{9}
+  \bibitem{okhotin-salomaa-2018}
+  A. Okhotin, K. Salomaa, 2018.
+\end{thebibliography}
 \end{frame}
 
-\begin{frame}{Risultati noti}
+\begin{frame}{Linguaggi con distanza di edit "facile"}
     \begin{itemize}
+        \setlength{\itemsep}{1em}
         \item $O(n)$ per linguaggi regolari.
         \item $O(n^3)$ per linguaggi context-free.
-        \item La classe dei linguaggi riconosciuti da automi 1-NAuxPDA è la più ampia per cui si conosce un algoritmo efficiente per il calcolo della distanza di edit.
+        \begin{itemize}
+            \item[$\rightarrow$] Caso particolare: linguaggi accettati da Input Driven Pushdown Automata.
+        \end{itemize}
+        \item La classe dei linguaggi riconosciuti da 1-NAuxPDA è la più ampia classe per cui si conosce un algoritmo efficiente per il calcolo della distanza di edit.
     \end{itemize}
+
+    \vfill
+    \footnotesize
+    \begin{thebibliography}{9}
+        \bibitem{pighizzini}
+        G. Pighizzini, 2001.
+    \end{thebibliography}
 \end{frame}
 
-\begin{frame}{Classi di complessita' considerate}
-\begin{itemize}
-  \item $P$: tempo polinomiale deterministico.
-  \item $NP$: verifica polinomiale di certificati.
-  \item $PSPACE$: spazio polinomiale.
-\end{itemize}
-\vspace{0.5em}
+\begin{frame}{Linguaggi con distanza di edit "difficile"}
 \begin{columns}[T,onlytextwidth]
     \column{0.5\textwidth}
-    Relazioni note:
-    \[
-    P\subseteq NP\subseteq PSPACE.
-    \]
+    \begin{itemize}
+        \item P: problemi risolvibili in tempo polinomiale deterministico.
+        \item NP: problemi con certificati verificabili in tempo polinomiale deterministico.
+    \end{itemize}
     \column{0.5\textwidth}
-    Questione aperta:
-    \[
-    P \stackrel{?}{=} NP.
-    \]
+    \vfill
+    \centering
+    Questione aperta: $\stackrel{?}{P=NP}$
+    \vfill
 \end{columns}
-\end{frame}
 
-\begin{frame}{Collegamento con $P=NP$}
 \begin{block}{Teorema}
 Se $P=NP$, allora la distanza di edit di qualunque linguaggio in $NP$ e' calcolabile in tempo polinomiale.
 \end{block}
@@ -221,20 +245,6 @@ Idea della prova:
   \item Si verifica se $y \in L$ e $d(y, x) \le k$.
   \item Si calcola $d(L,x)$ valutando $\Pi_L$ per valori crescenti di $k$.
 \end{itemize}
-\end{frame}
-
-\begin{frame}{Riferimenti principali}
-\footnotesize
-\begin{thebibliography}{9}
-\bibitem{okhotin-salomaa-2014}
-A. Okhotin, K. Salomaa, \emph{Complexity of Input-Driven Pushdown Automata}, 2014.
-
-\bibitem{pighizzini-2001}
-G. Pighizzini, \emph{How Hard Is Computing the Edit Distance?}, 2001.
-
-\bibitem{okhotin-salomaa-2018}
-A. Okhotin, K. Salomaa, \emph{Edit distance neighbourhoods of input-driven pushdown automata}, 2018.
-\end{thebibliography}
 \end{frame}
 
 \end{document}
